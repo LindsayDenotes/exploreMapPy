@@ -1,41 +1,56 @@
-"nh": {
-        "state": "PY NEW HAMPSHIRE DEPARTMENT OF TRANSPORTATION",
+{
+    "nh": {
+
+        "agency": "PY NEW HAMPSHIRE DEPARTMENT OF TRANSPORTATION",
         "contacts": {
-            "PY Bill Real": {
-                "product_types": [
-                    "PY CADD",
-                    "CCC",
-                    "ECP",
-                    "GTX/REGEO",
-                    "HDPE",
-                    "PPP",
-                    "PVC",
-                    "HMA-CS",
-                    "PCC-JS",
-                    "RSCP",
-                    "PY REBAR/WWR"
-                ],
-                "title": "PY Research Supervisor/QPL",
-                "phone": "PY 603-271-3151",
-                "email": "PY wreal@dot.state.nh.us"
-            },
-            "Tobey Reynolds": {
-                "product_types": [
-                    "PY PMM",
-                    "PY SSM/RUP"
-                ],
-                "title": "PY Assistant Traffic Engineer",
-                "phone": "PY 603-271-2291",
-                "email": "PY treynolds@dot.state.nh.us"
-            },
-            "Jerry Zoller": {
-                "product_types": [
-                    "PY SSC/CCS"
-                ],
-                "title": "PY No Title",
-                "phone": "PY 603-271-2731",
-                "email": "PY jzoller@dot.state.nh.us"
-            }
+
+            "firstLast": "PY Bill Real",
+                    "info": {
+                        "product_types": [
+                            "PY CADD","CCC","ECP","GTX/REGEO","HDPE","PPP","PVC","HMA-CS","PCC-JS","RSCP","PY REBAR/WWR"
+                        ],
+                        "title": "PY Research Supervisor/QPL",
+                        "phone": "PY 603-271-3151",
+                        "email": "PY wreal@dot.state.nh.us"
+                    },
+
+            "firstLast": "PY Tobey Reynolds",
+                    "info": {
+                        "product_types": [
+                            "PY PMM", "PY SSM/RUP"
+                        ],
+                        "title": "PY Assistant Traffic Engineer",
+                        "phone": "PY 603-271-2291",
+                        "email": "PY treynolds@dot.state.nh.us"
+                    },
+
+            "firstLast": "PY Jerry Zoller",
+                    "info": {
+                        "product_types": [
+                            "PY SSC/CCS"
+                        ],
+                        "title": "PY No Title",
+                        "phone": "PY 603-271-2731",
+                        "email": "PY jzoller@dot.state.nh.us"
+                    }
+        }
+    },
+
+
+    "fl": {
+        "agency": "FLORIDA DEPARTMENT OF TRANSPORTATION",
+        "contacts": {
+            "firstLast": "PY Karen Byram",
+                    "info":{
+                        "product_types":[
+                            "Concrete Admixtures (CADD)","Hot-Mix Asphalt Crack Sealers (HMA CS)","Pavement Marking Materials (PMM)","Portland Cement Concrete Joint Sealants (PCC JS)","Portable Changeable Message Signs/Flashing Arrow Panels (PCMS/FAP)","Protective Coatings - Structural Steel Coatings and Concrete Coating Systems (SSC/CCS)","Raised Pavement Markers/Snowplowable Raised Pavement Markers (RPM/SRPM)","Rapid Set Concrete Patch Materials (RSCPM)", "Sign Sheeting Materials/Roll Up Signs (SSM/RUP)","Temporary Traffic Control Devices (TTCD)"
+                        ],
+                        "title": "Product Evaluation Administrator",
+                        "phone": "850-414-4353",
+                        "email": "karen.byram@dot.state.fl.us"
+                    }
         }
     }
+
+}
 
