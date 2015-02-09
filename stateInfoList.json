@@ -1,9 +1,34 @@
-{
-    "nh": {
-        "agency": "PY NEW HAMPSHIRE DEPARTMENT OF TRANSPORTATION",
+"nh": {
+        "state": "PY NEW HAMPSHIRE DEPARTMENT OF TRANSPORTATION",
         "contacts": {
-            "firstLast": "PY Jerry Zoller",
-            "info": {
+            "PY Bill Real": {
+                "product_types": [
+                    "PY CADD",
+                    "CCC",
+                    "ECP",
+                    "GTX/REGEO",
+                    "HDPE",
+                    "PPP",
+                    "PVC",
+                    "HMA-CS",
+                    "PCC-JS",
+                    "RSCP",
+                    "PY REBAR/WWR"
+                ],
+                "title": "PY Research Supervisor/QPL",
+                "phone": "PY 603-271-3151",
+                "email": "PY wreal@dot.state.nh.us"
+            },
+            "Tobey Reynolds": {
+                "product_types": [
+                    "PY PMM",
+                    "PY SSM/RUP"
+                ],
+                "title": "PY Assistant Traffic Engineer",
+                "phone": "PY 603-271-2291",
+                "email": "PY treynolds@dot.state.nh.us"
+            },
+            "Jerry Zoller": {
                 "product_types": [
                     "PY SSC/CCS"
                 ],
@@ -13,5 +38,4 @@
             }
         }
     }
-}
 
