@@ -27,19 +27,13 @@ $( document ).ready( function(){
 
                            contacts.forEach(function(obj){
                             //console.log(obj.firstLast);
+                            //console.log(obj.productTypes);
+                            var productTypes = [];
+                             productTypes = ( obj.productTypes );
+                              console.log( productTypes );
                             var firstLast = (obj.firstLast);
                              console.log(firstLast);
                             });
-
-                            contacts.forEach(function(obj){
-                            console.log(obj.productTypes);
-//                            var productTypes = [];
-//                             productTypes = ( obj.productTypes );
-//                              console.log( productTypes );
-                            });
-
-
-
 
 
                           $( "#txtDOT" ).html( "<p id='agency " + key + "'>" + val.agency + "</p>" ); //2/1/15  changed from state to agency
