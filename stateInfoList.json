@@ -4,7 +4,7 @@
         "contacts": [
             {
                 "firstLast": "PY Bill Real",
-                "product_types": [
+                "productTypes": [
                     "CADD",
                     "CCC",
                     "ECP",
@@ -23,7 +23,7 @@
             },
             {
                 "firstLast": "PY Tobey Reynolds",
-                "product_types": [
+                "productTypes": [
                     "PMM",
                     "SSM/RUP"
                 ],
@@ -33,7 +33,7 @@
             },
             {
                 "firstLast": "PY Jerry Zoller",
-                "product_types": [
+                "productTypes": [
                     "SSC/CCS"
                 ],
                 "title": "PY No Title",
