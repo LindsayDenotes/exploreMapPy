@@ -25,13 +25,22 @@ $( document ).ready( function(){
                          contacts = ( val.contacts );
                           console.log ( "Referenced by val.contacts, contacts are " + contacts );
 
-                          contacts.forEach(function(obj) {
-                           console.log(obj.firstLast);
-                           });
+                           contacts.forEach(function(obj){
+                            //console.log(obj.firstLast);
+                            var firstLast = (obj.firstLast);
+                             console.log(firstLast);
+                            });
 
-                        var productTypes = [];
-                         productTypes = ( val.contacts.productTypes );
-                          console.log( productTypes );
+                            contacts.forEach(function(obj){
+                            console.log(obj.productTypes);
+//                            var productTypes = [];
+//                             productTypes = ( obj.productTypes );
+//                              console.log( productTypes );
+                            });
+
+
+
+
 
                           $( "#txtDOT" ).html( "<p id='agency " + key + "'>" + val.agency + "</p>" ); //2/1/15  changed from state to agency
                           $( "#txtDOT" ).append( "<p id='productTypes'>" + val.contacts.productTypes + "</p>" );
