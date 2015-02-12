@@ -1,11 +1,11 @@
-$(document).ready(function(){
+$( document ).ready( function(){
 
-    var items = {};
+    var json = {};
     $.getJSON( "stateInfoList.json", function( data ) {
-      console.log (data);//whole JSON object //revisiting on 2/1/15 Am I actually "loading" all 52 state DOTs? That sounds expensive for bandwidth. Is this necessary in order to use .each( ) in the loop below?
+      console.log ( data );//whole JSON object //revisiting on 2/1/15 Am I actually "loading" all 52 state DOTs? That sounds expensive for bandwidth. Is this necessary in order to use .each( ) in the loop below?
 
         $( "g" ).on( "click", function (e) {
-          console.log("user clicked " + this.id);
+          console.log( "user clicked " + this.id );
 
         $( this ).attr( "class", "clicked" ).siblings( "g" ).removeAttr( "class","clicked" );
 
@@ -16,23 +16,31 @@ $(document).ready(function(){
                    console.log ( key, val );//key is "nh" or "fl", val is whats inside json's { }s
 
                     var jsonKey = ( key );
-                      console.log ( "this is one state key: " + jsonKey );
+                      console.log ( "this is a state key: " + jsonKey );
 
                        if (jsonKey == selectedState){
-                        console.log( "selectedState ID " + selectedState + " MATCHES key: " + jsonKey + ". Return that value." );
-                        console.log( val.contacts );
+                        console.log( "selectedState ID " + selectedState + " MATCHES key: " + jsonKey + ". Return that val." );
 
-                        //var productTypes = []
-                        productTypes = ( val.contacts.info.productTypes );
-                          console.log(productTypes);
+                        var contacts = [];
+                         contacts = ( val.contacts );
+                          console.log ( "Referenced by val.contacts, contacts are " + contacts );
 
-                          $("#txtDOT").html("<p id='agency " + key + "'>" + val.agency + "</p>"); //2/1/15  changed from state to agency
-                          $("#txtDOT").append("<p id='productTypes'>" + val.contacts.info.productTypes + "</p>");
+                          contacts.forEach(function(obj) {
+                           console.log(obj.firstLast);
+                           });
+
+                        var productTypes = [];
+                         productTypes = ( val.contacts.productTypes );
+                          console.log( productTypes );
+
+                          $( "#txtDOT" ).html( "<p id='agency " + key + "'>" + val.agency + "</p>" ); //2/1/15  changed from state to agency
+                          $( "#txtDOT" ).append( "<p id='productTypes'>" + val.contacts.productTypes + "</p>" );
+                          $( "#txtDOT" ).append( "<p id ='firstLast'>" + val.contacts.firstLast + "</p>" );
 
                        }
 
                        else {
-                       console.log("selectedState ID " + selectedState + " does NOT match key: " + jsonKey)
+                       console.log( "selectedState ID " + selectedState + " does NOT match key: " + jsonKey + " , so don't return that val." )
                        }
 
                 });
