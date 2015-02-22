@@ -7,44 +7,64 @@ $( document ).ready( function(){
         $( "g" ).on( "click", function (e) {
           console.log( "user clicked " + this.id );
 
-        $( this ).attr( "class", "clicked" ).siblings( "g" ).removeAttr( "class","clicked" );
+          $( this ).attr( "class", "clicked" ).siblings( "g" ).removeAttr( "class","clicked" );
 
-        selectedState = ( this.id );
+          selectedState = ( this.id );
           console.log( "so var selectedState is " + selectedState );
 
-                 $.each ( data, function( key, val ){
-                   console.log ( key, val );//key is "nh" or "fl", val is whats inside json's { }s
+          $.each ( data, function( key, val ){
+            console.log ( key, val );//key is "nh" or "fl", val is whats inside json's { }s
 
-                    var jsonKey = ( key );
-                      console.log ( "this is a state key: " + jsonKey );
+            var jsonKey = ( key );
+            console.log ( "this is a state key: " + jsonKey );
 
-                       if (jsonKey == selectedState){
-                        console.log( "selectedState ID " + selectedState + " MATCHES key: " + jsonKey + ". Return that val." );
+            if ( jsonKey == selectedState ){
+              console.log( "selectedState ID " + selectedState + " MATCHES key: " + jsonKey + ". Return that val." );
 
-                        var contacts = [];
-                         contacts = ( val.contacts );
-                          console.log ( "Referenced by val.contacts, contacts are " + contacts );
+              var contacts = [];
+              contacts = ( val.contacts );
+              console.log ( "Referenced by val.contacts, contacts are " + contacts );
 
-                           contacts.forEach(function(obj){
-                            //console.log(obj.firstLast);
-                            //console.log(obj.productTypes);
-                            var productTypes = [];
-                             productTypes = ( obj.productTypes );
-                              console.log( productTypes );
-                            var firstLast = (obj.firstLast);
-                             console.log(firstLast);
-                            });
+              var theText = "<p id='agency " + key + "'>" + val.agency + "</p>"; //2/1/15  changed from state to agency";
+              contacts.forEach( function( obj ){
+
+                var productTypes = [];
+                productTypes = ( obj.productTypes );
+                console.log( productTypes );
+
+                var productTypesText = "";
+                productTypesText += productTypes;
+                productTypesText = productTypesText.replace(/,/g , "<br/>" );//g stands for global, replace all matches, and not just the first one. makes it a regular expression(?)
+                console.log(productTypesText);
+
+                var firstLast = ( obj.firstLast );
+                console.log( firstLast );
+
+                var title = ( obj.title );
+                console.log ( title );
+
+                var phone = ( obj.phone );
+                console.log ( phone );
+
+                var email = ( obj.email );
+                console.log ( email );
+
+                theText += "<p class='productTypes'>" + productTypesText + "</p>";//make this a </br> to prevent extra space? Can we switch font to Arial?
+                theText += "<p class='contacts'> For the above product types, please contact: </br>" + firstLast + ", " + title + ", " + phone + ", " + email + "</p>";
 
 
-                          $( "#txtDOT" ).html( "<p id='agency " + key + "'>" + val.agency + "</p>" ); //2/1/15  changed from state to agency
-                          $( "#txtDOT" ).append( "<p id='productTypes'>" + val.contacts.productTypes + "</p>" );
-                          $( "#txtDOT" ).append( "<p id ='firstLast'>" + val.contacts.firstLast + "</p>" );
+//             $( "#txtDOT" ).append( "<p id='productTypes'>" + productTypes + "</p>" );
+//             $( "#txtDOT" ).append( "<p id ='firstLast'>" + firstLast + "</p>" );
+              });
 
-                       }
+              $( "#txtDOT" ).html(theText);
 
-                       else {
-                       console.log( "selectedState ID " + selectedState + " does NOT match key: " + jsonKey + " , so don't return that val." )
-                       }
+
+               }
+
+               else {
+               console.log( "selectedState ID " + selectedState + " does NOT match key: " + jsonKey + " , so don't return that val." )
+               }
 
                 });
 

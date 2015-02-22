@@ -1,49 +1,49 @@
 {
     "nh": {
-        "agency": "PY NEW HAMPSHIRE DEPARTMENT OF TRANSPORTATION",
+        "agency": "NEW HAMPSHIRE DEPARTMENT OF TRANSPORTATION",
         "contacts": [
             {
-                "firstLast": "PY Bill Real",
+                "firstLast": "Bill Real",
                 "productTypes": [
-                    "CADD",
-                    "CCC",
-                    "ECP",
-                    "GTX/REGEO",
-                    "HDPE",
-                    "PPP",
-                    "PVC",
-                    "HMA-CS",
-                    "PCC-JS",
-                    "RSCP",
-                    "REBAR/WWR"
+                    "Concrete Admixtures (CADD)",
+                    "Concrete Curing Compounds (CCC)",
+                    "Erosion Control Products (ECP)",
+                    "Geotextiles/Reinforcing Geosynthetics (GTX/REGEO)",
+                    "High Density Polyethylene Pipe (HDPE)",
+                    "Polypropylene Pipe (PPP)",
+                    "Polyvinyl Chloride Pipe (PVC)",
+                    "Hot Mix Asphalt Crack Sealers (HMA-CS)",
+                    "Portland Cement Concrete Joint Sealants (PCC JS)",
+                    "Rapid Set Concrete Patch Materials (RSCPM)",
+                    "Reinforcing Steel/Welded Wire Reinforcement (REBAR/WWR)"
                 ],
-                "title": "PY Research Supervisor/QPL",
-                "phone": "PY 603-271-3151",
-                "email": "PY wreal@dot.state.nh.us"
+                "title": "Research Supervisor/QPL",
+                "phone": "603-271-3151",
+                "email": "wreal@dot.state.nh.us"
             },
             {
-                "firstLast": "PY Tobey Reynolds",
+                "firstLast": "Tobey Reynolds",
                 "productTypes": [
-                    "PMM",
-                    "SSM/RUP"
+                    "Pavement Marking Materials (PMM)",
+                    "Sign Sheeting Materials/Roll Up Signs (SSM/RUP)"
                 ],
-                "title": "PY Assistant Traffic Engineer",
-                "phone": "PY 603-271-2291",
-                "email": "PY treynolds@dot.state.nh.us"
+                "title": "Assistant Traffic Engineer",
+                "phone": "603-271-2291",
+                "email": "treynolds@dot.state.nh.us"
             },
             {
-                "firstLast": "PY Jerry Zoller",
+                "firstLast": "Jerry Zoller",
                 "productTypes": [
-                    "SSC/CCS"
+                    "Structual Steel Coatings/Concrete Coating Systems (SSC/CCS)"
                 ],
-                "title": "PY No Title",
-                "phone": "PY 603-271-2731",
-                "email": "PY jzoller@dot.state.nh.us"
+                "title": "No Title",
+                "phone": "603-271-2731",
+                "email": "jzoller@dot.state.nh.us"
             }
         ]
     },
     "fl": {
-        "agency": "PY FLORIDA DEPARTMENT OF TRANSPORTATION",
+        "agency": "FLORIDA DEPARTMENT OF TRANSPORTATION",
         "contacts": [
             {
                 "firstLast": "Karen Byram",
