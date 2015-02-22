@@ -55,6 +55,7 @@ $( document ).ready( function(){
 
 //             $( "#txtDOT" ).append( "<p id='productTypes'>" + productTypes + "</p>" );
 //             $( "#txtDOT" ).append( "<p id ='firstLast'>" + firstLast + "</p>" );
+
               });
 
               $( "#txtDOT" ).html(theText);
