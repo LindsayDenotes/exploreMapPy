@@ -1,56 +1,79 @@
-import xlrd #davideads@gmail.com email the excel workbook when you email him. this function is a starting point for rearranging column values and writing into new file.
-# for your twenty headers, write if, and 19 if elif's
-# source: https://github.com/nprapps/leso/blob/master/util.py
+#!/usr/bin/env python
 
-def clean_data(worksheet, writer, headers, datemode):
+import xlrd     # Library that processes excel files
+import json     # Library for processing / writing JSON
+
+from slugify import slugify  # Library to slugify strings
+from pprint import pformat   # Pretty print output
+
+# File to be processed
+IMPORT_FILE = 'ntpepData.xlsx'
+OUTPUT_FILE = 'processed_data.json'
+
+def process_data():
+    """
+    The main processing function.
+    """
+
+    # Open the file
+    workbook = xlrd.open_workbook(IMPORT_FILE)
+
+    # Datemode is required for processing dates in Excel files
+    datemode = workbook.datemode
+
+    worksheet = workbook.sheet_by_name('ntpepData')
+
+    # Extract headers from first row of worksheet
+    headers = make_headers(worksheet)
+    print 'Headers are: %s' % pformat(headers)
+
+    # Output will be a list of dictionaries which will be written to JSON
+    output = []
+
+    # Main processing loop, starts with second row
     row_idx = 1
+
+    # Loop over rows
     while row_idx < worksheet.nrows:
         cell_idx = 0
         row_dict = {}
         while cell_idx < worksheet.ncols:
-            try:
-                header = headers[cell_idx]
-            except KeyError:
-                cell_idx += 1
-                continue
+            header = headers[cell_idx]
+            value = worksheet.cell_value(row_idx, cell_idx)
 
-            if header == "ship_date":
-                # clean date
-                try:
-                    cell_value = int(worksheet.cell_value(row_idx, cell_idx))
-                    if cell_value > 20000000:
-                        # turn into string and parse as YYYYMMDD
-                        cell_value = str(cell_value)
-                        cell_value = datetime.strptime(cell_value, "%Y%m%d")
-                    else:
-                        parts = xlrd.xldate_as_tuple(cell_value, datemode)
-                        cell_value = datetime(*parts)
-                except ValueError:
-                    cell_value = None
+            # Example of processing a specific column
+            if header == 'polymer_concrete_overlays_pco':
+                if value == 'No':
+                    value = 0
+                else:
+                    value = 1
 
-            elif header == 'nsn':
-                cell_value = str(worksheet.cell_value(row_idx, cell_idx))
-                id_prefix = cell_value.split('-')[0]
-                row_dict['federal_supply_class'] = id_prefix
-
-                federal_supply_category = id_prefix[:2]
-                row_dict['federal_supply_category'] = federal_supply_category
-
-            elif header == "quantity":
-                try:
-                    cell_value = int(worksheet.cell_value(row_idx, cell_idx))
-                except ValueError:
-                    cell_value = None
-
-            else:
-                try:
-                    # Strings
-                    cell_value = worksheet.cell_value(row_idx, cell_idx).strip()
-                except AttributeError:
-                    # Numbers
-                    cell_value = worksheet.cell_value(row_idx, cell_idx)
-            row_dict[header] = cell_value
+            row_dict[header] = value
             cell_idx += 1
 
-        writer.writerow(row_dict)
-        row_idx += 1
+        print 'Processed row: %s' % pformat(row_dict)
+
+    # Write the data to JSON
+    with open(OUTPUT_FILE, 'w') as f:
+        json.dump(output, f)
+
+
+def make_headers(worksheet):
+    """Make headers"""
+    headers = {}
+    cell_idx = 0
+    while cell_idx < worksheet.ncols:
+        cell_type = worksheet.cell_type(0, cell_idx)
+        cell_value = worksheet.cell_value(0, cell_idx)
+        cell_value = slugify(cell_value).replace('-', '_')
+        if cell_type == 1:
+            headers[cell_idx] = cell_value
+        cell_idx += 1
+
+    return headers
+
+# This allows the script to be run from the command line
+if __name__ == "__main__":
+    process_data()
+
+
