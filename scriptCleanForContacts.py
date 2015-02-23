@@ -48,10 +48,14 @@ def process_data():
                 else:
                     value = 1
 
+            # Example of splitting a column for json
+            if header == 'producttypes':
+                value = value.split(',')
+
             row_dict[header] = value
             cell_idx += 1
 
-        print 'Processed row: %s' % pformat(row_dict)
+        #print 'Processed row: %s' % pformat(row_dict)
 
     # Write the data to JSON
     with open(OUTPUT_FILE, 'w') as f:
