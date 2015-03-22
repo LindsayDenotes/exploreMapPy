@@ -43,24 +43,28 @@ def process_data():
     # iterating through all rows and fulfilling our dictionary
     while curr_row < num_rows:
         curr_row += 1
-        for idx, val in enumerate(worksheet.row(curr_row)):
+        for idx, val in enumerate(worksheet.row(curr_row)): # for line in lines
             if val.value.strip():
-                data[keys[idx]].append(val.value)
-
-                # planned to make a list for abbs, then make list into dict
-                # attempted to delete dups from one list of abb, and later from one list of agency
-                # abbs = [] # create list
-                # for abb in data[keys[idx]]: # for object in L
-                #     if keys[idx] =='abb': # if condition
-                #         abbs.append(val.value)
-                #         # if val in abbs: # The in operator can be used to check if an item is present in the list
-                #         #     pass
-                # # print "abbs",abbs
-                # uniqueAbbs = list(set(abbs))
-                # print "uniqueAbbs", uniqueAbbs
+                data[keys[idx]].append(val.value) 
+                # make val.values into a list so .zip() will work
+                valValuesList = []
+                valValuesList = data[keys[idx]]
+                print valValuesList
+                
+                single_line_dict = {} # create 
+                print "zip(keys,valValuesList",zip(keys,valValuesList) #returned only first index of string. # zip method returns as list
+                # for val in data[keys[idx]]: # for object in 
+                    # print val
 
 
-                # attempt to delete dups from dict
+                # if keys[idx] =='abb': # if condition
+                # abbs.append(val.value)
+                # print "abbs",abbs
+                # # uniqueAbbs = dict(set(abbs))
+                # # # print "uniqueAbbs", uniqueAbbs
+                # if val not in abbs: # The in operator can be used to check if an item is present in the 
+
+                # attempt to delete dups from dict that has dups
                 # result = {}
                 # for key,value in data():
                 #     if value not in result.values():
