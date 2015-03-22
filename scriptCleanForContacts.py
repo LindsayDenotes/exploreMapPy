@@ -46,20 +46,33 @@ def process_data():
         for idx, val in enumerate(worksheet.row(curr_row)):
             if val.value.strip():
                 data[keys[idx]].append(val.value)
-                # if key = 'abb':
-                    #abbs_dict = .append(val)
+
+                # planned to make a list for abbs, then make list into dict
+                # attempted to delete dups from one list of abb, and later from one list of agency
+                # abbs = [] # create list
+                # for abb in data[keys[idx]]: # for object in L
+                #     if keys[idx] =='abb': # if condition
+                #         abbs.append(val.value)
+                #         # if val in abbs: # The in operator can be used to check if an item is present in the list
+                #         #     pass
+                # # print "abbs",abbs
+                # uniqueAbbs = list(set(abbs))
+                # print "uniqueAbbs", uniqueAbbs
+
+
+                # attempt to delete dups from dict
+                # result = {}
+                # for key,value in data():
+                #     if value not in result.values():
+                #         result[key] = value
+                # print "value", value
+                # print "result",result
+                # return result
+
+
 
     # print "data",data
-    return data
-    # attempt to delete dups from list of abb, list of agency
-    # result = {}
-    # for key,value in data():
-    #     if value not in result.values():
-    #         result[key] = value
-    # print "value", value
-    # print "result",result
-    # return result
-        
+    # return data    
  
 data = process_data() 
 # output = []
