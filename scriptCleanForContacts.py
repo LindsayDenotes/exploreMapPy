@@ -60,25 +60,27 @@ def process_data():
         # print "\nrowValuesList", rowValuesList
 
         single_line_dict = {} # create dict
+        # print "\nzip(keys,rowValuesList[0]",zip(keys,rowValuesList[0])
+        for key, value in zip(keys, rowValuesList[0]): #looping through zip list, returns keys and values as strings
+            # print "key is {0} and value is {1}".format(key, value)
+            
+            # the two lines below output same as print data under colValuesList above. 
+            # single_line_dict[key] = value #returns properties (key, value pairs, i.e., "labels" and "details") as dict
+            # print "single_line_dict",single_line_dict
 
-        print "\nzip(keys,rowValuesList[0]",zip(keys,rowValuesList[0])
+            # Narrow dict to include just rowValuesList[0], aka, 'abb' values.
+            if key == 'abb':
+                single_line_dict[value] = key #returns properties (key, value pairs, i.e., "labels" and "details") as dict
+            print "single_line_dict",single_line_dict
+
+            
 
         
     # return data
 
 
 
-
-
-
-
                 # print "idx,val.value", idx,val.value
-
-                # make val.values into a list so .zip() will work
-                # valValuesList = []
-                # valValuesList = data[keys[idx]]
-                # valValuesList.append(val.value) 
-                # # print valValuesList
 
                 # abbsLists = []
                 # if keys[idx] =='abb': # if condition
