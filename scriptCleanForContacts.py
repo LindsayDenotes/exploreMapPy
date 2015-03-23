@@ -36,34 +36,64 @@ def process_data():
     # getting number or rows and setting current row as 0 -e.g first
     num_rows, curr_row = worksheet.nrows - 1, 0
     # retrieving keys values(first row values)
-    keys = [x.value for x in worksheet.row(0)]
-    print "\nkeys",keys
+    keys = [x.value for x in worksheet.row(0)] # creates [u'abb', u'agency', u'firstLast', u'first', u'Last', u'title', u'phone', u'email', u'productTypes']
     # building dict
     data = dict((x, []) for x in keys)
     # iterating through all rows and fulfilling our dictionary
     while curr_row < num_rows:
         curr_row += 1
-        for idx, val in enumerate(worksheet.row(curr_row)): # for line in lines
+        for idx, val in enumerate(worksheet.row(curr_row)): # 
             if val.value.strip():
-                data[keys[idx]].append(val.value) 
+                colValuesList = []
+                colValuesList = data[keys[idx]]
+                colValuesList.append(val.value)
+            print "\ncolValuesList idx:{0} len:{1} {2}".format(idx,len(colValuesList),colValuesList) # def don't delete this line and block above, even if you comment out
+    # print "data", data
+    
+    #Create a list within a list so that Contacts and their infor are in its own list sperate from other contacts to help make a nested dictionary
+    # with open("ntpepInfo.xls", "r") as contacts_file:
+    #     values = contacts_file.read().split("\n")  
+    # print "values", values
+    num_rows = worksheet.nrows - 1
+    curr_row = -1
+    while curr_row < num_rows:
+        curr_row += 1
+        row = worksheet.row(curr_row)
+        all_rows_list = []
+        all_rows_list.append(row)
+        print "\nall_rows_list", all_rows_list
+
+        single_line_dict = {} # create 
+        print "\nzip(keys,all_rows_list",zip(keys,all_rows_list)
+
+        
+    # return data
+
+
+
+
+
+
+
+                # print "idx,val.value", idx,val.value
+
                 # make val.values into a list so .zip() will work
-                valValuesList = []
-                valValuesList = data[keys[idx]]
-                print valValuesList
-                
-                single_line_dict = {} # create 
-                print "zip(keys,valValuesList",zip(keys,valValuesList) #returned only first index of string. # zip method returns as list
-                # for val in data[keys[idx]]: # for object in 
-                    # print val
+                # valValuesList = []
+                # valValuesList = data[keys[idx]]
+                # valValuesList.append(val.value) 
+                # # print valValuesList
 
-
+                # abbsLists = []
                 # if keys[idx] =='abb': # if condition
-                # abbs.append(val.value)
-                # print "abbs",abbs
-                # # uniqueAbbs = dict(set(abbs))
-                # # # print "uniqueAbbs", uniqueAbbs
-                # if val not in abbs: # The in operator can be used to check if an item is present in the 
-
+                #     abbsLists.append(val.value)
+                # print "abbsLists",abbsLists
+                # # uniqueAbbLists = list(set(abbsLists))
+                # # print "uniqueAbbLists", uniqueAbbLists
+                # # if val not in abbs: # The in operator can be used to check if an item is present in the 
+                
+                # single_line_dict = {} # create 
+                # print "zip(keys,valValuesList",zip(keys,valValuesList) #keys not matching with vals # zip method returns as list
+            
                 # attempt to delete dups from dict that has dups
                 # result = {}
                 # for key,value in data():
@@ -75,7 +105,7 @@ def process_data():
 
 
 
-    # print "data",data
+                # print "data",data
     # return data    
  
 data = process_data() 
