@@ -44,15 +44,16 @@ def process_data():
         curr_row += 1
         for idx, val in enumerate(worksheet.row(curr_row)): 
             if val.value.strip():
-                colValuesList = []
-                colValuesList = data[keys[idx]]
-                colValuesList.append(val.value)
-            print "colValuesList idx:{0} len:{1} {2}".format(idx,len(colValuesList),colValuesList) # def don't delete this line and block above, even if you comment out
-    
-
-
-    # print "data", data
-    
+                data[keys[idx]].append(val.value) #this would have been final line in unaltered function followed by print and return data
+                # colValuesList = []
+                # colValuesList = data[keys[idx]]
+                # colValuesList.append(val.value)
+            # print "colValuesList idx:{0} len:{1} {2}".format(idx,len(colValuesList),colValuesList) # def don't delete this line and block above, even if you comment out
+                # print "data.values()[0]",data.values()[0]
+                abbsList = list(set( data.values()[0] ))
+                print "abbsList",abbsList
+                # return data.values()[0]
+   
     # num_rows = worksheet.nrows - 1
     # curr_row = -1
     # while curr_row < num_rows:
@@ -62,16 +63,22 @@ def process_data():
     #     rowValuesList.append(row)
     #     # print "\nrowValuesList", rowValuesList
 
-        # single_line_dict = {} # create dict
-        # print "\nzip(keys,rowValuesList[0]",zip(keys,rowValuesList[0])
-        # for key, value in zip(keys,colValuesList): #looping through zip list, returns keys and values as strings
-            # print "key is {0} and value is {1}".format(key, value)
+        # single_col_dict = {} # create dict
+        # # print "\nzip(keys,rowValuesList",zip(keys,rowValuesList)
+        # for key, value in zip(keys,rowValuesList): #looping through zip list, returns keys and values as strings
+        #     print "key is {0} and value[0] is {1}".format(key, value[0]) # prints key is abb and value is AL
             
-            # the two lines below output same as print data under colValuesList above. 
-            # single_col_dict[key] = value #returns properties (key, value pairs, i.e., "labels" and "details") as dict
+        # abbVals = []
+        # for abb in key,value[0]:
+        #     value[0] = abb
+        # # print "abb",abb
+        # abbVals.append(abb)
+        # print "abbVals",abbVals
+                # single_col_dict.update(abb)
             # print "single_col_dict",single_col_dict
+        
 
-            # Narrow dict to include just rowValuesList[0], aka, 'abb' values.
+            # One attempt to narrow dict to include just rowValuesList[0], aka, 'abb' values
             # if key == 'abb':
             #     single_line_dict[value] = key #returns properties (key, value pairs, i.e., "labels" and "details") as dict
             # print "single_line_dict",single_line_dict
@@ -107,8 +114,8 @@ def process_data():
 
 
 
-                # print "data",data
-    return data    
+    # print "data",data
+    # return data    
  
 data = process_data() 
 # output = []
