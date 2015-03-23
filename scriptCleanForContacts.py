@@ -47,24 +47,21 @@ def process_data():
                 colValuesList = []
                 colValuesList = data[keys[idx]]
                 colValuesList.append(val.value)
-            print "\ncolValuesList idx:{0} len:{1} {2}".format(idx,len(colValuesList),colValuesList) # def don't delete this line and block above, even if you comment out
+            # print "\ncolValuesList idx:{0} len:{1} {2}".format(idx,len(colValuesList),colValuesList # def don't delete this line and block above, even if you comment out
     # print "data", data
     
-    #Create a list within a list so that Contacts and their infor are in its own list sperate from other contacts to help make a nested dictionary
-    # with open("ntpepInfo.xls", "r") as contacts_file:
-    #     values = contacts_file.read().split("\n")  
-    # print "values", values
     num_rows = worksheet.nrows - 1
     curr_row = -1
     while curr_row < num_rows:
         curr_row += 1
         row = worksheet.row(curr_row)
-        all_rows_list = []
-        all_rows_list.append(row)
-        print "\nall_rows_list", all_rows_list
+        rowValuesList = []
+        rowValuesList.append(row)
+        # print "\nrowValuesList", rowValuesList
 
-        single_line_dict = {} # create 
-        print "\nzip(keys,all_rows_list",zip(keys,all_rows_list)
+        single_line_dict = {} # create dict
+
+        print "\nzip(keys,rowValuesList[0]",zip(keys,rowValuesList[0])
 
         
     # return data
