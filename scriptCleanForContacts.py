@@ -46,22 +46,37 @@ def process_data():
         for idx, val in enumerate(worksheet.row(curr_row)): 
             if val.value.strip():
                 data[keys[idx]].append(val.value) #this would have been final line in unaltered function followed by print and return data
-                # colValuesList = []
-                # colValuesList = data[keys[idx]]
-                # colValuesList.append(val.value)
+                colValuesList = []
+                colValuesList = data[keys[idx]]
+                colValuesList.append(val.value)
             # print "colValuesList idx:{0} len:{1} {2}".format(idx,len(colValuesList),colValuesList) # def don't delete this line and block above, even if you comment out
     # print "data.values()[0]",data.values()[0]
-    # return data.values()[0] 
+    # return data.values()[0] # wrote to processed_data.json
             
-    abbsList = list(set( data.values()[0] ))
-    print "\nabbsList",abbsList
-    # print "str(abbsList).strip", str(abbsList).strip('[]') # the purpose of this line, eh, just an exercise
+        abbsList = list(set( data.values()[0] ))
+        print "\nabbsList",abbsList
+        
+        #Create dict from abbsList where item becomes key, separate empty dicts values. I used a dictionary comprehension instead of .dict()
+        abbsDict = {k: {} for k in abbsList[0:51]}  
+        print "\nabbsDict",abbsDict
 
-    #Create dict from abbsList where item becomes key, empty dict are separate values. attempt to use a dictionary comprehension
+                # print data.values()[4] 
+        agencyList = list(set( data.values()[4] )) # ~~~~~~~~~~Why isn't the agency column [1]? Why is it [4]?~~~~~~~~~~~~~~~~~~~~~~
+        print "\nagencyList", agencyList
+        
+
+    # for key, value in data.abbsDict: #looping through existing empty dicts
+    #         print "key is {0} and value[0] is {1}".format(key, value(loop through agencyList )) # prints key is agency and value is "whatever agency name is"
     
-    abbsDict = {k: {} for k in abbsList[0:51]}  # to the right: might be useful later:  k : v for k, v in someDict.iteritems()
-    print "\nabbsDict",abbsDict
+    # data = abbsDict
+    return data
             
+    # {x: x**2 for x in (2, 4, 6)} # This line and what it returns on next line is food for thought
+    # {2: 4, 4: 16, 6: 36}
+    
+    # k : v for k, v in someDict.iteritems() # This line might be useful to create one of the sub dicts in this project  
+
+    
     # failed block below. transform into a dictionary with the function dict(). but this only returned first letter of each abb.
     # abbs_dict = {}
     # abbs_dict = dict(data.values()[0])
@@ -136,7 +151,7 @@ def process_data():
 
 
     # print "data",data
-    return data    
+    # return data    
  
 data = process_data() 
 # output = []
