@@ -37,6 +37,7 @@ def process_data():
     num_rows, curr_row = worksheet.nrows - 1, 0
     # retrieving keys values(first row values)
     keys = [x.value for x in worksheet.row(0)] # creates [u'abb', u'agency', u'firstLast', u'first', u'Last', u'title', u'phone', u'email', u'productTypes']
+    # print "keys",keys
     # building dict
     data = dict((x, []) for x in keys)
     # iterating through all rows and fulfilling our dictionary
@@ -49,11 +50,31 @@ def process_data():
                 # colValuesList = data[keys[idx]]
                 # colValuesList.append(val.value)
             # print "colValuesList idx:{0} len:{1} {2}".format(idx,len(colValuesList),colValuesList) # def don't delete this line and block above, even if you comment out
-                # print "data.values()[0]",data.values()[0]
-                abbsList = list(set( data.values()[0] ))
-                print "abbsList",abbsList
-                # return data.values()[0]
-   
+    # print "data.values()[0]",data.values()[0]
+    # return data.values()[0] 
+            
+    abbsList = list(set( data.values()[0] ))
+    print "\nabbsList",abbsList
+    # print "str(abbsList).strip", str(abbsList).strip('[]') # the purpose of this line, eh, just an exercise
+
+    #Create dict from abbsList where item becomes key, empty dict are separate values. attempt to use a dictionary comprehension
+    
+    abbsDict = {k: {} for k in abbsList[0:51]}  # to the right: might be useful later:  k : v for k, v in someDict.iteritems()
+    print "\nabbsDict",abbsDict
+            
+    # failed block below. transform into a dictionary with the function dict(). but this only returned first letter of each abb.
+    # abbs_dict = {}
+    # abbs_dict = dict(data.values()[0])
+    # print "abbs_dict", abbs_dict
+
+    # failed block below.
+    # print "abbs_dict",abbs_dict
+    # for key,val in abbsList:
+    #     item = key
+    #     single_col_dict.update(item)
+    # print "single_col_dict",single_col_dict
+
+    # this block below may work for creating firstLast, title, phone, email, productTypes dicts, which may entail .zip( )
     # num_rows = worksheet.nrows - 1
     # curr_row = -1
     # while curr_row < num_rows:
@@ -78,7 +99,7 @@ def process_data():
             # print "single_col_dict",single_col_dict
         
 
-            # One attempt to narrow dict to include just rowValuesList[0], aka, 'abb' values
+            # One abandoned attempt to narrow dict to include just rowValuesList[0], aka, 'abb' values
             # if key == 'abb':
             #     single_line_dict[value] = key #returns properties (key, value pairs, i.e., "labels" and "details") as dict
             # print "single_line_dict",single_line_dict
@@ -115,7 +136,7 @@ def process_data():
 
 
     # print "data",data
-    # return data    
+    return data    
  
 data = process_data() 
 # output = []
