@@ -55,28 +55,40 @@ def process_data():
             
         abbsList = list(set( data.values()[0] ))
         print "\nabbsList",abbsList
-        
-        #Create dict from abbsList where item becomes key, separate empty dicts values. I used a dictionary comprehension instead of .dict()
-        abbsDict = {k: {} for k in abbsList[0:51]}  
-        print "\nabbsDict",abbsDict
-
-                # print data.values()[4] 
-        agencyList = list(set( data.values()[4] )) # ~~~~~~~~~~Why isn't the agency column [1]? Why is it [4]?~~~~~~~~~~~~~~~~~~~~~~
+        # print data.values()[4] 
+        agencyList = list(set( data.values()[4] )) # ~~~~~Why isn't the agency column [1]? Why is it [4]?~~~~~
         print "\nagencyList", agencyList
         
+        #Create dict from abbsList where item becomes key, separate empty dicts become values. I used a dictionary comprehension instead of .dict()
+        # abbsDict = {k: {} for k in abbsList[0:51]}  # ~~~~~How do I insert agency header and agency values into the 51 empty dicts being created by this line?~~~~~
+        # print "\nabbsDict",abbsDict
 
-    # for key, value in data.abbsDict: #looping through existing empty dicts
-    #         print "key is {0} and value[0] is {1}".format(key, value(loop through agencyList )) # prints key is agency and value is "whatever agency name is"
-    
-    # data = abbsDict
+        # interesting concepts found on http://www.pythonlearn.com/html-009/book010.html  9.1
+
+        # Dictionaries have a method called get that takes a key and a default value. If the key appears in the dictionary, get returns the corresponding value; otherwise it returns the default value.
+        abbsDict = {k: {k: v for v in agencyList[0:51]} for k in abbsList[0:51]}
+        print "\nabbsDict", abbsDict
+        # You could create a dictionary with characters as keys and ~~COUNTERS~~ as the corresponding values. The first time you see a character (~ie, key (agency item)~), you would add an item to the dictionary(~ie, value~~there will only be one agency item per value. I will need to map agency item/value to key, then attach the value to a sub dict with a key called "agency"~~)
+
+
+        # Failed attempt to insert agency as values using a dictionary comprehenion
+        # example:  k : v for k, v in someDict.iteritems() # This line might be useful to create one of the sub dicts in this project 
+        # testDict = {k: v for k, v in abbsDict.iteritems()}
+        # print "testDict", testDict # testDict's output same as abbsDict's output printed on line 64
+
+
+        # for key, value in data.abbsDict: #looping through existing empty dicts
+        #     print "key is {0} and value[0] is {1}".format(key, value(loop through agencyList )) # I hope it prints key is agency and value is "whatever agency name is"
+        
+    data = abbsDict
     return data
             
     # {x: x**2 for x in (2, 4, 6)} # This line and what it returns on next line is food for thought
     # {2: 4, 4: 16, 6: 36}
     
-    # k : v for k, v in someDict.iteritems() # This line might be useful to create one of the sub dicts in this project  
+     
 
-    
+
     # failed block below. transform into a dictionary with the function dict(). but this only returned first letter of each abb.
     # abbs_dict = {}
     # abbs_dict = dict(data.values()[0])
