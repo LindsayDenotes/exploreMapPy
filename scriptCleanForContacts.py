@@ -54,20 +54,44 @@ def process_data():
     # return data.values()[0] # wrote to processed_data.json
             
         abbsList = list(set( data.values()[0] ))
-        print "\nabbsList",abbsList
+        #print "\nabbsList",abbsList
         # print data.values()[4] 
-        agencyList = list(set( data.values()[4] )) # ~~~~~Why isn't the agency column [1]? Why is it [4]?~~~~~
-        print "\nagencyList", agencyList
+        agencyList = list(set( data.values()[4] )) # ~~~~~Why isn't the agency column [1]? Why is it [4]? Liz said proly something goofy in my data~~~~~
+        #print "\nagencyList", agencyList
         
         #Create dict from abbsList where item becomes key, separate empty dicts become values. I used a dictionary comprehension instead of .dict()
-        # abbsDict = {k: {} for k in abbsList[0:51]}  # ~~~~~How do I insert agency header and agency values into the 51 empty dicts being created by this line?~~~~~
+        abbsDict = {k: {} for k in abbsList[0:51]}  # Goal 2 ~~How do I insert agency header and agency values into the 51 empty dicts being created by this line?~~~~~
         # print "\nabbsDict",abbsDict
+
+        idx = 0
+        for state in abbsDict: #this gives keys
+            abbsDict[state] = {'agency': agencyList[idx]}
+            idx += 1
+
+
+
+        #print abbsDict
+
+    ab_ag = zip(data.values()[0], data.values()[4])
+        #print ab_ag
+
+    ab_ag_sets = set(ab_ag)
+    
+
+    state_dict = {}
+    for ab_ag_pair in ab_ag_sets:
+        state_dict[ab_ag_pair[0]] = {"agency": ab_ag_pair[1]}
+    print state_dict
+ 
+
+
+        # All returned well in first row iteration. In second row, AK, agency list item is one item behind. How to put a counter in this dictionary comprehension?
+        # abbsDict = {k:  {"agency": v for v in agencyList[0:51]}  for k in abbsList[0:51]}
+        # print "\nabbsDict", abbsDict
 
         # interesting concepts found on http://www.pythonlearn.com/html-009/book010.html  9.1
 
         # Dictionaries have a method called get that takes a key and a default value. If the key appears in the dictionary, get returns the corresponding value; otherwise it returns the default value.
-        abbsDict = {k: {k: v for v in agencyList[0:51]} for k in abbsList[0:51]}
-        print "\nabbsDict", abbsDict
         # You could create a dictionary with characters as keys and ~~COUNTERS~~ as the corresponding values. The first time you see a character (~ie, key (agency item)~), you would add an item to the dictionary(~ie, value~~there will only be one agency item per value. I will need to map agency item/value to key, then attach the value to a sub dict with a key called "agency"~~)
 
 
