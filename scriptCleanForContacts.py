@@ -45,7 +45,7 @@ def process_data():
         curr_row += 1
         for idx, val in enumerate(worksheet.row(curr_row)): 
             if val.value.strip():
-                data[keys[idx]].append(val.value) #this would have been final line in unaltered function followed by print and return data
+                data[keys[idx]].append(val.value) # this would have been final line in unaltered function followed by print and return data
                 colValuesList = []
                 colValuesList = data[keys[idx]]
                 colValuesList.append(val.value)
@@ -54,39 +54,40 @@ def process_data():
     # return data.values()[0] # wrote to processed_data.json
             
         abbsList = list(set( data.values()[0] ))
-        #print "\nabbsList",abbsList
+        # print "\nabbsList",abbsList
         # print data.values()[4] 
         agencyList = list(set( data.values()[4] )) # ~~~~~Why isn't the agency column [1]? Why is it [4]? Liz said proly something goofy in my data~~~~~
-        #print "\nagencyList", agencyList
+        # print "\nagencyList", agencyList
         
-        #Create dict from abbsList where item becomes key, separate empty dicts become values. I used a dictionary comprehension instead of .dict()
-        abbsDict = {k: {} for k in abbsList[0:51]}  # Goal 2 ~~How do I insert agency header and agency values into the 51 empty dicts being created by this line?~~~~~
+        # Create dict from abbsList where item becomes key, separate empty dicts become values. I used a dictionary comprehension instead of .dict()
+        abbsDict = {k: {} for k in abbsList[0:51]}  # Goal 1 completed. Goal 2: insert agency header and agency values into the 51 empty dicts being created by this line
         # print "\nabbsDict",abbsDict
 
         idx = 0
-        for state in abbsDict: #this gives keys
+        for state in abbsDict: # this gives keys
             abbsDict[state] = {'agency': agencyList[idx]}
             idx += 1
 
+        contacts = [] # Goal 3: add contacts to stateDicts
+        # for blah in blahList: # no list items yet. within this while loop, append, update, or somehow populate the firstLast dicts into this contacts list
 
-
-        #print abbsDict
-
-    ab_ag = zip(data.values()[0], data.values()[4])
-        #print ab_ag
-
-    ab_ag_sets = set(ab_ag)
     
+    # Outside while loop
+    # print "\nabbsDict",abbsDict # the agency is mismatched to main state abb key. Fixed below by zipping each list, then removing dups 
+    ab_ag = zip(data.values()[0], data.values()[4])
+        # print ab_ag
+    ab_ag_sets = set(ab_ag) # removed dups
+        
 
-    state_dict = {}
+    stateDict = {}
     for ab_ag_pair in ab_ag_sets:
-        state_dict[ab_ag_pair[0]] = {"agency": ab_ag_pair[1]}
-    print state_dict
- 
+        stateDict[ab_ag_pair[0]] = {"agency": ab_ag_pair[1], "contacts": contacts}
+    print "\nstateDict",stateDict
+
+      
 
 
-        # All returned well in first row iteration. In second row, AK, agency list item is one item behind. How to put a counter in this dictionary comprehension?
-        # abbsDict = {k:  {"agency": v for v in agencyList[0:51]}  for k in abbsList[0:51]}
+        
         # print "\nabbsDict", abbsDict
 
         # interesting concepts found on http://www.pythonlearn.com/html-009/book010.html  9.1
@@ -104,7 +105,7 @@ def process_data():
         # for key, value in data.abbsDict: #looping through existing empty dicts
         #     print "key is {0} and value[0] is {1}".format(key, value(loop through agencyList )) # I hope it prints key is agency and value is "whatever agency name is"
         
-    data = abbsDict
+    data = stateDict
     return data
             
     # {x: x**2 for x in (2, 4, 6)} # This line and what it returns on next line is food for thought
