@@ -26,19 +26,12 @@ def process_data():
     # print '\nHeaders are: %s' % pformat(headers)
     # print 'headers.values()',headers.values()
     
-    # Output will be a list of dictionaries which will be written to JSON.    
-    # output = []
-
-# def getDataFromFile(): # don't use this and next 4 lines
-#     with xlrd.open_workbook() as wb:
-#   # we are using the second sheet here
-#     worksheet = wb.sheet_by_index(1)
     # getting number or rows and setting current row as 0 -e.g first
     num_rows, curr_row = worksheet.nrows - 1, 0
     # retrieving keys values(first row values)
     keys = [x.value for x in worksheet.row(0)] # creates [u'abb', u'agency', u'firstLast', u'first', u'Last', u'title', u'phone', u'email', u'productTypes']
     # print "keys",keys
-    # building dict
+    # building dict, the whole JSON object
     data = dict((x, []) for x in keys)
     # iterating through all rows and fulfilling our dictionary
     while curr_row < num_rows:
@@ -52,11 +45,26 @@ def process_data():
             # print "colValuesList idx:{0} len:{1} {2}".format(idx,len(colValuesList),colValuesList) # def don't delete this line and block above, even if you comment out
     # print "data.values()[0]",data.values()[0]
     # return data.values()[0] # wrote to processed_data.json
-            
+
+        # ~~~~~Why aren't column indices in their proper order? Liz said proly something goofy in my data~~~~~
+        # [0] abb, [1] Last, [2] title, [3] product, [4] agency, [5] firstLast, [6] phone (correct), [7] email (correct), [8] first
+        firstLastList = list( data.values()[5] ) # list not returning the 5 empty strings and that's okay because the other 3 list won't return them either so they will all be zippable
+        # print "\nfirstLastList", len(firstLastList) # len137 with set, len 274 without set
+
+        titleList = list( data.values()[2] )
+        # print "\ntitleList", len(titleList) #len127, should be 137, but there must be dup titles.len274 without set
+
+        phoneList = list( data.values()[6] )
+        # print "\nphoneList", len(phoneList) #len135, should be 137, but there must be dup phones. len274 without set
+
+        emailList = list( data.values()[7] )
+        # print "\nemailList", emailList #len134, should be 137, but there must be dup emails. len 274 withoutset
+        
+        
         abbsList = list(set( data.values()[0] ))
         # print "\nabbsList",abbsList
         # print data.values()[4] 
-        agencyList = list(set( data.values()[4] )) # ~~~~~Why isn't the agency column [1]? Why is it [4]? Liz said proly something goofy in my data~~~~~
+        agencyList = list(set( data.values()[4] )) 
         # print "\nagencyList", agencyList
         
         # Create dict from abbsList where item becomes key, separate empty dicts become values. I used a dictionary comprehension instead of .dict()
@@ -68,42 +76,31 @@ def process_data():
             abbsDict[state] = {'agency': agencyList[idx]}
             idx += 1
 
-        contacts = [] # Goal 3: add contacts to stateDicts
-        # for blah in blahList: # no list items yet. within this while loop, append, update, or somehow populate the firstLast dicts into this contacts list
+        contacts = [] # Goal 3: add contacts to stateDicts. Goal 3 completed by adding empty contacts list to stateDicts by modifying for loop beneath this while loop.
+        # Next, loop through column key and values to make dicts holding zipped keys and values for firstLast, title, phone, email. Will make productTypes last.
+        # for blah in blahList: # no list items yet. within this while loop, append, update, or somehow populate the firstLast dicts into this contacts list 
+        
+    # Outside while loop
+    fLtpeList = zip(data.values()[5], data.values()[2], data.values()[6], data.values()[7])
+    # print "fLtpeList", fLtpeList
+    fLtpeSets = set(fLtpeList) # removed dups
+    # [0] abb, [1] Last, [2] title, [3] product, [4] agency, [5] firstLast, [6] phone (correct), [7] email (correct), [8] first
+    firstLastDict = {} 
+    for fLtpeGroup in fLtpeSets: # this gives keys
+        firstLastDict[fLtpeGroup[0]] = {"firstLast": fLtpeGroup[0], "title": fLtpeGroup[1], "phone": fLtpeGroup[2], "email": fLtpeGroup[3]}
+    print "\nfirstLastDict", firstLastDict
 
     
-    # Outside while loop
     # print "\nabbsDict",abbsDict # the agency is mismatched to main state abb key. Fixed below by zipping each list, then removing dups 
-    ab_ag = zip(data.values()[0], data.values()[4])
-        # print ab_ag
-    ab_ag_sets = set(ab_ag) # removed dups
+    abAg = zip(data.values()[0], data.values()[4])
+    # print "abAg", abAg  
+    abAgSets = set(abAg) # removed dups
         
-
     stateDict = {}
-    for ab_ag_pair in ab_ag_sets:
-        stateDict[ab_ag_pair[0]] = {"agency": ab_ag_pair[1], "contacts": contacts}
-    print "\nstateDict",stateDict
-
-      
-
-
+    for abAgPair in abAgSets:
+        stateDict[abAgPair[0]] = {"agency": abAgPair[1], "contacts": contacts} 
+    # print "\nstateDict",stateDict      
         
-        # print "\nabbsDict", abbsDict
-
-        # interesting concepts found on http://www.pythonlearn.com/html-009/book010.html  9.1
-
-        # Dictionaries have a method called get that takes a key and a default value. If the key appears in the dictionary, get returns the corresponding value; otherwise it returns the default value.
-        # You could create a dictionary with characters as keys and ~~COUNTERS~~ as the corresponding values. The first time you see a character (~ie, key (agency item)~), you would add an item to the dictionary(~ie, value~~there will only be one agency item per value. I will need to map agency item/value to key, then attach the value to a sub dict with a key called "agency"~~)
-
-
-        # Failed attempt to insert agency as values using a dictionary comprehenion
-        # example:  k : v for k, v in someDict.iteritems() # This line might be useful to create one of the sub dicts in this project 
-        # testDict = {k: v for k, v in abbsDict.iteritems()}
-        # print "testDict", testDict # testDict's output same as abbsDict's output printed on line 64
-
-
-        # for key, value in data.abbsDict: #looping through existing empty dicts
-        #     print "key is {0} and value[0] is {1}".format(key, value(loop through agencyList )) # I hope it prints key is agency and value is "whatever agency name is"
         
     data = stateDict
     return data
