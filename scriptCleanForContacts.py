@@ -95,13 +95,15 @@ def process_data():
     firstLastDict = {} 
     for fLtpeGroup in fLtpeSets: # like saying, to create a key val pair from the zipped and set list of 4 cols
         firstLastDict[fLtpeGroup[0]] = {"firstLast": fLtpeGroup[0], "title": fLtpeGroup[1], "phone": fLtpeGroup[2], "email": fLtpeGroup[3]}
-    print "\nfirstLastDict.values()", firstLastDict.values() #len137
-    contactsList = firstLastDict.values() # maybe don't rename the list
-    print "contactsList", len(contactsList)
+    # print "\nfirstLastDict.values()", firstLastDict.values() #len137
+    # contactsList = firstLastDict.values() # maybe don't rename the list
+    # print "contactsList", len(contactsList) #len137
 
-    # Above, we linked agency to abb by zipping the two lists. Now try to link firstLastDict.values() len137 to agencyList len284
-    agContacts = zip(agencyList,firstLastDict.values()) # HOLD IT! You can't count on a list made from a dict staying in order, right?
-    print "agContacts", agContacts
+    # Above, we linked agency to abb by zipping the two lists. How to link firstLastDicts with agency? Try to link fLtpeList len 274 (or firstLastDict.values() len137 ?) to agencyList len284
+    agContacts = zip(data.values()[4],fLtpeList) # vince davis of DE tied to CT DOT, karen byram of fl tied to DC DOT, rick douds tied to FL DOT. These are off by 1 row.
+    print "agContacts", agContacts #len274
+    agContactsSets = set(agContacts)
+    # print "agContactsSets", agContactsSets
 
     # for contact in agencyList:
     #     = firstLastDict.values()
