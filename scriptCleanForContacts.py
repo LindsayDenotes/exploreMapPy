@@ -48,67 +48,70 @@ def process_data():
 
         # ~~~~~Why aren't column indices in their proper order? Liz said proly something goofy in my data~~~~~
         # [0] abb, [1] Last, [2] title, [3] product, [4] agency, [5] firstLast, [6] phone (correct), [7] email (correct), [8] first
-        firstLastList = list( data.values()[5] ) # list not returning the 5 empty strings and that's okay because the other 3 list won't return them either so they will all be zippable
-        # print "\nfirstLastList", len(firstLastList) # len137 with set, len 274 without set
-
+        firstLastList = list( data.values()[5] ) # list not returning the 5 empty strings and that's okay because the other 3 lists won't return them either so these 4 can be zipped
+        # print "\nfirstLastList", len(firstLastList) # len 274 without set. len137 with set
         titleList = list( data.values()[2] )
-        # print "\ntitleList", len(titleList) #len127, should be 137, but there must be dup titles.len274 without set
-
+        # print "\ntitleList", len(titleList) #len274 without set. len127 set, should be 137, there must be dup titles.
         phoneList = list( data.values()[6] )
-        # print "\nphoneList", len(phoneList) #len135, should be 137, but there must be dup phones. len274 without set
-
+        # print "\nphoneList", len(phoneList) #len274 without set. len135 set, should be 137, there must be dup phones. 
         emailList = list( data.values()[7] )
-        # print "\nemailList", emailList #len134, should be 137, but there must be dup emails. len 274 withoutset
+        # print "\nemailList", len(emailList) #len274 without set. len134 set, should be 137, there must be dup emails. 
         
+        abbsList = list( data.values()[0] )
+        # print "\nabbsList",len(abbsList) #len284 without set. len51 set.
+        agencyList = list( data.values()[4] ) 
+        # print "\nagencyList", len(agencyList) #len284 without set. len51 set.
         
-        abbsList = list(set( data.values()[0] ))
-        # print "\nabbsList",abbsList
-        # print data.values()[4] 
-        agencyList = list(set( data.values()[4] )) 
-        # print "\nagencyList", agencyList
-        
-        # Create dict from abbsList where item becomes key, separate empty dicts become values. I used a dictionary comprehension instead of .dict()
-        abbsDict = {k: {} for k in abbsList[0:51]}  # Goal 1 completed. Goal 2: insert agency header and agency values into the 51 empty dicts being created by this line
+    # Create dict from abbsList where item becomes key, separate empty dicts become values. I used a dictionary comprehension instead of .dict()
+        # abbsDict = {k: {} for k in abbsList[0:51]}  # Goal 1 completed. 51 empty dicts being created by this line
         # print "\nabbsDict",abbsDict
-
-        idx = 0
-        for state in abbsDict: # this gives keys
-            abbsDict[state] = {'agency': agencyList[idx]}
-            idx += 1
-
-        contacts = [] # Goal 3: add contacts to stateDicts. Goal 3 completed by adding empty contacts list to stateDicts by modifying for loop beneath this while loop.
-        # Next, loop through column key and values to make dicts holding zipped keys and values for firstLast, title, phone, email. Will make productTypes last.
-        # for blah in blahList: # no list items yet. within this while loop, append, update, or somehow populate the firstLast dicts into this contacts list 
-        
-    # Outside while loop
-    fLtpeList = zip(data.values()[5], data.values()[2], data.values()[6], data.values()[7])
-    # print "fLtpeList", fLtpeList
-    fLtpeSets = set(fLtpeList) # removed dups
-    # [0] abb, [1] Last, [2] title, [3] product, [4] agency, [5] firstLast, [6] phone (correct), [7] email (correct), [8] first
-    firstLastDict = {} 
-    for fLtpeGroup in fLtpeSets: # this gives keys
-        firstLastDict[fLtpeGroup[0]] = {"firstLast": fLtpeGroup[0], "title": fLtpeGroup[1], "phone": fLtpeGroup[2], "email": fLtpeGroup[3]}
-    print "\nfirstLastDict", firstLastDict
-
-    
-    # print "\nabbsDict",abbsDict # the agency is mismatched to main state abb key. Fixed below by zipping each list, then removing dups 
-    abAg = zip(data.values()[0], data.values()[4])
-    # print "abAg", abAg  
+    # Goal 2: insert agency header and agency values into the 51 empty dicts
+        # problem with the loop below is agency doesn't match with main key. Fixed beneath this while loop by zipping the abb and agency lists together, then removing dups
+        # idx = 0
+        # for state in abbsDict: # this gives keys
+        #     abbsDict[state] = {'agency': agencyList[idx]}
+        #     idx += 1
+        # print "\nabbsDict", abbsDict
+              
+    # Outside while loop - zipping and then setting of lists made inside while loop, creating dicts
+    # in first attempt loop above to create a dict, the agency was mismatched to main state abb key.  
+    abAg = zip(data.values()[0], data.values()[4]) # this zip associates abb col with agency col; creates proper pairing
+    # print "abAg", len(abAg)  #len 284
     abAgSets = set(abAg) # removed dups
-        
+    # print "abAgSets", len(abAgSets) #len 51   
+    
+    # Below is loop that creates dict with agency matched to main state abb key. possibly later, I'll add contactslist into this dictionary block
     stateDict = {}
-    for abAgPair in abAgSets:
-        stateDict[abAgPair[0]] = {"agency": abAgPair[1], "contacts": contacts} 
+    for abAgPair in abAgSets: # like saying, to create a key val pair from the set, zip list of abbs and agencies
+        stateDict[abAgPair[0]] = {"agency": abAgPair[1]} # position 0 of this zipped list is abb, position 1 is agency. I removed "contactsList": contactsList
     # print "\nstateDict",stateDict      
         
-        
+    fLtpeList = zip(data.values()[5], data.values()[2], data.values()[6], data.values()[7]) # this zip associates these 4 cols with each other for the sub dict firstLastDict
+    # print "fLtpeList", len(fLtpeList) # len 274
+    fLtpeSets = set(fLtpeList) # removed dups
+    # print "fLtpeSets", len(fLtpeSets) # len 137, which is number of rows exluding the 5 rows that don't have values. good.
+    
+    # Below is the loop that creates firstLastDicts that will be wrapped by contactsList
+    firstLastDict = {} 
+    for fLtpeGroup in fLtpeSets: # like saying, to create a key val pair from the zipped and set list of 4 cols
+        firstLastDict[fLtpeGroup[0]] = {"firstLast": fLtpeGroup[0], "title": fLtpeGroup[1], "phone": fLtpeGroup[2], "email": fLtpeGroup[3]}
+    print "\nfirstLastDict.values()", firstLastDict.values() #len137
+    contactsList = firstLastDict.values() # maybe don't rename the list
+    print "contactsList", len(contactsList)
+
+    # Above, we linked agency to abb by zipping the two lists. Now try to link firstLastDict.values() len137 to agencyList len284
+    agContacts = zip(agencyList,firstLastDict.values()) # HOLD IT! You can't count on a list made from a dict staying in order, right?
+    print "agContacts", agContacts
+
+    # for contact in agencyList:
+    #     = firstLastDict.values()
+    
     data = stateDict
     return data
             
     # {x: x**2 for x in (2, 4, 6)} # This line and what it returns on next line is food for thought
     # {2: 4, 4: 16, 6: 36}
-    
-     
+
 
 
     # failed block below. transform into a dictionary with the function dict(). but this only returned first letter of each abb.
