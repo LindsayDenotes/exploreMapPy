@@ -36,17 +36,15 @@ def process_data():
     # iterating through all rows and fulfilling our dictionary
     while curr_row < num_rows:
         curr_row += 1
-        for idx, val in enumerate(worksheet.row(curr_row)): 
-            if val.value.strip():
+        for idx, val in enumerate(worksheet.row(curr_row)):
+            if val.value.title():
                 data[keys[idx]].append(val.value) # this would have been final line in unaltered function followed by print and return data
                 colValuesList = []
                 colValuesList = data[keys[idx]]
                 colValuesList.append(val.value)
             # print "colValuesList idx:{0} len:{1} {2}".format(idx,len(colValuesList),colValuesList) # def don't delete this line and block above, even if you comment out
-    # print "data.values()[0]",data.values()[0]
-    # return data.values()[0] # wrote to processed_data.json
-
-        # ~~~~~Why aren't column indices in their proper order? Liz said proly something goofy in my data~~~~~
+    
+        # Why aren't column indices in their proper order? Liz said proly something goofy in my data. Note: I had to put spaces in cells without values.
         # [0] abb, [1] Last, [2] title, [3] product, [4] agency, [5] firstLast, [6] phone (correct), [7] email (correct), [8] first
         firstLastList = list( data.values()[5] ) # list not returning the 5 empty strings and that's okay because the other 3 lists won't return them either so these 4 can be zipped
         # print "\nfirstLastList", len(firstLastList) # len 274 without set. len137 with set
@@ -82,30 +80,29 @@ def process_data():
     
     # Below is loop that creates dict with agency matched to main state abb key. possibly later, I'll add contactslist into this dictionary block
     stateDict = {}
-    for abAgPair in abAgSets: # like saying, to create a key val pair from the set, zip list of abbs and agencies
+    for abAgPair in abAgSets: # like saying, to create a key val pair from the zipped and set list of abbs and agencies...
         stateDict[abAgPair[0]] = {"agency": abAgPair[1]} # position 0 of this zipped list is abb, position 1 is agency. I removed "contactsList": contactsList
     # print "\nstateDict",stateDict      
         
-    fLtpeList = zip(data.values()[5], data.values()[2], data.values()[6], data.values()[7]) # this zip associates these 4 cols with each other for the sub dict firstLastDict
-    # print "fLtpeList", len(fLtpeList) # len 274
-    fLtpeSets = set(fLtpeList) # removed dups
-    # print "fLtpeSets", len(fLtpeSets) # len 137, which is number of rows exluding the 5 rows that don't have values. good.
+    fLtpeList = zip(data.values()[5], data.values()[2], data.values()[6], data.values()[7]) # skips the 5 empty string states
+    # print "fLtpeList", len(fLtpeList) #len284
+    agList = (data.values()[4])
+    # print "agList", agList #len284. 
+    agFltpeList = zip(agList, fLtpeList) # this zip associates ag with 4 cols that will be the vals in the sub dicts, firstLastDict. List of tuples.
+    # print "agFltpeList", agFltpeList # len 284, was 274 before I replaced .strip with .title in line 40
+    agFltpeSets = set(agFltpeList) # removed dups but screwed up the order!!
+    # print "agFltpeSets", agFltpeSets # len 142, was 137 before I replaced .strip with .title in line 40. 
     
     # Below is the loop that creates firstLastDicts that will be wrapped by contactsList
     firstLastDict = {} 
-    for fLtpeGroup in fLtpeSets: # like saying, to create a key val pair from the zipped and set list of 4 cols
-        firstLastDict[fLtpeGroup[0]] = {"firstLast": fLtpeGroup[0], "title": fLtpeGroup[1], "phone": fLtpeGroup[2], "email": fLtpeGroup[3]}
-    print "\nfirstLastDict.values()", firstLastDict.values() #len137
+    for agFltpeGroup in agFltpeSets: # like saying, to create a key val pair from the zipped and set list of ag and 4 cols...
+        firstLastDict[agFltpeGroup[0]] = {"firstLast": agFltpeGroup[1]} #"title": agFltpeGroup[2], "phone": agFltpeGroup[3], "email": agFltpeGroup[4]}
+    print "\nfirstLastDict", firstLastDict
+    # print "\nfirstLastDict.values()", firstLastDict.values() #len137
     # contactsList = firstLastDict.values() # maybe don't rename the list
     # print "contactsList", len(contactsList) #len137
 
-    # Above, we linked agency to abb by zipping the two lists. How to link firstLastDicts with agency? Try to link fLtpeList len 274 (or firstLastDict.values() len137 ?) to agencyList len284
-    agContacts = zip(data.values()[4],fLtpeList) # vince davis of DE tied to CT DOT, karen byram of fl tied to DC DOT, rick douds tied to FL DOT. These are off by 1 row.
-    # print "agContacts", agContacts #len274
-    agContactsSets = set(agContacts)
-    # print "agContactsSets", agContactsSets
-
-    # for contact in agencyList:
+        # for contact in agencyList:
     #     = firstLastDict.values()
     
     data = stateDict
