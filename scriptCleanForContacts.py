@@ -47,7 +47,7 @@ def process_data():
     
     # Why aren't column indices in the order they appear in the Excel worksheet? Liz said proly something goofy in my data. 
     # [0] abb (correct), [1] Last, [2] title, [3] productType, [4] agency, [5] firstLast, [6] phone (correct), [7] email (correct), [8] first
-    abbsList = data.values()[0] 
+    abbsList = data.values()[0]
     # print "\nabbsList",len(abbsList) #len284 without set. len51 set.
     agencyList = data.values()[4]
     # print "\nagencyList", len(agencyList) #len284 without set. len51 set.
@@ -90,8 +90,8 @@ def process_data():
 if __name__ == "__main__":
     data = process_data()
     # Write the data to JSON
-    with open(OUTPUT_FILE, 'w') as f: #~do I need to rename OUTPUT_FILE to processed_data?
-        json.dump(data, f) # replaced output    
+    with open(OUTPUT_FILE, 'w') as f: 
+        json.dump(data, f)    
 
 
 
