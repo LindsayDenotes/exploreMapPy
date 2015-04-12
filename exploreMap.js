@@ -49,9 +49,8 @@ $( document ).ready( function(){
                 var email = ( obj.email );
                 console.log ( email );
 
+                theText += "<p class='contacts'>" + firstLast + ", " + title + ", " + phone + ", " + email + "</br>";
                 theText += "<p class='productTypes'>" + productTypesText + "</p>";//make this a </br> to prevent extra space? Can we switch font to Arial?
-                theText += "<p class='contacts'> For the above product types, please contact: </br>" + firstLast + ", " + title + ", " + phone + ", " + email + "</p>";
-
 
 //             $( "#txtDOT" ).append( "<p id='productTypes'>" + productTypes + "</p>" );
 //             $( "#txtDOT" ).append( "<p id ='firstLast'>" + firstLast + "</p>" );
