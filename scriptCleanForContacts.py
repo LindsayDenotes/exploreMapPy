@@ -61,7 +61,7 @@ def process_data():
     # print "\nemailList", len(emailList) #len274 without set. len134 set, should be 137, there must be dup emails. 
     productTypes = data.values()[3]
 
-        
+
     allHeaders = zip(abbsList,agencyList,firstLastList,titleList,phoneList,emailList,productTypes)
     # print allHeaders
     allHeaders = set(allHeaders)
@@ -70,21 +70,23 @@ def process_data():
 
     for row in allHeaders:
         abb,agency,firstLast,title,phone,email,productsString = row
+        productsString = productsString.replace("_"," ")
+        
         if abb not in dotDict:
             dotDict[abb] = {"agency": agency, "contacts":[]}
-        contact = {"firstLast": firstLast, "title": title, "phone": phone, "email": email}
-        products = productsString.split(",")
-        contact["productTypes"] = products
-        dotDict[abb]["contacts"].append(contact)
-
-    # print dotDict
+        
+        if firstLast != " ":
+            contact = {"firstLast": firstLast, "title": title, "phone": phone, "email": email}
+            products = productsString.split(",")
+            contact["productTypes"] = products
+            dotDict[abb]["contacts"].append(contact)
+        else:
+            contact = {}
+            contact = "This state currently does not use NTPEP data for any product type."
+            dotDict[abb]["contacts"].append(contact)
+    # pretty print dotDict
     pprint(dotDict)
     return dotDict
- 
-# data = process_data() 
-# output = []
-# output = output.append(data)
-
 
 # This allows the script to be run from the command line
 if __name__ == "__main__":
