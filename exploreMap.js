@@ -41,20 +41,10 @@ $( document ).ready( function(){
                             productTypesText = productTypesText.replace(/,/g , "<br/>" );// g stands for global, replace all matches, and not just the first one. makes it a regular expression(?)
                             console.log(productTypesText);//I managed to return either empty strings or undefined objects for CO,HI,NM,SD,and WY. See stateInfoList.json Git pushes on 4/15 and 4/16
 
-                            if ( jsonKey === co,hi,nm,sd,wy ){ //I'm trying to say, if the json key is equal to any of the following json keys: co, hi, nm, sd, or wy; but when I clicked on tx, it gave me theMessage.
-                                console.log( jsonKey + " is one of those 5 empty states");
-
-                                var theMessage = (obj.productTypes );
-                                    console.log( theMessage );
-
-                                theText += "<dt class='contacts'>" + theMessage + "</dt>";// yes, I want the message that I wrote into the productTypes cell to be displayed in the contacts class.
-
-                            }
-
-                            else{
-
                             var firstLast = ( obj.firstLast );
                             console.log( firstLast );//empty string for 5 states
+
+                            if ( firstLast !== " " ){
 
                             var title = ( obj.title );
                             console.log ( title );//empty string for 5 states
@@ -70,6 +60,12 @@ $( document ).ready( function(){
                             theText += "<dd class='productTypes'>" + productTypesText + "</dd>";
                             }
 
+                            else{
+
+                            var theMessage = (obj.productTypes );
+                                console.log( theMessage );
+                            theText += "<dt class='contacts'>" + theMessage + "</dt>";// yes, I want the message that I wrote into the productTypes cell to be displayed in the contacts class.
+                            }
 
                         });
 
