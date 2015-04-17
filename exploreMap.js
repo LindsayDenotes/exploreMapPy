@@ -52,8 +52,8 @@ $( document ).ready( function(){
 
                             var productTypesText = " ";//how do I say, if empty string, return nothing? I don't want triple quotes.
                             productTypesText += productTypes;
-                            productTypesText = productTypesText.replace(/,/g , "<br/>" );//Why do I have a triple quote in my HTML? g stands for global, replace all matches, and not just the first one. makes it a regular expression(?)
-                            console.log(productTypesText);//undefined for 5 states
+                            productTypesText = productTypesText.replace(/,/g , "<br/>" );//Why do I have a triple ,,, in my HTML? NOTE: g stands for global, replace all matches, and not just the first one. makes it a regular expression(?)
+                            console.log(productTypesText);//I managed to return either empty strings or undefined objects for CO,HI,NM,SD,and WY. See stateInfoList.json Git pushes on 4/15 and 4/16
 
 
                             var firstLast = ( obj.firstLast );
