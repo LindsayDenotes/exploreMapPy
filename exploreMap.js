@@ -12,6 +12,9 @@ $( document ).ready( function(){
           selectedState = ( this.id );
           console.log( "so var selectedState is " + selectedState );
 
+//          if ( this == )
+//          $ ( this ).attr( "class", "emptyString" )
+
           $.each ( data, function( key, val ){
                 console.log ( key, val );//key is "nh" or "fl", val is whats inside json's { }s
 
@@ -28,48 +31,49 @@ $( document ).ready( function(){
                       var theText = "<dl class ='agency " + key + "'>" + val.agency + "</dl>";
 
 
-                          if ( jsonKey == co,hi,nm,sd,wy ){
-                                console.log( jsonKey + "is one of those 5 empty states");
+//                          if ( jsonKey == co,hi,nm,sd,wy ){
+//                                console.log( jsonKey + "is one of those 5 empty states");
+//
+//                                contacts.forEach( function( obj ){
+//
+//                                    var theMessage = (obj);
+//                                    console.log( theMessage )
+//
+//                                    theText += "<dt class='contacts'>" + contacts + "</dt>"
+//                                });
+//                          }
+//
+//                          else {
+                        contacts.forEach( function( obj ){
 
-                                contacts.forEach( function( obj ){
+                            var productTypes = [];
+                            productTypes = ( obj.productTypes );
+                            console.log( productTypes );//
 
-                                    var theMessage = (obj);
-                                    console.log( theMessage )
-
-                                    theText += "<dt class='contacts'>" + contacts + "</dt>"
-                                });
-                          }
-
-                          else {
-                                contacts.forEach( function( obj ){
-
-                                    var productTypes = [];
-                                    productTypes = ( obj.productTypes );
-                                    console.log( productTypes );//
-
-                                    var productTypesText = " ";//how do I say, if empty string, return nothing? I don't want triple quotes.
-                                    productTypesText += productTypes;
-                                    productTypesText = productTypesText.replace(/,/g , "<br/>" );//Why do I have a triple quote in my HTML? g stands for global, replace all matches, and not just the first one. makes it a regular expression(?)
-                                    console.log(productTypesText);//undefined for 5 states
+                            var productTypesText = " ";//how do I say, if empty string, return nothing? I don't want triple quotes.
+                            productTypesText += productTypes;
+                            productTypesText = productTypesText.replace(/,/g , "<br/>" );//Why do I have a triple quote in my HTML? g stands for global, replace all matches, and not just the first one. makes it a regular expression(?)
+                            console.log(productTypesText);//undefined for 5 states
 
 
-                                    var firstLast = ( obj.firstLast );
-                                    console.log( firstLast );//undefined for 5 states
+                            var firstLast = ( obj.firstLast );
+                            console.log( firstLast );//undefined for 5 states
 
-                                    var title = ( obj.title );
-                                    console.log ( title );//undefined for 5 states
+                            var title = ( obj.title );
+                            console.log ( title );//undefined for 5 states
 
-                                    var phone = ( obj.phone );
-                                    console.log ( phone );//undefined for 5 states
+                            var phone = ( obj.phone );
+                            console.log ( phone );//undefined for 5 states
 
-                                    var email = ( obj.email );
-                                    console.log ( email );//undefined for 5 states
+                            var email = ( obj.email );
+                            console.log ( email );//undefined for 5 states
 
-                                    theText += "<dt class='contacts'>" + firstLast + ", " + title + ", " + phone + ", " + email + "</dt>";
-                                    theText += "<dd class='productTypes'>" + productTypesText + "</dd>";//make this a </br> to prevent extra space?
+                            theText += "<dt class='contacts'>" + firstLast + ", " + title + ", " + phone + ", " + email + "</dt>";
+                            theText += "<dd class='productTypes'>" + productTypesText + "</dd>";//make this a </br> to prevent extra space?
 
-                                });
-                          }
+
+                        });
+//                          }
                 $( "#txtDOT" ).html(theText);
                 }
 
