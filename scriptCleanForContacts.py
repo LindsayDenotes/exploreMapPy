@@ -3,11 +3,11 @@
 import xlrd     # Library that processes excel files
 import json     # Library for processing / writing JSON
 
-from slugify import slugify  # Library to slugify strings
+from slugify import slugify  # Library to slugify strings, in case I decide to slugify
 from pprint import pformat, pprint   # Pretty print output
 
 # File to be processed
-IMPORT_FILE = 'ntpepInfo.xls' # not .xlsx
+IMPORT_FILE = 'ntpepInfo.xlsx' 
 OUTPUT_FILE = 'stateInfoList.json'
 
 def process_data():
@@ -21,11 +21,6 @@ def process_data():
 
     worksheet = workbook.sheet_by_name('contacts')
        
-    # Extract headers from first row of worksheet
-    # headers = make_headers(worksheet)
-    # print '\nHeaders are: %s' % pformat(headers)
-    # print 'headers.values()',headers.values()
-    
     # getting number or rows and setting current row as 0 -e.g first
     num_rows, curr_row = worksheet.nrows - 1, 0
     # retrieving keys values(first row values)
@@ -42,10 +37,10 @@ def process_data():
                 colValuesList = []
                 colValuesList = data[keys[idx]]
                 colValuesList.append(val.value)
-            # print "colValuesList idx:{0} len:{1} {2}".format(idx,len(colValuesList),colValuesList) # def don't delete this line and block above, even if you comment out
+            # print "colValuesList idx:{0} len:{1} {2}".format(idx,len(colValuesList),colValuesList) # keep this line and block above for your ref, even if you comment out
             # Note: I had to put spaces in cells without values and replace .strip with .title in order to have empty strings returned
     
-    # Why aren't column indices in the order they appear in the Excel worksheet? Liz said proly something goofy in my data. 
+    # Column indices in the order they appear in the Excel worksheet. Probably due to creating abb column and firstLast column.
     # [0] abb (correct), [1] Last, [2] title, [3] productType, [4] agency, [5] firstLast, [6] phone (correct), [7] email (correct), [8] first
     abbsList = data.values()[0]
     # print "\nabbsList",len(abbsList) #len284 without set. len51 set.
@@ -75,15 +70,11 @@ def process_data():
         if abb not in dotDict:
             dotDict[abb] = {"agency": agency, "contacts":[]}
         
-        if firstLast != " ":
-            contact = {"firstLast": firstLast, "title": title, "phone": phone, "email": email}
-            products = productsString.split(",")
-            contact["productTypes"] = products
-            dotDict[abb]["contacts"].append(contact)
-        else:
-            contact = {}
-            contact = "This state currently does not use NTPEP data for any product type."
-            dotDict[abb]["contacts"].append(contact)
+        contact = {"firstLast": firstLast, "title": title, "phone": phone, "email": email}
+        products = productsString.split(",")
+        contact["productTypes"] = products
+        dotDict[abb]["contacts"].append(contact)
+        
     # pretty print dotDict
     pprint(dotDict)
     return dotDict
