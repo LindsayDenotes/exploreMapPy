@@ -2,18 +2,16 @@ $( document ).ready( function(){
 
     var json = {};
     $.getJSON( "stateInfoList.json", function( data ) {
-      console.log ( data );//whole JSON object //revisiting on 2/1/15 Am I actually "loading" all 52 state DOTs? That sounds expensive for bandwidth. Is this necessary in order to use .each( ) in the loop below?
-
+      console.log ( data );//whole JSON object
+      
         $( "g" ).on( "click", function (e) {
           console.log( "user clicked " + this.id );
 
-          $( this ).attr( "class", "clicked" ).siblings( "g" ).removeAttr( "class","clicked" ); //styling the selected svg shape
+          $( this ).attr( "class", "clicked" ).siblings( "g" ).removeAttr( "class","clicked" ); //remove styling from unselected svg shapes
 
           selectedState = ( this.id );
           console.log( "so var selectedState is " + selectedState );
 
-//          if ( this == )
-//          $ ( this ).attr( "class", "emptyString" )
 
           $.each ( data, function( key, val ){
                 console.log ( key, val );//key is "nh" or "fl", val is whats inside json's { }s
@@ -38,8 +36,8 @@ $( document ).ready( function(){
 
                             var productTypesText = " ";
                             productTypesText += productTypes;
-                            productTypesText = productTypesText.replace(/,/g , "<br/>" );// g stands for global, replace all matches, and not just the first one. makes it a regular expression(?)
-                            console.log(productTypesText);//I managed to return either empty strings or undefined objects for CO,HI,NM,SD,and WY. See stateInfoList.json Git pushes on 4/15 and 4/16
+                            productTypesText = productTypesText.replace(/,/g , "<br/>" );// g stands for global, replace all matches, and not just the first one. makes it a regular expression
+                            console.log(productTypesText);
 
                             var firstLast = ( obj.firstLast );
                             console.log( firstLast );//empty string for 5 states
@@ -62,7 +60,7 @@ $( document ).ready( function(){
 
                             else{
 
-                            var theMessage = (obj.productTypes );
+                            var theMessage = ( obj.productTypes );
                                 console.log( theMessage );
                             theText += "<dt class='contacts'>" + theMessage + "</dt>";// yes, I want the message that I wrote into the productTypes cell to be displayed in the contacts class.
                             }
