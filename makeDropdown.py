@@ -1,12 +1,15 @@
+from pprint import pformat, pprint
+
 with open("productTypes.csv", "r") as products_file:
 	products = products_file.read().replace("\r","\n")
 	products = products.replace("_"," ")
-	products = products.replace("and", "&")
+	products = products.replace(" and ", " & ")
 	products = products.split("\n")
 	# print products # printed ['ARA,Asphalt_Release_Agents_(ARA)', 'CADD,Concrete_Admixtures_(CADD)',...
 	for index, product in enumerate(products):
 		products[index] = product.split(",")
-	print products #printed [['ARA', 'Asphalt_Release_Agents_(ARA)'], ['CADD', 'Concrete_Admixtures_(CADD)'],...
+	# print products#printed [['ARA', 'Asphalt_Release_Agents_(ARA)'], ['CADD', 'Concrete_Admixtures_(CADD)'],...
+	pprint(products)
 	
 with open("productMenu.html", "w") as writeMenu_file:
 	writeMenu_file.write("<select id='productOptions'>\n")
