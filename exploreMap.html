@@ -20,33 +20,27 @@
     padding-bottom:1%;
     }
 
-    .selectedProduct {
-    fill-opacity: 0;
+    .selectedClass {
+    <!--fill: white; 5/2/15 not working. g's and polygon's already have a fill attribute. try a def attribute and a use attribute. see SVG bookmarks folder
+    https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stop-color-->
     }
 
     .menu-container {
-    <!--float: left;-->
-    position: relative;
-    top: 0px;
-    left: 0px;
+
     }
-
-
-
-   </style>
+    </style>
 </head>
 
 <body>
 
-<table>
-   <tbody>
-   <tr height="auto">
-   <td width="auto">
+<!--<table>-->
+   <!--<tbody>-->
+   <!--<tr style="vertical-align:top">-->
+   <!--<td width="auto">-->
 
     <div class="svg-container">
-        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-             viewBox="0 0" xml:space="preserve">
-             <!--units are px as defined in x and y vars. the view box starts at coordinates 0,0 and is (removed) 205.7 or 411.1 wide and 130.1 high-->
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" xml:space="preserve" display="inline-table">
+             <!--units are px as defined in x and y vars. the view box starts at coordinates 0,0 and is (removed) 205.7 or 411.1 wide and 130.1 high (removed) viewBox="0 0"-->
                 <g id="Header">
                     <text transform="matrix(1 0 0 1 47.6695 4.4096)" style="font-family:'Verdana'; font-size:5.1064;">State DOT Usage of NTPEP - Fall 2013 Survey Results.<!--/text-->
                         <tspan x="8" y="6" font-family="'MyriadPro-Regular'" font-size="4">Click on a state to see contact information and product types for which the </tspan>
@@ -877,9 +871,9 @@
 
         </svg>
     </div>
-    </td>
+    <!--</td>-->
 
-    <td width="auto">
+    <!--<td width="auto">-->
     <div class="menu-container">
         <select id="productOptions">
             <option selected='selected'>Select a product type to see which states use NTPEP data to evaluate it.</option>
@@ -904,10 +898,10 @@
             <option id=TTCD> Temporary Traffic Control Devices (TTCD) </option>
         </select>
     </div>
-    </td>
-    </tr>
-    </tbody>
-</table>
+    <!--</td>-->
+    <!--</tr>-->
+    <!--</tbody>-->
+<!--</table>-->
 
 
 <div id="txtDOT" style="font-family: verdana">
@@ -920,3 +914,9 @@
 
 </body>
 </html>
+
+<!--vertical-align:top;-->
+<!--float: left;-->
+<!--position: relative;-->
+<!--top: 0px;-->
+<!--left: 0px;-->
