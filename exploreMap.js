@@ -3,11 +3,11 @@ $( document ).ready( function(){
     var json = {};
     $.getJSON( "stateInfoList.json", function( data ) {
       console.log ( data );//whole JSON object
-      
+
         $( "g" ).on( "click", function (e) {
           console.log( "user clicked " + this.id );
 
-          $( this ).attr( "class", "clicked" ).siblings( "g" ).removeAttr( "class","clicked" ); //remove styling from unselected svg shapes
+          $( this ).attr( "class", "clicked" ).siblings( "g" ).removeAttr( "class","clicked" ); //remove styling from un-clicked svg shapes
 
           selectedState = ( this.id );
           console.log( "so var selectedState is " + selectedState );
@@ -32,12 +32,12 @@ $( document ).ready( function(){
 
                             var productTypes = [];
                             productTypes = ( obj.productTypes );
-                            console.log( productTypes );
+                            console.log( productTypes );//has quotes and brackets on console
 
                             var productTypesText = " ";
                             productTypesText += productTypes;
                             productTypesText = productTypesText.replace(/,/g , "<br/>" );// g stands for global, replace all matches, and not just the first one. makes it a regular expression
-                            console.log(productTypesText);
+                            console.log( productTypesText );//does not have quotes and brackets on console
 
                             var firstLast = ( obj.firstLast );
                             console.log( firstLast );//empty string for 5 states
@@ -67,7 +67,7 @@ $( document ).ready( function(){
 
                         });
 
-                $( "#txtDOT" ).html(theText);
+                      $( "#txtDOT" ).html(theText);
                 }
 
                 else {
