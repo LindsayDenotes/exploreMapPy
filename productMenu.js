@@ -5,6 +5,10 @@ $( document ).ready( function(){
 //      console.log ( data );//whole JSON object
 
         $( "#productOptions" ).change( function( e ) {//.on can only bind to one function and .on is used on clicked g already. use .bind to bind ~?an el~? to multiple functions. Can .change do multiple events? it better or replace it.
+            // Remove selectedClass before making any new selections
+            // SVGs are weird and won't let you explicitly remove a class, so you just use empty quotes instead
+            $('.selectedClass').attr('class','');
+            
             var selected = $("#productOptions option:selected").text();  //$spans.eq( 3 ).text( jQuery.inArray( "Pete", arr, 2 ) );
 //            console.log( "user selected " + selected );
 //            console.log( typeof selected );//string
