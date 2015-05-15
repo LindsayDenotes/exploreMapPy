@@ -5,6 +5,18 @@ $( document ).ready( function(){
 //      console.log ( data );//whole JSON object
 
         $( "#productOptions" ).change( function( e ) {//.on can only bind to one function and .on is used on clicked g already. use .bind to bind ~?an el~? to multiple functions. Can .change do multiple events? it better or replace it.
+            // look for elements with .selectedClass and check for other existing classes
+        	$(".selectedClass").attr("class", function(index, classNames) {
+        	    // if the element does have other existing classes
+				if (typeof classNames != "undefined") {
+				    // return the list of classnames and just remove the .selectedClass
+					return classNames.replace("selectedClass", "");
+				} else {
+				    // otherwise, remove the class
+					$(".selectedClass").attr("class", "");
+				}
+			});
+            
             var selected = $("#productOptions option:selected").text();  //$spans.eq( 3 ).text( jQuery.inArray( "Pete", arr, 2 ) );
 //            console.log( "user selected " + selected );
 //            console.log( typeof selected );//string
@@ -61,7 +73,20 @@ $( document ).ready( function(){
 //                                        $productStates.css( "fill-opacity", "0.1" );//SUCCESS, but how to remove styling from unselected g's?
 //                                        $productStates = $productStates.attr("class","selectedClass");//class appears on tag but not actually styled with opacity change
 //                                        $productStates = $productStates.attr("class","selectedClass").siblings( "g" ).removeAttr( "class","selectedClass" );//class appears but quickly removes itself
-                                        $productStates.attr("class","selectedClass");//.siblings( "g" ).removeAttr( "class","selectedClass" );//class appears on tag but not actually styled with opacity change
+                                       
+                                       // check $productStates for existing classes
+                                       	$productStates.attr('class', function(index, classNames) {
+                                       	    // if there are existing classes
+											if (typeof classNames != 'undefined') {
+											    // return the existing classes and add selectedClass to the end of the list
+												return classNames + ' selectedClass';
+											} else {
+											    // otherwise, just add selectedClass
+												$productStates.attr('class', 'selectedClass');	
+											}
+										});
+                                       
+                                       // $productStates.attr("class","selectedClass");//.siblings( "g" ).removeAttr( "class","selectedClass" );//class appears on tag but not actually styled with opacity change
                                         //for line above, I indented one more tab in from where it was and now selectedClass is again appearing on tags but not actually styling the g's.
 //                                        $productStates = $productStates.addClass( "selectedClass" );//nothing. earlier today, style=("fill-opacity","0.1") got tacked onto appropriate g tags
 
