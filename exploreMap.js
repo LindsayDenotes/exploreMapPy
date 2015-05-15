@@ -7,7 +7,30 @@ $( document ).ready( function(){
         $( "g" ).on( "click", function (e) {
           console.log( "user clicked " + this.id );
 
-          $( this ).attr( "class", "clicked" ).siblings( "g" ).removeAttr( "class","clicked" ); //remove styling from un-clicked svg shapes
+        // gets the class attribute and checks for existing classes
+        $(this).attr("class", function(index, classNames) {
+            // if there are existing classes
+			 if (typeof classNames != "undefined") {
+			     // return the existing classes and just add the clicked class to them
+				 return classNames + " clicked";
+				 // gets the class attribute and checks for existing classes on the "g" element
+				 $(this).siblings("g").attr("class", function(index, classNames) {
+				     // if there are existing classes
+					if (typeof classNames != "undefined") {
+					    // return the existing classes and just remove the clicked class
+						return classNames.replace("clicked", "");	
+					} else {
+					    // otherwise, remove the class attribute altogether
+						$(this).siblings("g").removeAttr("class", "clicked");
+					}
+				 });
+			 } else {
+			     // if there aren't any existing classes, add the class clicked outright to the selected g element and remove the class from its siblings
+				$(this).attr("class", "clicked").siblings("g").removeAttr("class","clicked");	 
+			 }
+		  });
+
+          //$( this ).attr( "class", "clicked" ).siblings( "g" ).removeAttr( "class","clicked" ); //remove styling from un-clicked svg shapes
 
           selectedState = ( this.id );
           console.log( "so var selectedState is " + selectedState );
