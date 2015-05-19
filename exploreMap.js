@@ -2,52 +2,29 @@ $( document ).ready( function(){
 
     var json = {};
     $.getJSON( "stateInfoList.json", function( data ) {
-      console.log ( data );//whole JSON object
+//      console.log ( data );//whole JSON object
 
         $( "g" ).on( "click", function (e) {
-          console.log( "user clicked " + this.id );
+//          console.log( "user clicked " + this.id );
 
-          //gets the class attribute and checks for existing classes. Function courtesy of Rebecca.
-          $(this).attr("class", function(index, classNames) {
-              // if there are existing classes
-             if (typeof classNames != "undefined") {
-                 // return the existing classes and just add the clicked class to them
-                 return classNames + " clicked";
-                 // gets the class attribute and checks for existing classes on the "g" element
-                 $(this).siblings("g").attr("class", function(index, classNames) {
-                     // if there are existing classes
-                    if (typeof classNames != "undefined") {
-                        // return the existing classes and just remove the clicked class
-                        return classNames.replace("clicked", "");
-                    } else {
-                        // otherwise, remove the class attribute altogether
-                        $(this).siblings("g").removeAttr("class", "clicked");
-                    }
-                 });
-             } else {
-                 // if there aren't any existing classes, add the class clicked outright to the selected g element and remove the class from its siblings
-                $(this).attr("class", "clicked").siblings("g").removeAttr("class","clicked");
-             }
-          });
-
-          //$( this ).attr( "class", "clicked" ).siblings( "g" ).removeAttr( "class","clicked" ); //remove styling from un-clicked svg shapes
+          $( this ).attr( "class", "clicked" );//.siblings( "g" ).removeAttr( "class","clicked" ); //add and remove styling from un-clicked svg shapes. worked before second class was added.
 
           selectedState = ( this.id );
           console.log( "so var selectedState is " + selectedState );
 
 
           $.each ( data, function( key, val ){
-                console.log ( key, val );//key is "nh" or "fl", val is whats inside json's { }s
+//                console.log ( key, val );//key is "nh" or "fl", val is whats inside json's { }s
 
                 var jsonKey = ( key );
-                console.log ( "this is a state key: " + jsonKey );
+//                console.log ( "this is a state key: " + jsonKey );
 
                 if ( jsonKey == selectedState ){
-                      console.log( "selectedState ID " + selectedState + " MATCHES key: " + jsonKey + ". Return that val." );
+//                      console.log( "selectedState ID " + selectedState + " MATCHES key: " + jsonKey + ". Return that val." );
 
                       var contacts = [];
                       contacts = ( val.contacts );
-                      console.log ( "Referenced by val.contacts, contacts are " + contacts );
+//                      console.log ( "Referenced by val.contacts, contacts are " + contacts );
 
                       var theText = "<dl class ='agency " + key + "'>" + val.agency + "</dl>";
 
@@ -80,8 +57,7 @@ $( document ).ready( function(){
                             theText += "<dt class='contacts'>" + firstLast + ", " + title + ", " + phone + ", " + email + "</dt>";
                             theText += "<dd class='productTypes'>" + productTypesText + "</dd>";
                             }
-
-                            else{
+                            else {
 
                             var theMessage = ( obj.productTypes );
                                 console.log( theMessage );
@@ -102,10 +78,21 @@ $( document ).ready( function(){
         });
 
 
-        $( "#productOptions" ).change( function( e ) {//.on can only bind to one function. .on is used for click event already. use .bind to bind ~?an el~? to multiple functions.
-
-                    $('.selectedClass').attr('class','');// 5/13/15 Rebecca discovered that removing a class from SVGs works with empty quotes in arguments. But how to keep the selectedClass (chosen from drop down menu) on their appropriate SVG els despite that user clicked on any state, calling the clicked class.
-
+        $( "#productOptions" ).change( function( e ) {//.on can only bind to one function and .on is used on clicked g already. use .bind to bind ~?an el~? to multiple functions. Can .change do multiple events? it better or replace it.
+                    // look for elements with .selectedClass and check for other existing classes
+                	$(".selectedClass").attr("class", function(index, classNames) {
+                	    console.log ( classNames );//returned 1
+                	    console.log ( typeof classNames );
+                	    // if the element does have other existing classes
+        				if (typeof classNames != "undefined") {
+        				    // return the list of classnames and just remove the .selectedClass
+        					return classNames.replace("selectedClass", "");
+        				}
+        				else {
+        				    // otherwise, remove the class~no, put the selectedClass on
+        					$(".selectedClass").attr("class", "selectedClass");
+        				}
+        			});
 
 
 
@@ -135,8 +122,8 @@ $( document ).ready( function(){
         //                          console.log ( "Array" );
                                 }
 
-        //                      Iterate over each item and make object out of match
-                                productTypes.every( function( entry ) { // .every returns same as .forEach from what I've tested so far. The every method executes the provided callback function once for each element present in the array until it finds one where callback returns a falsy value (a value that becomes false when converted to a Boolean). If such an element is found, the every method immediately returns false.
+        //                      Iterate over each item in array and make object out of match
+                                productTypes.forEach( function( entry ) { // .every failed to iterate through productTypes array. The every method executes the provided callback function once for each element present in the array until it finds one where callback returns a falsy value (a value that becomes false when converted to a Boolean). If such an element is found, the every method immediately returns false.
         //                          console.log( entry );//entry is the element(s) from array
         //                          console.log ( typeof entry );//string
         //                          console.log ( selected );//my var, option the user selected from drop down menu
@@ -145,9 +132,9 @@ $( document ).ready( function(){
                                     if (selected.indexOf( entry ) == -1 ) {//returns either the index/number of the start point for the string or a -1 meaning it isn’t there.
         //                              console.log( "element doesn't exist" );
                                     }
-
                                     else {
         //                              console.log( "element found" );
+                                        console.log ( "the contact in charge of the selected productType is responsible for " + productTypes.length + " product types." );//.length is like Python's len(list_name)
 
                                     var productKey = ( key );
                                         console.log ( "productKey " + productKey );//presence of a productKey means that corresponding state shapes (#g's) should get styled.
@@ -160,8 +147,23 @@ $( document ).ready( function(){
                                                 return ( this.id );//running slowly. I think each object has own function. constructor method of object creation inefficient.
                                             }
                                           })
-                                            console.log ($productStates);
+                                            console.log ( $productStates );
         //                                    console.log ( typeof $productStates );//object; i.e., a jQuery collection of matched elements
+
+        // check $productStates for existing classes
+                                            $productStates.attr("class", function(index, classNames) {
+                                                // if there are existing classes
+                                                if (typeof classNames != "undefined") {
+                                                    // return the existing classes and add selectedClass to the end of the list
+                                                    return classNames + " selectedClass";
+                                                }
+                                                else {
+                                                    //
+                                                    $productStates.attr("class", "selectedClass");//.siblings( "g").removeAttr("class","selectedClass");
+                                                    }
+        console.log ( $(".selectedClass").length );//check to see if number of states with selectedClass matches the Excel spreadsheet (ntpepInfo.xlsx - read by scriptCleanForContacts.py, which wrote to stateInfoList.json)
+//
+                                            });
 
                                                 // 5/13/15 In block below, I struggled to add and remove classes to the SVG g elements as the two classes are affecting each other. Also, SVG has finicky styling rules in which empty quotes may be needed to remove a class (see line 84).
                                                 // I have yet to figure out how to make this web app work so that when the user clicks on a state, the selectedClass doesn't go away; i.e., those white states remain white until the user chooses a new product type from the drop down menu.
@@ -169,7 +171,7 @@ $( document ).ready( function(){
         //                                        $productStates.css( "fill-opacity", "0.1" );//SUCCESS, but how to remove styling from unselected g's?
         //                                        $productStates = $productStates.attr("class","selectedClass");//class appears on tag but not actually styled with opacity change
         //                                        $productStates = $productStates.attr("class","selectedClass").siblings( "g" ).removeAttr( "class","selectedClass" );//class appears but quickly removes itself
-                                                $productStates.attr("class","selectedClass");//.siblings( "g" ).removeAttr( "class","selectedClass" );//class appears on tag but not actually styled with opacity change
+//                                                $productStates.attr("class","selectedClass");//.siblings( "g" ).removeAttr( "class","selectedClass" );//class appears on tag but not actually styled with opacity change
                                                 //for line above, I indented one more tab in from where it was and now selectedClass is again appearing on tags but not actually styling the g's.
         //                                    $productStates = $productStates.addClass( "selectedClass" );//nothing. earlier today, style=("fill-opacity","0.1") got tacked onto appropriate g tags
         //                                    $productStates.addClass("selectedClass").siblings("g").removeClass("selectedClass");//Rebecca suggested on 5/13/15
@@ -190,17 +192,8 @@ $( document ).ready( function(){
 });
 
                 /*
-                  if firstLast not in contacts:
-                          if(firstLast.hasOwnProperty('obj.firstLast')) { ... } // will run
-                          if(firstLast.hasOwnProperty('toString')) { ... } // will not run
 
-                $( "#txtDOT" ).append( "<p id='productTypes'>" + productTypes + "</p>" );
-                     $( "#txtDOT" ).append( "<p id ='firstLast'>" + firstLast + "</p>" );
-
-                jQuery Selector $() function w optional 2nd parameter to do a search within an event handler
-                $("g").on("click", function (e) {//Using e is just a short for event. You can pass any variable name you desire.
-                     var $e = $(e.target);//target is #something
-                     clicked.css("background", "red");
-                });
+//                                            var len = $.map($productStates, function(n, i) { return i; }).length;
+//                                            console.log (len);//returned 1 for each unique instance of a $productState id
                 */
 
