@@ -1,3 +1,6 @@
+//Rebecca Deprey's patch 2.
+//5/19/15 The selectedClass appends to the clicked class, but the color turns white. Yet the text contact info remains. I could settle for this.
+
 $( document ).ready( function(){
 
     var json = {};
@@ -7,10 +10,36 @@ $( document ).ready( function(){
         $( "g" ).on( "click", function (e) {
 //          console.log( "user clicked " + this.id );
 
-          $( this ).attr( "class", "clicked" );//.siblings( "g" ).removeAttr( "class","clicked" ); //add and remove styling from un-clicked svg shapes. worked before second class was added.
+        $( this ).attr("class", function(index, classNames) {
+            //if classNames already exist on the el
+            if ( typeof classNames != "undefined" ) {
+                // Reed's guidance this line and 4 below. Write it out in English on paper. return classNames + " clicked"; NOT as .attr is written in the .change function bc that wipes out all existing classes on the el: $(".selectedClass").attr("class", "");
+                // Does classNames contain clicked already?
+                if ( classNames == "clicked" ){
+                // if it does, keep it on the el and remove it from the siblings
+                $( this ).siblings("g").removeAttr( "class","clicked" );
+                //return $( this ).prev().attr( "class" );
+                }
+                // if the el doesn't contain clicked class already, add it
+                else {
+                $( this ).attr( "class", "clicked" ).siblings( "g" ).removeAttr( "class","clicked" );//Reed said removeAttr can only take one arg
+                //$( this ).addClass( "clicked" ).siblings("g").removeClass("clicked");//did nothing
+                }
+            return classNames + " clicked";
+            }
+            //if there are no classNames on the clicked el already
+            else {
+                $( this ).attr("class", "clicked").siblings("g").removeAttr( "class","clicked" );//$(".selectedClass").attr("class", "");
+            }
+
+            return classNames + " clicked";
+        });
+
+
+          //
 
           selectedState = ( this.id );
-          console.log( "so var selectedState is " + selectedState );
+//          console.log( "so var selectedState is " + selectedState );
 
 
           $.each ( data, function( key, val ){
@@ -57,6 +86,7 @@ $( document ).ready( function(){
                             theText += "<dt class='contacts'>" + firstLast + ", " + title + ", " + phone + ", " + email + "</dt>";
                             theText += "<dd class='productTypes'>" + productTypesText + "</dd>";
                             }
+
                             else {
 
                             var theMessage = ( obj.productTypes );
@@ -77,20 +107,18 @@ $( document ).ready( function(){
 
         });
 
-
-        $( "#productOptions" ).change( function( e ) {//.on can only bind to one function and .on is used on clicked g already. use .bind to bind ~?an el~? to multiple functions. Can .change do multiple events? it better or replace it.
+        // The drop down menu functionality
+        $( "#productOptions" ).change( function( e ) {//.on can only bind to one function and .on is used on clicked g function already. use .bind to bind ~?an el~? to multiple functions.
                     // look for elements with .selectedClass and check for other existing classes
                 	$(".selectedClass").attr("class", function(index, classNames) {
-                	    console.log ( classNames );//returned 1
-                	    console.log ( typeof classNames );
                 	    // if the element does have other existing classes
         				if (typeof classNames != "undefined") {
         				    // return the list of classnames and just remove the .selectedClass
         					return classNames.replace("selectedClass", "");
         				}
         				else {
-        				    // otherwise, remove the class~no, put the selectedClass on
-        					$(".selectedClass").attr("class", "selectedClass");
+        				    // otherwise, remove the classes already on el
+        					$(".selectedClass").attr("class", "");//attr takes 2 so this is ok. wipes out all classes on the element.
         				}
         			});
 
@@ -122,8 +150,8 @@ $( document ).ready( function(){
         //                          console.log ( "Array" );
                                 }
 
-        //                      Iterate over each item in array and make object out of match
-                                productTypes.forEach( function( entry ) { // .every failed to iterate through productTypes array. The every method executes the provided callback function once for each element present in the array until it finds one where callback returns a falsy value (a value that becomes false when converted to a Boolean). If such an element is found, the every method immediately returns false.
+        //                      Iterate over each item and make object out of match
+                                productTypes.forEach( function( entry ) { // The every method executes the provided callback function once for each element present in the array until it finds one where callback returns a falsy value (a value that becomes false when converted to a Boolean). If such an element is found, the every method immediately returns false.
         //                          console.log( entry );//entry is the element(s) from array
         //                          console.log ( typeof entry );//string
         //                          console.log ( selected );//my var, option the user selected from drop down menu
@@ -134,7 +162,6 @@ $( document ).ready( function(){
                                     }
                                     else {
         //                              console.log( "element found" );
-                                        console.log ( "the contact in charge of the selected productType is responsible for " + productTypes.length + " product types." );//.length is like Python's len(list_name)
 
                                     var productKey = ( key );
                                         console.log ( "productKey " + productKey );//presence of a productKey means that corresponding state shapes (#g's) should get styled.
@@ -147,7 +174,7 @@ $( document ).ready( function(){
                                                 return ( this.id );//running slowly. I think each object has own function. constructor method of object creation inefficient.
                                             }
                                           })
-                                            console.log ( $productStates );
+                                            console.log ($productStates);
         //                                    console.log ( typeof $productStates );//object; i.e., a jQuery collection of matched elements
 
         // check $productStates for existing classes
@@ -158,11 +185,9 @@ $( document ).ready( function(){
                                                     return classNames + " selectedClass";
                                                 }
                                                 else {
-                                                    //
-                                                    $productStates.attr("class", "selectedClass");//.siblings( "g").removeAttr("class","selectedClass");
-                                                    }
-        console.log ( $(".selectedClass").length );//check to see if number of states with selectedClass matches the Excel spreadsheet (ntpepInfo.xlsx - read by scriptCleanForContacts.py, which wrote to stateInfoList.json)
-//
+                                                    // otherwise, just add selectedClass
+                                                    $productStates.attr("class", "selectedClass");
+                                                }
                                             });
 
                                                 // 5/13/15 In block below, I struggled to add and remove classes to the SVG g elements as the two classes are affecting each other. Also, SVG has finicky styling rules in which empty quotes may be needed to remove a class (see line 84).
@@ -192,8 +217,16 @@ $( document ).ready( function(){
 });
 
                 /*
+                  if firstLast not in contacts:
+                          if(firstLast.hasOwnProperty('obj.firstLast')) { ... } // will run
+                          if(firstLast.hasOwnProperty('toString')) { ... } // will not run
 
-//                                            var len = $.map($productStates, function(n, i) { return i; }).length;
-//                                            console.log (len);//returned 1 for each unique instance of a $productState id
+                $( "#txtDOT" ).append( "<p id='productTypes'>" + productTypes + "</p>" );
+                     $( "#txtDOT" ).append( "<p id ='firstLast'>" + firstLast + "</p>" );
+
+                jQuery Selector $() function w optional 2nd parameter to do a search within an event handler
+                $("g").on("click", function (e) {//Using e is just a short for event. You can pass any variable name you desire.
+                     var $e = $(e.target);//target is #something
+                     clicked.css("background", "red");
+                });
                 */
-
