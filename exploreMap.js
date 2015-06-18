@@ -1,3 +1,8 @@
+/*back up dated 5/25/15
+problems with this version:
+selectedClass did not remove clicked
+clicked class instances are accruing on els
+*/
 $( document ).ready( function(){
 
     var json = {};
@@ -7,37 +12,38 @@ $( document ).ready( function(){
         $( "g" ).on( "click", function (e) {
 //          console.log( "user clicked " + this.id );
 
-        $(this).attr("class", function(index, classNames) {
-                     if ( typeof classNames != "undefined" ) { // if there are existing classes
-        //                 console.log ( classNames + " <-classNames");//logged clicked clicked clicked selectedClass after I clicked MS 3x and selected multiple product types for MS
-                        // return the existing classes and just add the clicked class to them
+            $(this).attr("class", function(index, classNames) {
 
-                        // Does classNames contain clicked already?
-                        // if it does, remove it
-                        // if it doesn't, add it
-                         return classNames + " clicked";
-                         // function that removes previously clicked class instances from sibling states. gets the ~returned clicked~ class attribute and checks for existing classes on the "g" element
-                         $(this).siblings("g").attr("class", function(index, classNames) {
-        //                    console.log ( typeof classNames );//logged nothing no matter what combo of clicks and selects
-                            if (typeof classNames == "classNames") {// if there are existing ~clicked~ class instances on the siblings
-        //                        console.log ( typeof classNames );//logged nothing no matter what combo of clicks and selects ~so I changed condition in line above~
-                                return classNames.replace("clicked", "");// return the existing classes and remove just the clicked class
-                            }
-                            else {// if there are not existing ~clicked~ class instances on the siblings
-                                // otherwise, remove the clicked class attribute altogether
-                                $(this).siblings("g").removeAttr("class", "");
-                            }
-                         });
-                     }
+             if ( typeof classNames != "undefined" ) { // if there are existing classes
+    //                 console.log ( classNames + " <-classNames");//logged clicked clicked clicked selectedClass after I clicked MS 3x and selected multiple product types for MS
+                // return the existing classes and just add the clicked class to them
 
-                     else {
-                         // if typeof classNames is undefined, meaning there aren't any existing classes, add the class clicked outright to the selected g element and remove the class from its siblings
-                        $(this).attr("class", "clicked").siblings("g").removeAttr("class","clicked");//removeAttr only takes one arg
-                     }
+                // Does classNames contain clicked already?
+                // if it does, remove it
+                // if it doesn't, add it
+                 return classNames + " clicked";
+                 // function that removes previously clicked class instances from sibling states. gets the ~returned clicked~ class attribute and checks for existing classes on the "g" element
+                 $(this).siblings("g").attr("class", function(index, classNames) {
+    //                    console.log ( typeof classNames );//logged nothing no matter what combo of clicks and selects
+                    if (typeof classNames == "classNames") {// if there are existing ~clicked~ class instances on the siblings
+    //                        console.log ( typeof classNames );//logged nothing no matter what combo of clicks and selects ~so I changed condition in line above~
+                        return classNames.replace("clicked", "");// return the existing classes and remove just the clicked class
+                    }
+                    else {// if there are not existing ~clicked~ class instances on the siblings
+                        // otherwise, remove the clicked class attribute altogether
+                        $(this).siblings("g").removeAttr("class", "");
+                    }
+                 });
+             }
+
+             else {
+                 // if typeof classNames is undefined, meaning there aren't any existing classes, add the class clicked outright to the selected g element and remove the class from its siblings
+                $(this).attr("class", "clicked").siblings("g").removeAttr("class","clicked");//removeAttr only takes one arg
+             }
         });
 
 
-          selectedState = ( this.id );
+        selectedState = ( this.id );
 //          console.log( "so var selectedState is " + selectedState );
 
 
@@ -96,13 +102,14 @@ $( document ).ready( function(){
                         });
 
                       $( "#txtDOT" ).html(theText);
+
                 }
 
                 else {
                 //console.log( "selectedState ID " + selectedState + " does NOT match key: " + jsonKey + " , so don't return that val." )
                 }
 
-          });
+            });
 
         });
 
@@ -215,7 +222,14 @@ $( document ).ready( function(){
 
 });
 
-                /*.siblings("g").removeAttr( "class","clicked" );//$(".selectedClass").attr("class", "");/*
+
+
+                //remove text if class does not contain selectedClass
+                                     // if (!$(this).hasClass("selectedClass")) {
+                                     //     //do stuff
+                                     // }
+/*
+                .siblings("g").removeAttr( "class","clicked" );//$(".selectedClass").attr("class", "");/*
 
 
                   if firstLast not in contacts:
@@ -230,4 +244,5 @@ $( document ).ready( function(){
                      var $e = $(e.target);//target is #something
                      clicked.css("background", "red");
                 });
-                */
+*/
+
