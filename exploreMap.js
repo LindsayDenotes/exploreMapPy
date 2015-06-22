@@ -28,32 +28,28 @@ $( document ).ready( function(){
                       var contacts = [];
                       contacts = ( val.contacts );
 //                      console.log ( "Referenced by val.contacts, contacts are " + contacts );
-                        console.log (typeof ( val.contacts ) );
+//                      console.log ( typeof ( val.contacts ) );//logged object
 
                         //CONCATENATE JSON KEY AND OBJECT WITH HTML TO POPULATE TEXT BOX
                         var theText = "<dl class ='agency " + key + "'>" + val.agency + "</dl>";//<dl> tag defines a description list in HTML5
 
 
+                            //MAKE PRODUCTTYPES ARRAY ACCESSIBLE IN GLOBAL SCOPE BY CREATING (Not done - NAMESPACED) FUNCTION, USING REVEALING MODULE PATTERN
+                            //define module <-that's if we're using Angular JS, right? Ok, let's try anyway.
+                            var productsArrayModule = ( function () {//var declaration. which scope am I in? scope of productsArrayModule. Also, in lexical scope of theText? I wanted to be in .each so I moved this "function" above var theText declaration, but then theText was undefined.
+                            var productTypeLoop = contacts.forEach( function( obj ){//func declaration (or expression?) with no identifier after "function". //LHS left hand side of assignment is var declaration. "loop" is our LHS reference, the target. The RHS is the source. //the forEach() method executes a provided function once per array element.
+                                var productTypes = [];//args are implicit declarations when they contain named parameters. I have a named parameter called productTypes. top down compiler will treat it as a local var.//is an array
+                            });
+                            return {
+                                productTypes
+                            };//compile phase complete. going into execution phase where's there's no more var anymore, just the assignment, if I write a line above "loop = " such as var saveArray = "bar";
 
-                            //MAKE PRODUCTTYPES ARRAY ACCESSIBLE IN GLOBAL SCOPE BY CREATING NAMESPACED FUNCTION, USING REVEALING MODULE PATTERN
-                            // define module
-                            var productsArrayModule = ( function () {
-                                var loop = contacts.forEach( function( obj ){//the forEach() method executes a provided function once per array element.
-                                productTypes = [];//is an array
-                                });
-                                return {
-                                    productTypes
+                            //call module + methods
+                            var productsTypes = loop.productTypes();
 
-                                }();
-                            // call module + methods
-                            productsArrayModule.productTypes();
-
-                            productTypes = ( obj.productTypes );//make the array into an object
+                            productsTypes = ( obj.productTypes );//make the array into an object
 //                                console.log( productTypes );//an array of strings. For Array objects, the toString method joins the array and returns one string containing each array element separated by commas.
 //                                console.log( typeof productTypes );//logged object
-
-
-
 
 
                             //CREATE TEXT OBJECTS
@@ -108,8 +104,8 @@ $( document ).ready( function(){
         //      console.log( "user selected " + selected );
 //              console.log( typeof selected );//string
 
-            //6/20 if you're going to keep this filter functionality outwith the $.each method, then you need to somehow call the product types array. maybe make it global up there.
-
+//6/21 if you're going to keep this filter functionality outwith the $.each scope or lexical scope of theText, then you need to somehow call the product types array. maybe make it global up there.
+                loop.productTypes();
                         if( Object.prototype.toString.call( productTypes ) === "[object Array]" ) {//test to make sure it is a true array, not array-like object. a prototype function.
         //                   console.log ( "Array" );
                         }
