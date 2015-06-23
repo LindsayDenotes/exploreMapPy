@@ -25,20 +25,21 @@ $( document ).ready( function(){
                 if ( jsonKey == clickedState ){
 //                      console.log( "clickedState ID " + clickedState + " MATCHES key: " + jsonKey + ". Return that val." );
 
-                      //CONCATENATE JSON KEY AND OBJECT WITH HTML TO POPULATE TEXT BOX
-                      var theText = "<dl class ='agency " + key + "'>" + val.agency + "</dl>";//<dl> tag defines a description list in HTML5
+                  //DRILL DOWN INTO JSON
+                  var contacts = [];
+                  contacts = ( val.contacts );
+//                  console.log ( "Referenced by val.contacts, contacts are " + contacts );
+//                  console.log ( typeof ( val.contacts ) );//logged object
 
-                      //DRILL DOWN INTO JSON
-                      var contacts = [];
-                      contacts = ( val.contacts );
-//                      console.log ( "Referenced by val.contacts, contacts are " + contacts );
-//                      console.log ( typeof ( val.contacts ) );//logged object
+                    var theText = "<dl class ='agency " + key + "'>" + val.agency + "</dl>";//<dl> tag defines a description list in HTML5
+
 
                         contacts.forEach( function( obj ){
+
                             var productTypes = [];
                             productsTypes = ( obj.productTypes );//make the array into an object
-//                                console.log( productTypes );//an array of strings. For Array objects, the toString method joins the array and returns one string containing each array element separated by commas.
-//                                console.log( typeof productTypes );//logged object
+//                             console.log( productTypes );//an array of strings. For Array objects, the toString method joins the array and returns one string containing each array element separated by commas.
+//                             console.log( typeof productTypes );//logged object
 
                             //CREATE TEXT OBJECTS
                             var productTypesText = " ";//is string
@@ -73,17 +74,17 @@ $( document ).ready( function(){
                                 theText += "<dt class='contacts'>" + theMessage + "</dt>";//yes, I want the message I wrote into the productTypes cell in Excel to be displayed in the contacts class.
                             }
 
-                        });//closure for contacts.forEach( function( obj ){//the forEach() method executes a provided function once per array element.//CONCATENATE TEXT OBJs WITH HTML - START
+                        });//closing for contacts.forEach( function( obj ){//the forEach() method executes a provided function once per array element.//CONCATENATE TEXT OBJs WITH HTML - START
 
                       $( "#txtDOT" ).html( theText );
 
-                }
+                }//closing for if ( jsonKey == clickedState ){
 
                 else {//else, if jsonKey does not match the clickedState
                 //console.log( "clickedState ID " + clickedState + " does NOT match key: " + jsonKey + " , so don't return that val." )
                 }
 
-            });//closure for $.each( data, function( key, val ){
+
 
 
         //The drop down menu text object creation and filter functionality
@@ -91,13 +92,21 @@ $( document ).ready( function(){
             var selected = $( "#productOptions option:selected" ).text();
         //      console.log( "user selected " + selected );
 //              console.log( typeof selected );//string
+            $.each ( data, function( key, val ){
+//                console.log ( key, val.contacts );//key is "nh" or "fl", val is whats inside json's { }s
 
-//6/22 if you're going to keep this filter functionality outwith the $.each scope or lexical scope of theText, then you need to somehow call the product types array. maybe make it global up there.
+                var contacts = [];
+                contacts = ( val.contacts );
 
+                contacts.forEach( function( obj ){
+
+                    var productTypes = [];
+                    productTypes = ( obj.productTypes );
+//                    console.log(obj.productTypes);//call productTypes array obj somehow on this line
                         if( Object.prototype.toString.call( productTypes ) === "[object Array]" ) {//test to make sure it is a true array, not array-like object. a prototype function.
         //                   console.log ( "Array" );
                         }
-
+//                        console.log(productTypes.length);//logged 7242 undefined
         //              Iterate over each item in array and make object out of match
                         productTypes.forEach( function( entry ) { //replaced the every method - executed the provided callback function once for each element present in the array ONLY until it found one where callback returned a falsy value (a value that becomes false when converted to a Boolean). If such an element was found, the every method immediately returned false.
         //                          console.log( entry );//entry is the element(s) from array
@@ -108,43 +117,43 @@ $( document ).ready( function(){
                             if (selected.indexOf( entry ) == -1 ) {//if element doesn't exist.//returns either the index/number of the start point for the string or a -1 meaning it isn’t there.
         //                      console.log( "element doesn't exist" );
                             }
+
                             else {//else, if element exists.
-        //                      console.log( "element found" );
+                              console.log( "element found" );
 
-                            var productKey = ( key );
-                                console.log ( "productKey " + productKey );//presence of a productKey means that corresponding state shapes (#g's) should get styled.
+                                var productKey = ( key );
+                                    console.log ( "productKey " + productKey );//presence of a productKey means that corresponding state shapes (#g's) should get styled.
 
-                            var $productStates =  $( "g" )//the $ in the var name indicates the var contains jQuery object(s) or is a jQuery collection
+                                var $productStates =  $( "g" )//the $ in the var name indicates the var contains jQuery object(s) or is a jQuery collection
 
-                                  .filter( function( index ) {//within the filter function, this refers to each DOM element in turn.
-                                    if ( $( this ).attr( "id" ) == productKey ){//if the id of a g el matches a productKey
-                                        console.log ( this.id );//GOOD. logged or, mn, etc., i.e., the states that have the product type which user selected in the drop down menu
-                                        return ( this.id );//running slowly. I think each created object has its own function. constructor method of object creation inefficient.
+                                      .filter( function( index ) {//within the filter function, this refers to each DOM element in turn.
+                                        if ( $( this ).attr( "id" ) == productKey ){//if the id of a g el matches a productKey
+                                            console.log ( this.id );//GOOD. logged or, mn, etc., i.e., the states that have the product type which user selected in the drop down menu
+                                            return ( this.id );//running slowly. I think each created object has its own function. constructor method of object creation inefficient.
+                                        }
+                                      })
+//                                console.log ( $productStates );//logged [g#or, prevObject: n.fn.init[52], context: document]
+//                                console.log ( typeof $productStates );//object; i.e., a jQuery collection of matched elements
+
+                                //$productStates.attr( "class", "selectedClass" );//add selectedClass to the matched elements
+                                $productStates.attr( "class", function( index, classNames ) {//Check $productStates for existing classes
+                                    if ( typeof classNames != "undefined") {//if there are existing classes on the productStates (selectedClass added by line 139)
+                                        return classNames + " selectedClass";//THIS WILL ACCRUE //return the existing classes and add selectedClass to the end of the list
+                                        //$( ".clicked" ).removeAttr( "class" );//Default select behavior is to discard the existing clicked class instance
                                     }
-                                  })
-                            console.log ( $productStates );
-                            console.log ( typeof $productStates );//object; i.e., a jQuery collection of matched elements
+                                    else {//else, if there are not existing classes on the productStates
+                                    $productStates.attr( "class", "selectedClass" );//just add selectedClass
+                                    }
+                                });//closing for $productStates.attr( "class", function( index, classNames ) {
 
-                            //$productStates.attr( "class", "selectedClass" );//add selectedClass to the matched elements
+                             }//closing for else {//else, if element exists.
 
-                            $productStates.attr( "class", function( index, classNames ) {//Check $productStates for existing classes
-                                if ( typeof classNames != "undefined") {//if there are existing classes on the productStates (selectedClass added by line 139)
-                                    return classNames + " selectedClass";//THIS WILL ACCRUE //return the existing classes and add selectedClass to the end of the list
-                                    //$( ".clicked" ).removeAttr( "class" );//Default select behavior is to discard the existing clicked class instance
-                                }
-                                else {//else, if there are not existing classes on the productStates
-                                $productStates.attr( "class", "selectedClass" );//just add selectedClass
-                                }
-                            });//closure for $productStates.attr( "class", function( index, classNames ) {
-
-                            }//closure for else {//else, if element exists.
-
-                        });//closure for productTypes.forEach( function( entry ) { //iterates over each item in productTypes and make obj out of each match
+                            });//closing for productTypes.forEach( function( entry ) { //iterates over each item in productTypes and make obj out of each match
 
 
-                    //});//closure for the second, removed contacts.forEach( function( obj ){
+                    });//closing for the second contacts.forEach( function( obj ){
 
-//            });//closure for the second, removed $.each ( data, function( key, val ){
+            });//closing for the second $.each ( data, function( key, val ){
 
             //WHEN USER SELECTS FROM THE DROP DOWN MENU - ATTRIBUTES FUNCTION. Always discard existing clicked class first.
 //            $( ".clicked" ).removeAttr( "class" );
@@ -155,10 +164,9 @@ $( document ).ready( function(){
                 else {//else, if the element does not have other existing classes
                     $( ".selectedClass" ).attr( "class", "selectedClass" );//add the selectedClass
                 }
-            });
+            });//closing for WHEN USER SELECTS FROM THE DROP DOWN MENU - ATTRIBUTES FUNCTION.
 
 
-        });//closure for $( "productOptions" ).on( "change", function (e){//when user selects from drop down menu
 
             //WHEN USER CLICKS ON A STATE - ATTRIBUTES FUNCTION. Always discard existing clicked class first
 //            $( this ).off( "click" );//this line only lets user click on a state one time. try some other method.
@@ -191,7 +199,7 @@ $( document ).ready( function(){
                     $(this).attr("class", "clicked").siblings("g").removeAttr("class");//removeAttr only takes one arg, says Reed
 
                 }
-            });
+            });//closing for $(this).attr("class", function(index, classNames) { CLICK ATTR FUNC
 
 //        $( this ).attr( "class", function( index, classNames ) {//gets the class attribute of clicked el and checks for existing classes
 //            if ( typeof classNames != "undefined"  && //if the clicked state does have other existing classes AND
@@ -234,15 +242,18 @@ $( document ).ready( function(){
 //            }))
 //            console.log("write your exceptions functions chain here");
 //        });
-//       });//i removed whatever this was closure for on 6/20/15
 
-       });//closure for $( "g" )on( "click", function(e){
+        });//closing for $( "productOptions" ).on( "change", function (e){//when user selects from drop down menu
 
-      });//closure for $.getJSON( "stateInfoList.json", function( data ){
+       });//closing for $.each ( data, function( key, val){
 
-    //});//closure for var showEventMessage = function(options){
+       });//closing for $( "g" )on( "click", function(e){
 
-});//closure for $(document).ready(function(){
+      });//closing for $.getJSON( "stateInfoList.json", function( data ){
+
+//    });//closing for var showEventMessage = function(options){
+
+});//closing for $(document).ready(function(){
 
 
 /*
