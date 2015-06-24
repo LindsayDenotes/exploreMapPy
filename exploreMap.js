@@ -9,27 +9,47 @@ $( document ).ready( function(){
       $.getJSON( "stateInfoList.json", function( data ) {
 //        console.log ( data );//whole JSON object loads on document ready
 
+
+
         //WHEN USER SELECTS FROM DROP DOWN MENU
         $( "#productOptions" ).on( "change", function(e) {
+
+
+
         //WHEN USER SELECTS FROM THE DROP DOWN MENU - ATTRIBUTES FUNCTION. Always discard existing clicked class first.
             $(".clicked").attr("class","");
             $(".selectedClass").attr("class", function(index, classNames) {
-                // if the selectedClass elements have other existing classes
+                // if the selectedClass elements already have other existing classes, ie, the clicked class
                 if (typeof classNames != "undefined") {
-                    // return the list of classnames and just remove the .selectedClass
+                    // return the list of class names and just remove the .selectedClass
                     return classNames.replace("selectedClass", "");
                 }
                 else {
-                    // otherwise, remove the classes already on el
-                    $(".selectedClass").attr("class", "");//Not working 6/23/15 attr takes 2 so this is ok. wipes out all classes on the element.
-//                    $(".selectedClass").attr("class","selectedClass");//This allowed a non-selected clicked state to remove selected states
+                    // otherwise, if the selectedClass elements don't already have other classes, ie, the clicked class, remove the selected class
+                    $(".selectedClass").attr("class", "");//Not sure if working 6/23/15. attr takes 2 so this is ok. wipes out all classes on the element.
                 }
             });//closing for $(".selectedClass").attr("class", function(index, classNames) {
 
+            //HIDE TEXT BOX - 6/24 look again at failed code in discardClicked1st...
+            $(this).attr("class", function(index,classNames){
+                if (typeof classNames != "undefined") {
+//                if ( $("g").hasClass("clicked") ) {
+                console.log("clicked exists so show txtDOT");//8
+//                $("#productOptions").one("change",function(){ //try .one, didn't do anything on 6/23
+                $("#txtDOT").show();//but it stays off eve after click class returns
+//                });
+                }
+                else {
+                console.log("clicked doesn't exist so hide txtDOT");//43
+                $("txtDOT").hide();
+                }
+            });
             //The drop down menu text object creation and filter functionality
             var selected = $( "#productOptions option:selected" ).text();
               console.log( "user selected " + selected );
         //      console.log( typeof selected );//string
+
+
 
             $.each ( data, function( key, val ){//parse JSON
                 console.log ( key, val.contacts );//key is "nh" or "fl", val is whats inside json's { }s
@@ -91,8 +111,6 @@ $( document ).ready( function(){
                                     $productStates.attr("class", "selectedClass");
 //                                }
 
-
-
                             });//closing for $productStates.attr( "class", function( index, classNames ) {
 
                             }//closing for else {//else, if element exists
@@ -139,6 +157,8 @@ $( document ).ready( function(){
         //            console.log("write your exceptions functions chain here");
         //        });
         //       });
+
+
 
                });//closing for $( "#productOptions" ).on( "change", function (e){
 
@@ -237,9 +257,8 @@ $( document ).ready( function(){
 
             });//closing for $.each(data,function(key,val){
 
+        });//closing for $( "g" )on( "click", function(e){
 
-
-       });//closing for $( "g" )on( "click", function(e){
 
       });//closing for $.getJSON( "stateInfoList.json", function( data ){
 
