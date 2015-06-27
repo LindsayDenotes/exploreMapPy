@@ -12,8 +12,11 @@ $( document ).ready( function(){
         //WHEN USER SELECTS FROM DROP DOWN MENU
         $( "#productOptions" ).on( "change", function(e) {
 
-        //WHEN USER SELECTS FROM THE DROP DOWN MENU - ATTRIBUTES FUNCTION. Always discard existing clicked class first.
-            $(".clicked").attr("class","");
+            //WHEN USER SELECTS FROM THE DROP DOWN MENU - ATTRIBUTES FUNCTION. Always discard existing clicked class first.
+            $(".clicked").attr("class", "");
+            // Then, hide previously displayed content
+            $("#txtDOT").hide();
+
             $(".selectedClass").attr("class", function(index, classNames) {
                 // if the selectedClass elements already have other existing classes. ¸
                 if (typeof classNames != "undefined") {
@@ -27,18 +30,18 @@ $( document ).ready( function(){
             });//closing for $(".selectedClass").attr("class", function(index, classNames) {
 
             //HIDE TEXT BOX - 6/24 look again at failed code in discardClicked1st...
-            $(this).attr("class", function(index,classNames){
-                if (typeof classNames != "undefined") {
-//                if ( $("g").hasClass("clicked") ) {
-                console.log("clicked exists so show txtDOT");//logged 8 (8 out of 51 state DOTs)
-                $("#txtDOT").show();//but unfortunately, the text stays off even after click class returns!
-//                });
-                }
-                else {
-                console.log("clicked doesn't exist so hide txtDOT");//43 (43 out of 51 state DOTs)
-                $("txtDOT").hide();
-                }
-            });
+//             $(this).attr("class", function(index,classNames){
+//                 if (typeof classNames != "undefined") {
+// //                if ( $("g").hasClass("clicked") ) {
+//                 console.log("clicked exists so show txtDOT");//logged 8 (8 out of 51 state DOTs)
+//                 $("#txtDOT").show();//but unfortunately, the text stays off even after click class returns!
+// //                });
+//                 }
+//                 else {
+//                 console.log("clicked doesn't exist so hide txtDOT");//43 (43 out of 51 state DOTs)
+//                 $("txtDOT").hide();
+//                 }
+//             });
 
             //THE DROP DOWN MENU TEXT OBJECT CREATION AND FILTER FUNCTIONALITY
             var selected = $( "#productOptions option:selected" ).text();
@@ -152,28 +155,37 @@ $( document ).ready( function(){
 
         //WHEN USER CLICKS ON A STATE
         $("g").on( "click", function ( e ) {
+            // checks to see if the state clicked actually has the "selectedClass" so that it will only display information on states clicked with the "selectedClass"
+            if (($(this).attr("class")) == ("selectedClass")) {
 
-        //WHEN USER CLICKS ON A STATE - ATTRIBUTES FUNCTION. Always discard existing clicked class first
-        //$( this ).off( "click" );//this line only lets user click on a state one time. try some other method.
-        $(this).attr("class", function(index, classNames) {
-            if ( typeof classNames != "undefined" ) { // if there are existing classes
-//                return classNames + " clicked";//comment this line out and clicked won't accrue on selected states
+            //WHEN USER CLICKS ON A STATE - ATTRIBUTES FUNCTION. Always discard existing clicked class first
+            //$( this ).off( "click" );//this line only lets user click on a state one time. try some other method.
+            $(this).attr("class", function(index, classNames) {
+                if ( typeof classNames != "undefined" ) { // if there are existing classes
+                   // before assigning "clicked" class to the newly clicked on "selectedClass", remove it from the previously clicked class
+                   $(".clicked").attr("class", "selectedClass");
 
-                //function that removes previously clicked class instances from sibling states. gets the ~returned clicked~ class attribute and checks for existing classes on the "g" element
-                $(this).siblings("g").attr("class", function(index, classNames) {
-                    if (typeof classNames != "undefined") {// if there are existing classes on the siblings
-                        return classNames.replace("clicked", "");// return the existing classes and remove just the clicked class
-                    }
-                    else {// if there are not existing classes on the siblings
-                        return classNames;
-                    }
-                 });
-            }
+                   // Show the corresponding text after the user clicks on a state, but before the return statement
+                   $("#txtDOT").show();
+                   
+                   // don't have to worry about "clicked" class accruing on "selectedClass" now because of line above
+                   return classNames + " clicked";
 
-            else {
-            // if typeof classNames is undefined, meaning there aren't any existing classes, add the class clicked outright to the selected g element and remove the class from its siblings
-            $(this).attr("class", "clicked").siblings("g").removeAttr("class");//removeAttr only takes one arg, says Reed
-            }
+                    //function that removes previously clicked class instances from sibling states. gets the ~returned clicked~ class attribute and checks for existing classes on the "g" element
+                    // $(this).siblings("g").attr("class", function(index, classNames) {
+                    //     if (typeof classNames != "undefined") {// if there are existing classes on the siblings
+                    //         return classNames.replace("clicked", "");// return the existing classes and remove just the clicked class
+                    //     }
+                    //     else {// if there are not existing classes on the siblings
+                    //         return classNames;
+                    //     }
+                    //  });
+                }
+
+                //else {
+                // if typeof classNames is undefined, meaning there aren't any existing classes, add the class clicked outright to the selected g element and remove the class from its siblings
+               // $(this).attr("class", "clicked").siblings("g").removeAttr("class");//removeAttr only takes one arg, says Reed
+               // }
         });//closing for $(this).attr("class", function(index, classNames) {
 
             //PARSE DATA, CREATE TEXT OBJECTS
@@ -246,6 +258,8 @@ $( document ).ready( function(){
                 }
 
             });//closing for $.each(data,function(key,val){
+
+            } // closing for if has "selectedClass" statement
 
         });//closing for $( "g" )on( "click", function(e){
 

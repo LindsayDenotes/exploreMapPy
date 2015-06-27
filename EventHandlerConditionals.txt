@@ -15,18 +15,21 @@ Event Handler Conditionals - i.e., non-standard behavior functions
 1) if: user has selected states && then user clicks a state that IS in the selected states group,
 	then: Keep selected, discard clicked (default)      
 	
+	- Rebecca: Fixed this by commenting out lines 174-182 and lines 185-188; uncommeting line 172; adding line 166 (with comment on line 165). Before adding the "clicked" class to the newly clicked "selectedClass", just change the currently "clicked" class so that it no longer has "clicked" class (and just has "selectedClass").  6/26/2015
 	- as of 6/24/15 discard clicked is not working which because click is not getting assigned to the clicked state in the selected states group	  
 	- earlier failure: Selected is successfully kept, but clicked instances are kept on previously clicked states within the selected states group, resulting in more than one state appearing as if the clicked state. Fixed it by commenting out line 160 return classNames + " clicked"	
 
 2) if: user has selected states && user then clicks a state that IS NOT one of the selected states,
 	then: Discard selected, discard clicked (default)      
 	
+	- Rebecca: for some reason, this didn't seem to be working, so I added and if statement on line 159 (with comment on 158). 6/26/2015
 	- this already works 6/9/15
 
 TO DO:	  
 3) if: clicked class doesn't exist anywhere on the map, 
 	then: Remove or hide the text under map
 
+	- Rebecca: I updated the code so that whenever the drop-down menu selection is changed, it automatically hides the txtDOT panel. Then, I moved the $("#txtDOT").show(); line within the click event, so that the content is updated/shown whenever the user clicks on a state with class="selectedClass.  Commented out lines 33-44; added lines 17-18; moved line 37 to line 169.  6/26/2015
 	- Not working yet as of 6/24/15. Tie to an event handler?
 
 
@@ -37,12 +40,14 @@ TO DO:
 1) if: user has clicked any state && user then selects states which may or may not include the clicked state,
 	then: discard clicked (default)   
 
+	- Rebecca: Hmm... not sure if I messed this up or not.  Let me know and I'll troubleshoot.  6/26/2015
 	-this works 6/24/15 (notwithstanding that clicked doesn't get assigned on selected states)    
 	  
 TO DO:
 2) if: selectedClass doesn't exist, 
 	then: reset menu.
 
+	- Rebecca: I'm not sure about this one.  Would there be a reset button to trigger the removal of selectedClass?  6/26/2015
 	- Not programmed yet as of 6/24/15. Tie to an event handler?
 		
 	
