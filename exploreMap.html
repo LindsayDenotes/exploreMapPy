@@ -10,6 +10,11 @@
     fill-opacity: 0.5;
     }
 
+    .selectedClass polygon {
+    fill: #ffffff;
+    fill-opacity: 0.01;
+    }
+
     dl.agency {
     font-family: verdana;
     font-size: 130%;
@@ -18,11 +23,6 @@
 
     dd.productTypes {
     padding-bottom:1%;
-    }
-
-    .selectedClass {
-    <!--fill: white; 5/2/15 not working. g's and polygon's already have a fill attribute. try a def attribute and a use attribute. see SVG bookmarks folder
-    https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stop-color-->
     }
 
     .menu-container {
@@ -38,7 +38,7 @@
    <!--<tr style="vertical-align:top">-->
    <!--<td width="auto">-->
 
-    <div class="svg-container">
+    <div class="svg-container"><!--5/7/15 make this the parent that returns the children?-->
         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" xml:space="preserve" display="inline-table">
              <!--units are px as defined in x and y vars. the view box starts at coordinates 0,0 and is (removed) 205.7 or 411.1 wide and 130.1 high (removed) viewBox="0 0"-->
                 <g id="Header">
@@ -63,7 +63,7 @@
                             <text id="NameRegion48" transform="matrix(1.0127 0 0 1 104.2989 83.3607)" style="stroke:#000000;stroke-width:0.1;stroke-miterlimit:10; font-family:'Verdana'; font-size:2.5;">OK</text>
                     </g>
                     <g id="ga">
-                        <polygon id="GA_Outline" style="fill:#518dc1;stroke:#1A171B;stroke-width:0.2;stroke-miterlimit:10;" points="149.994,83.51
+                        <polygon id="GA_Outline" style="fill:#518dc1;stroke:#1A171B;stroke-width:0.2;stroke-miterlimit:10;" fill=" " points="149.994,83.51
                             152.758,93.298 153.015,93.553 153.237,94.244 153.384,94.535 153.716,94.754 153.973,95.045 153.826,95.445 154.157,95.845
                             154.121,95.991 153.752,96.501 153.752,97.119 153.531,97.665 153.568,98.501 154.047,99.52 153.973,100.722 154.452,101.449
                             154.526,101.74 154.563,101.958 154.931,102.322 154.895,102.614 155.153,102.977 165.912,102.322 166.059,102.831
@@ -524,9 +524,7 @@
                             176.081,59.095 175.676,58.258 175.492,58.222 175.344,57.822 175.05,57.931 174.755,57.931 174.497,57.785 173.318,58.185
                             173.207,58.513 172.728,58.658 172.286,58.55 172.102,58.331 171.881,58.804 171.623,58.913 171.365,59.35 171.034,59.423
                             170.296,60.259 170.075,60.368 169.891,60.696 169.338,58.294 165.691,58.986 				"/>
-                        <g id="NameRegion19">
-
-                                <text transform="matrix(1.0127 0 0 1 162.8902 65.5173)" style="stroke:#000000;stroke-width:0.1;stroke-miterlimit:10; font-family:'Verdana'; font-size:2.5;">WV</text>
+                            <text id="NameRegion19" transform="matrix(1.0127 0 0 1 162.8902 65.5173)" style="stroke:#000000;stroke-width:0.1;stroke-miterlimit:10; font-family:'Verdana'; font-size:2.5;">WV</text>
                         </g>
                     </g>
                     <g id="oh">
@@ -808,7 +806,7 @@
                     </g>
 
                     <g id="hi">
-                        <path id="HI_x5F_Outline" style="fill:#4778a4;stroke:#000000;stroke-width:0.1;" d="M51.898,112.986l0.434-0.796l0.506-0.072
+                        <path id="HI_x5F_Outline" style="fill:#4778a4;stroke:#000000;stroke-width:0.1;" fill="#4778a4" d="M51.898,112.986l0.434-0.796l0.506-0.072
                     l0.073,0.181l-0.47,0.687H51.898z M54.177,112.154l1.375,0.579l0.47-0.072l0.362-0.869l-0.145-0.76l-0.941-0.109l-0.905,0.398
                     L54.177,112.154z M61.052,114.397l0.832,1.23l0.543-0.072l0.253-0.108l0.326,0.289l0.832-0.036l0.217-0.325l-0.651-0.398
                     l-0.434-0.832l-0.47-0.796l-1.303,0.651L61.052,114.397z M65.574,116.387l0.289-0.434l1.049,0.217l0.145-0.109l1.375,0.145
@@ -888,7 +886,7 @@
             <option id=PCC JS> Portland Cement Concrete Joint Sealants (PCC JS) </option>
             <option id=PCMS-FAP> Portable Changeable Message Signs & Flashing Arrow Panels (PCMS-FAP) </option>
             <option id=PCO> Polymer Concrete Overlays (PCO) </option>
-            <option id=SSC-CCS> Protective Coatings: Structural Steel Coatings & Concrete Coating Systems (SSC-CCS) </option>
+            <option id=SSC-CCS> Structural Steel Coatings & Concrete Coating Systems (SSC-CCS) </option>
             <option id=PPP> Polypropylene Pipe (PPP) </option>
             <option id=PVC> Polyvinyl Chloride Drainage Pipe (PVC) </option>
             <option id=RPM-SRPM> Raised Pavement Markers & Snowplowable Raised Pavement Markers (RPM-SRPM) </option>
@@ -910,10 +908,21 @@
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="exploreMap.js"></script>
-<script src="productMenu.js"></script>
+<!--script src="productMenu.js"></script-->
 
 </body>
 </html>
+
+<!--fill: white!important;-->
+
+<!--fill: #000000;-->
+<!--}-->
+<!--fill-opacity: 0.5;-->
+<!--stroke-width=0.5!important;-->
+}
+<!--.clicked text {-->
+<!--stroke-width:5.0;-->
+<!--}-->
 
 <!--vertical-align:top;-->
 <!--float: left;-->
