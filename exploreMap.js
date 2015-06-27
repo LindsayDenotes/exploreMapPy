@@ -14,6 +14,7 @@ $( document ).ready( function(){
 
         //WHEN USER SELECTS FROM THE DROP DOWN MENU - ATTRIBUTES FUNCTION. Always discard existing clicked class first.
             $(".clicked").attr("class","");
+            $("#txtDOT").show();
             $(".selectedClass").attr("class", function(index, classNames) {
                 // if the selectedClass elements already have other existing classes. ¸
                 if (typeof classNames != "undefined") {
@@ -26,17 +27,15 @@ $( document ).ready( function(){
                 }
             });//closing for $(".selectedClass").attr("class", function(index, classNames) {
 
-            //HIDE TEXT BOX - 6/24 look again at failed code in discardClicked1st...
-            $(this).attr("class", function(index,classNames){
+            //WHEN USER SELECTS FROM THE DROP DOWN MENU - HIDE TEXT BOX - 6/24 look again at failed code in discardClicked1st...
+            $("svg").attr("class", function(index,classNames){
                 if (typeof classNames != "undefined") {
-//                if ( $("g").hasClass("clicked") ) {
                 console.log("clicked exists so show txtDOT");//logged 8 (8 out of 51 state DOTs)
                 $("#txtDOT").show();//but unfortunately, the text stays off even after click class returns!
-//                });
                 }
                 else {
-                console.log("clicked doesn't exist so hide txtDOT");//43 (43 out of 51 state DOTs)
-                $("txtDOT").hide();
+                console.log("clicked doesn't exist so hide txtDOT");//only works before any state is clicked
+                $("#txtDOT").hide();
                 }
             });
 
@@ -46,7 +45,7 @@ $( document ).ready( function(){
         //      console.log( typeof selected );//string
 
             $.each ( data, function( key, val ){//parse JSON. Note: I wish I could wrap lines 48-60 into an IIFE (Immediately Invoked Function Expression) so I could access the productTypes array in my on click event handler without rewriting these lines. But I'm too retarded or sleepy to figure it out now.
-                console.log ( key, val.contacts );//key is "nh" or "fl", val is whats inside json's { }s
+//                console.log ( key, val.contacts );//key is "nh" or "fl", val is whats inside json's { }s
 
         //      var jsonKey = ( key );
         //          console.log ( "this is a state key: " + jsonKey );
@@ -80,13 +79,13 @@ $( document ).ready( function(){
         //                      console.log( "element found" );
 
                             var productKey = ( key );
-                                console.log ( "productKey " + productKey );//presence of a productKey means that corresponding state shapes (#g's) should get styled.
+//                                console.log ( "productKey " + productKey );//presence of a productKey means that corresponding state shapes (#g's) should get styled.
 
                             var $productStates =  $( "g" )//the $ in the var name indicates the var contains jQuery object(s) or is a jQuery collection
 
                                   .filter( function( index ) {//within the filter function, this refers to each DOM element in turn.
                                     if ( $( this ).attr( "id" ) == productKey ){//if the id of a g el matches a productKey
-                                        console.log ( this.id );//GOOD. logged or, mn, etc., i.e., the states that have the product type which user selected in the drop down menu
+//                                        console.log ( this.id );//GOOD. logged or, mn, etc., i.e., the states that have the product type which user selected in the drop down menu
                                         return ( this.id );//running slowly. I think each created object has its own function. constructor method of object creation inefficient.
                                     }
                                   })
@@ -152,7 +151,7 @@ $( document ).ready( function(){
 
         //WHEN USER CLICKS ON A STATE
         $("g").on( "click", function ( e ) {
-
+            $("#txtDOT").show();
         //WHEN USER CLICKS ON A STATE - ATTRIBUTES FUNCTION. Always discard existing clicked class first
         //$( this ).off( "click" );//this line only lets user click on a state one time. try some other method.
         $(this).attr("class", function(index, classNames) {
@@ -200,28 +199,28 @@ $( document ).ready( function(){
 
                             var productTypes = [];//is an array
                             productTypes = ( obj.productTypes );//make the array into an object
-                            console.log( productTypes );
+//                            console.log( productTypes );
 //                            console.log( typeof productTypes );//logged object
 
                             var productTypesText = " ";//is string
                             productTypesText += productTypes;//the addition assignment operator adds the value of the right operand to a variable and assigns the result to the variable.
                             productTypesText = productTypesText.replace( /,/g , "<br/>" );//g stands for global, replace all matches, not just the first one. makes it a regular expression
-                            console.log( productTypesText );
+//                            console.log( productTypesText );
 //                            console.log ( typeof productTypesText );//logged string
 
                             var firstLast = ( obj.firstLast );
-                            console.log( firstLast );//empty string for 5 non-participating states
+//                            console.log( firstLast );//empty string for 5 non-participating states
 
                             if ( firstLast !== " " ){//if firstLast obj is not an empty string, then...
 
                             var title = ( obj.title );
-                            console.log ( title );//empty string for 5 non-participating states
+//                            console.log ( title );//empty string for 5 non-participating states
 
                             var phone = ( obj.phone );
-                            console.log ( phone );//empty string for 5 non-participating states
+//                            console.log ( phone );//empty string for 5 non-participating states
 
                             var email = ( obj.email );
-                            console.log ( email );//empty string for 5 non-participating states
+//                            console.log ( email );//empty string for 5 non-participating states
 
                             //CONCATENATE TEXT OBJs WITH HTML - FINISH
                             theText += "<dt class='contacts'>" + firstLast + ", " + title + ", " + phone + ", " + email + "</dt>";//<dt> tag defines a term/name in the <dl> description list
