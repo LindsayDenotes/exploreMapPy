@@ -1,7 +1,10 @@
-/*problems with this version: 6/23/15
-clicked not assigning when a selected state is clicked - this is semi-important aspect of the condition I have yet to code: keep selectedClass if the clicked state is one of the selectedClass states. Now, clicked attr isn't showing up within selected group. Why this isn't dire: text under map indicates which state was last clicked.
-To do: whenever selectedClass discards clicked, remove text under map; i.e., if clicked class doesn't exist, remove, hide, or detach txtDOT which is associated with the clicked state.
-To do: whenever clicked discards selectedClass, reset drop down menu to default value; i.e., if selectedClass doesn't exist, reset menu.
+/*
+Brown's 6/28/15
+What's great about this version:
+-if clicked class doesn't exist, hide txtDOT works
+-if selectedClass doesn't exist, reset drop down menu to default value works
+Problems with this version:
+-clicked not assigning when a selected state is clicked - this is semi-important aspect of the condition I have yet to code: keep selectedClass if the clicked state is one of the selectedClass states. Now, clicked attr isn't showing up within selected group. Why this isn't dire: text under map indicates which state was last clicked.
 */
 
 $( document ).ready( function(){
@@ -12,30 +15,26 @@ $( document ).ready( function(){
         //WHEN USER SELECTS FROM DROP DOWN MENU
         $( "#productOptions" ).on( "change", function(e) {
 
-        //WHEN USER SELECTS FROM THE DROP DOWN MENU - ATTRIBUTES FUNCTION. Always discard existing clicked class first.
-            $(".clicked").attr("class","");
-            $("#txtDOT").show();
-            $(".selectedClass").attr("class", function(index, classNames) {
-                // if the selectedClass elements already have other existing classes. ¸
-                if (typeof classNames != "undefined") {
-                    // return the list of class names and just remove the .selectedClass
-                    return classNames.replace("selectedClass", "");
-                }
-                else {
-                    // otherwise, if the selectedClass elements don't already have other classes, i.e., the clicked class, remove the selected class
-                    $(".selectedClass").attr("class", "");//Not sure if working 6/24/15. attr takes 2 args so this is ok. wipes out all (or just selectedClass) classes on the element.
-                }
-            });//closing for $(".selectedClass").attr("class", function(index, classNames) {
+        //WHEN USER SELECTS FROM THE DROP DOWN MENU - ATTRIBUTES FUNCTION.
+            $( ".clicked" ).attr( "class", "" );//always discard existing clicked class first
+//            $( ".selectedClass" ).attr( "class", function( index, classNames ) {//REDUNDANT. 6/28/15
+//                if ( typeof classNames != "undefined" ) {//if the selectedClass elements already have other existing classes, i.e., the clicked class...
+//                    return classNames.replace( "selectedClass", "" );//return the list of class names and remove just the selectedClass
+//                }
+//                else {//else, if the selectedClass elements don't already have other classes, i.e., the clicked class...
+                    $( ".selectedClass" ).attr( "class", "" );//remove the selected class. attr takes 2 args so this is ok. wipes out all (or just selectedClass) class instances on the elements.
+//                }
+//            });//closing for $( ".selectedClass" ).attr( "class", function( index, classNames ) {
 
-            //WHEN USER SELECTS FROM THE DROP DOWN MENU - HIDE TEXT BOX - 6/24 look again at failed code in discardClicked1st...
-            $("svg").attr("class", function(index,classNames){
-                if (typeof classNames != "undefined") {
-                console.log("clicked exists so show txtDOT");//logged 8 (8 out of 51 state DOTs)
-                $("#txtDOT").show();//but unfortunately, the text stays off even after click class returns!
+            //WHEN USER SELECTS FROM THE DROP DOWN MENU - HIDE TEXT BOX FUNCTION
+            $( "svg" ).attr( "class", function( index, classNames ){
+                if ( typeof classNames != "undefined" ) {//if the SVG has the clicked class instance somewhere on it...
+                    console.log( "clicked exists so show txtDOT" );//clicked not getting assigned to selected states so this isn't getting logged 6/28/15 See Deprey's code
+                    $( "#txtDOT" ).show();//show the text box
                 }
                 else {
-                console.log("clicked doesn't exist so hide txtDOT");//only works before any state is clicked
-                $("#txtDOT").hide();
+                    console.log( "clicked doesn't exist so hide txtDOT" );
+                    $( "#txtDOT" ).hide();//hide the text box; comes back when clicked class comes back
                 }
             });
 
@@ -72,7 +71,7 @@ $( document ).ready( function(){
         //                          console.log ( selected );//my var, option the user selected from drop down menu
         //                          console.log ( typeof selected );//string
 
-                            if (selected.indexOf( entry ) == -1 ) {//if element doesn't exist.//returns either the index/number of the start point for the string or a -1 meaning it isn’t there.
+                            if ( selected.indexOf( entry ) == -1 ) {//if element doesn't exist.//returns either the index/number of the start point for the string or a -1 meaning it isn’t there.
         //                      console.log( "element doesn't exist" );
                             }
                             else {//else, if element exists
@@ -93,7 +92,7 @@ $( document ).ready( function(){
 //                            console.log ( typeof $productStates );//object; i.e., a jQuery collection of matched elements
 
                             //$productStates.attr( "class", "selectedClass" );//add selectedClass to the matched elements
-                            $productStates.attr("class", function(index, classNames) {
+                            $productStates.attr( "class", function( index, classNames ) {
 //                                // if there are existing classes
 //                                if (typeof classNames != "undefined") {
 //                                    // return the existing classes and add selectedClass to the end of the list
@@ -101,7 +100,7 @@ $( document ).ready( function(){
 //                                }
 //                                else {
                                     // otherwise, just add selectedClass
-                                    $productStates.attr("class", "selectedClass");
+                                    $productStates.attr( "class", "selectedClass" );
 //                                }
 
                             });//closing for $productStates.attr( "class", function( index, classNames ) {
@@ -115,136 +114,106 @@ $( document ).ready( function(){
 
             });//closing for $.each ( data, function( key, val ){
 
-        //      Stop Propagation Event Handler Arguments - commented out
-        //        console.log( "user clicked " + this.id );
-        //            if(!event.isPropagationStopped() &&
-        //            if(!event.isImmediatePropagationStopped() &&
-        //            if(!event.isDefaultPrevented())
-        //            {   showEventMsg.call(this,{eventType: event.type});
-        //                event.stopPropagation();
-        //            }
-        //      Show Messages Function - commented out. works as of 2:41 on 6/15/15
-        //        $(function (){
-        //            var showEventMessage = function(options){
-        //                options=$.extend(//defining options obj
-        //                {
-        //                eventType: "on",
-        //                eventTarget: this,
-        //                suffix: "<br/>"
-        //                },options);
-        //                var message = options.eventType + ": " +
-        //                                (options.eventTarget.nodeName || "unknown") +
-        //                                options.suffix;
-        //                $("#Messages").append(message);
-        //             };
-        //
-        //        $( ".eventable" )
-        //            .on( "click change",(function(event){
-        //                showEventMessage.call(this);
-        //                defaultOff.call();
-        //            }))
-        //            console.log("write your exceptions functions chain here");
-        //        });
-        //       });
-
-               });//closing for $( "#productOptions" ).on( "change", function (e){
+        });//closing for $( "#productOptions" ).on( "change", function (e){
 
         //WHEN USER CLICKS ON A STATE
-        $("g").on( "click", function ( e ) {
-            $("#txtDOT").show();
-        //WHEN USER CLICKS ON A STATE - ATTRIBUTES FUNCTION. Always discard existing clicked class first
-        //$( this ).off( "click" );//this line only lets user click on a state one time. try some other method.
-        $(this).attr("class", function(index, classNames) {
-            if ( typeof classNames != "undefined" ) { // if there are existing classes
-//                return classNames + " clicked";//comment this line out and clicked won't accrue on selected states
+        $( "g" ).on( "click", function ( e ) {
+            $( "#txtDOT" ).show();
 
-                //function that removes previously clicked class instances from sibling states. gets the ~returned clicked~ class attribute and checks for existing classes on the "g" element
+        //WHEN USER CLICKS ON A STATE - ATTRIBUTES FUNCTION. Always discard existing clicked class first.
+        //$( this ).off( "click" );//this line only lets user click on a state one time. try some other method.
+        $( this ).attr( "class", function( index, classNames ) {
+            //IF USER CLICKS ON A STATE THAT IS ONE OF THE SELECTED STATES
+            if ( typeof classNames != "undefined" ) { //if there are existing classes on the clicked state
+//                return classNames + " clicked";//comment this line out and clicked won't get assigned to more than one of the selected states
+
+                //function that removes existing clicked class instances from sibling states. gets their class attribute and checks for existing classes on the "g" element
                 $(this).siblings("g").attr("class", function(index, classNames) {
-                    if (typeof classNames != "undefined") {// if there are existing classes on the siblings
-                        return classNames.replace("clicked", "");// return the existing classes and remove just the clicked class
+                    if (typeof classNames != "undefined") {//if there are existing classes on the siblings, i.e., selectedClass
+                        return classNames.replace("clicked", "");//return the existing classes, i.e., selectedClass, and remove just the clicked class
                     }
-                    else {// if there are not existing classes on the siblings
+                    else {// if there are not existing classes, ie, the selectedClass, on the siblings
                         return classNames;
                     }
                  });
             }
-
-            else {
-            // if typeof classNames is undefined, meaning there aren't any existing classes, add the class clicked outright to the selected g element and remove the class from its siblings
-            $(this).attr("class", "clicked").siblings("g").removeAttr("class");//removeAttr only takes one arg, says Reed
+            //IF USER CLICKS ON A STATE THAT IS NOT ONE OF THE SELECTED STATES
+            else {//else, if typeof classNames is undefined, meaning there aren't any existing classes
+                $( this ).attr( "class", "clicked" ).siblings( "g" ).removeAttr( "class" );//add the class clicked outright to the selected g element and remove the class from its siblings//removeAttr only takes one arg, says Reed
+                $( "#productOptions" ).find( "option:first" ).attr( "selected", "selected" );//RESET DROP DOWN MENU TO DEFAULT VALUE
             }
-        });//closing for $(this).attr("class", function(index, classNames) {
+        });//closing for $( this ).attr( "class", function( index, classNames ) {
 
-            //PARSE DATA, CREATE TEXT OBJECTS
-            clickedState = ( this.id );
+        //WHEN USER CLICKS ON A STATE - PARSE DATA, CREATE TEXT OBJECTS
+        clickedState = ( this.id );
 //          console.log( "so var clickedState is " + clickedState );
 
-            $.each ( data, function( key, val ){
+        $.each( data, function( key, val ){
 //                console.log ( key, val );//key is "nh" or "fl", val is whats inside json's { }s
 
-                var jsonKey = ( key );
+            var jsonKey = ( key );
 //                console.log ( "this is a state key: " + jsonKey );
 
-                if ( jsonKey == clickedState ){
+            if ( jsonKey == clickedState ){
 //                      console.log( "clickedState ID " + clickedState + " MATCHES key: " + jsonKey + ". Return that val." );
 
-                      var contacts = [];
-                      contacts = ( val.contacts );
+                  var contacts = [];
+                  contacts = ( val.contacts );
 //                      console.log ( "Referenced by val.contacts, contacts are " + contacts );
 
-                      //CONCATENATE TEXT OBJs WITH HTML - START
-                      var theText = "<dl class ='agency " + key + "'>" + val.agency + "</dl>";//<dl> tag defines a description list
+                  //CONCATENATE TEXT OBJECTS WITH HTML - START
+                  var theText = "<dl class ='agency " + key + "'>" + val.agency + "</dl>";//<dl> tag defines a description list
 
-                        contacts.forEach( function( obj ){//The forEach() method executes a provided function once per array element.
+                    contacts.forEach( function( obj ){//The forEach() method executes a provided function once per array element.
 
-                            var productTypes = [];//is an array
-                            productTypes = ( obj.productTypes );//make the array into an object
+                        var productTypes = [];//is an array
+                        productTypes = ( obj.productTypes );//make the array into an object
 //                            console.log( productTypes );
 //                            console.log( typeof productTypes );//logged object
 
-                            var productTypesText = " ";//is string
-                            productTypesText += productTypes;//the addition assignment operator adds the value of the right operand to a variable and assigns the result to the variable.
-                            productTypesText = productTypesText.replace( /,/g , "<br/>" );//g stands for global, replace all matches, not just the first one. makes it a regular expression
+                        var productTypesText = " ";//is string
+                        productTypesText += productTypes;//the addition assignment operator adds the value of the right operand to a variable and assigns the result to the variable.
+                        productTypesText = productTypesText.replace( /,/g , "<br/>" );//g stands for global, replace all matches, not just the first one. makes it a regular expression
 //                            console.log( productTypesText );
 //                            console.log ( typeof productTypesText );//logged string
 
-                            var firstLast = ( obj.firstLast );
+                        var firstLast = ( obj.firstLast );
 //                            console.log( firstLast );//empty string for 5 non-participating states
 
-                            if ( firstLast !== " " ){//if firstLast obj is not an empty string, then...
+                        if ( firstLast !== " " ){//if firstLast obj is not an empty string, then...
 
-                            var title = ( obj.title );
+                        var title = ( obj.title );
 //                            console.log ( title );//empty string for 5 non-participating states
 
-                            var phone = ( obj.phone );
+                        var phone = ( obj.phone );
 //                            console.log ( phone );//empty string for 5 non-participating states
 
-                            var email = ( obj.email );
+                        var email = ( obj.email );
 //                            console.log ( email );//empty string for 5 non-participating states
 
-                            //CONCATENATE TEXT OBJs WITH HTML - FINISH
-                            theText += "<dt class='contacts'>" + firstLast + ", " + title + ", " + phone + ", " + email + "</dt>";//<dt> tag defines a term/name in the <dl> description list
-                            theText += "<dd class='productTypes'>" + productTypesText + "</dd>";//<dd> tag describes each <dt> term/name
-                            }
+                        //CONCATENATE TEXT OBJs WITH HTML - FINISH
+                        theText += "<dt class='contacts'>" + firstLast + ", " + title + ", " + phone + ", " + email + "</dt>";//<dt> tag defines a term/name in the <dl> description list
+                        theText += "<dd class='productTypes'>" + productTypesText + "</dd>";//<dd> tag describes each <dt> term/name
+                        }
 
-                            else {//else, if firstLast obj is an empty string, then...
+                        else {//else, if firstLast obj is an empty string, then...
 
-                            var theMessage = ( obj.productTypes );//place a message where the productTypes obj would have been
-                                console.log( theMessage );
-                            theText += "<dt class='contacts'>" + theMessage + "</dt>";//yes, I want the message I wrote into the productTypes cell in Excel to be displayed in the contacts class.
-                            }
+                        var theMessage = ( obj.productTypes );//place a message where the productTypes obj would have been
+                            console.log( theMessage );
+                        theText += "<dt class='contacts'>" + theMessage + "</dt>";//yes, I want the message I wrote into the productTypes cell in Excel to be displayed in the contacts class.
+                        }
 
-                        });
+                    });
 
-                      $( "#txtDOT" ).html( theText );
+                  $( "#txtDOT" ).html( theText );
 
-                }
+            }
 
-                else {//else, if jsonKey does not match the clickedState
-                //console.log( "clickedState ID " + clickedState + " does NOT match key: " + jsonKey + " , so don't return that val." )
-                }
+            else {//else, if jsonKey does not match the clickedState
+            //console.log( "clickedState ID " + clickedState + " does NOT match key: " + jsonKey + " , so don't return that val." )
+            }
 
-            });//closing for $.each(data,function(key,val){
+            });//closing for $.each( data, function( key,val ){
 
         });//closing for $( "g" )on( "click", function(e){
 
