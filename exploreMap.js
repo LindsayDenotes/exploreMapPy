@@ -4,32 +4,25 @@ What's great about this version:
 -if clicked class doesn't exist, hide txtDOT works
 -if selectedClass doesn't exist, reset drop down menu to default value works
 Problems with this version:
--clicked not assigning when a selected state is clicked - this is semi-important aspect of the condition I have yet to code: keep selectedClass if the clicked state is one of the selectedClass states. Now, clicked attr isn't showing up within selected group. Why this isn't dire: text under map indicates which state was last clicked.
+-clicked not assigning when a selected state is clicked - see Deprey's code. this is semi-important aspect of the condition I have yet to code: keep selectedClass if the clicked state is one of the selectedClass states. Now, clicked attr isn't showing up within selected group. Why this isn't dire: text under map indicates which state was last clicked.
 */
 
 $( document ).ready( function(){
     var json = {};
       $.getJSON( "stateInfoList.json", function( data ) {
-//        console.log ( data );//whole JSON object loads on document ready
+        //console.log ( data );//whole JSON object loads on document ready
 
         //WHEN USER SELECTS FROM DROP DOWN MENU
         $( "#productOptions" ).on( "change", function(e) {
 
-        //WHEN USER SELECTS FROM THE DROP DOWN MENU - ATTRIBUTES FUNCTION.
+        //WHEN USER SELECTS FROM THE DROP DOWN MENU - ATTRIBUTES
             $( ".clicked" ).attr( "class", "" );//always discard existing clicked class first
-//            $( ".selectedClass" ).attr( "class", function( index, classNames ) {//REDUNDANT. 6/28/15
-//                if ( typeof classNames != "undefined" ) {//if the selectedClass elements already have other existing classes, i.e., the clicked class...
-//                    return classNames.replace( "selectedClass", "" );//return the list of class names and remove just the selectedClass
-//                }
-//                else {//else, if the selectedClass elements don't already have other classes, i.e., the clicked class...
-                    $( ".selectedClass" ).attr( "class", "" );//remove the selected class. attr takes 2 args so this is ok. wipes out all (or just selectedClass) class instances on the elements.
-//                }
-//            });//closing for $( ".selectedClass" ).attr( "class", function( index, classNames ) {
+            $( ".selectedClass" ).attr( "class", "" );//remove the selected class. attr takes 2 args so this is ok. wipes out all (or just selectedClass) class instances on the elements.
 
             //WHEN USER SELECTS FROM THE DROP DOWN MENU - HIDE TEXT BOX FUNCTION
             $( "svg" ).attr( "class", function( index, classNames ){
                 if ( typeof classNames != "undefined" ) {//if the SVG has the clicked class instance somewhere on it...
-                    console.log( "clicked exists so show txtDOT" );//clicked not getting assigned to selected states so this isn't getting logged 6/28/15 See Deprey's code
+                    console.log( "clicked exists so show txtDOT" );//BUT clicked not getting assigned to selected states so this isn't getting logged 6/28/15 See Deprey's code
                     $( "#txtDOT" ).show();//show the text box
                 }
                 else {
@@ -43,8 +36,8 @@ $( document ).ready( function(){
               console.log( "user selected " + selected );
         //      console.log( typeof selected );//string
 
-            $.each ( data, function( key, val ){//parse JSON. Note: I wish I could wrap lines 48-60 into an IIFE (Immediately Invoked Function Expression) so I could access the productTypes array in my on click event handler without rewriting these lines. But I'm too retarded or sleepy to figure it out now.
-//                console.log ( key, val.contacts );//key is "nh" or "fl", val is whats inside json's { }s
+            $.each ( data, function( key, val ){//parse JSON. Note: I wish I could wrap lines 45-51 into an IIFE (Immediately Invoked Function Expression) so I could access the productTypes array in my on click event handler without rewriting these lines.
+        //        console.log ( key, val.contacts );//key is "nh" or "fl", val is whats inside json's { }s
 
         //      var jsonKey = ( key );
         //          console.log ( "this is a state key: " + jsonKey );
@@ -71,18 +64,17 @@ $( document ).ready( function(){
         //                          console.log ( selected );//my var, option the user selected from drop down menu
         //                          console.log ( typeof selected );//string
 
-                            if ( selected.indexOf( entry ) == -1 ) {//if element doesn't exist.//returns either the index/number of the start point for the string or a -1 meaning it isn’t there.
+                            if ( selected.indexOf( entry ) == -1 ) {//if element doesn't exist...//returns either the index/number of the start point for the string or a -1 meaning it isn’t there.
         //                      console.log( "element doesn't exist" );
                             }
-                            else {//else, if element exists
+                            else {//else, if element exists...
         //                      console.log( "element found" );
 
                             var productKey = ( key );
 //                                console.log ( "productKey " + productKey );//presence of a productKey means that corresponding state shapes (#g's) should get styled.
 
                             var $productStates =  $( "g" )//the $ in the var name indicates the var contains jQuery object(s) or is a jQuery collection
-
-                                  .filter( function( index ) {//within the filter function, this refers to each DOM element in turn.
+                                .filter( function( index ) {//within the filter function, this refers to each DOM element in turn.
                                     if ( $( this ).attr( "id" ) == productKey ){//if the id of a g el matches a productKey
 //                                        console.log ( this.id );//GOOD. logged or, mn, etc., i.e., the states that have the product type which user selected in the drop down menu
                                         return ( this.id );//running slowly. I think each created object has its own function. constructor method of object creation inefficient.
@@ -91,24 +83,11 @@ $( document ).ready( function(){
 //                            console.log ( $productStates );
 //                            console.log ( typeof $productStates );//object; i.e., a jQuery collection of matched elements
 
-                            //$productStates.attr( "class", "selectedClass" );//add selectedClass to the matched elements
-                            $productStates.attr( "class", function( index, classNames ) {
-//                                // if there are existing classes
-//                                if (typeof classNames != "undefined") {
-//                                    // return the existing classes and add selectedClass to the end of the list
-//                                    return classNames + " selectedClass";
-//                                }
-//                                else {
-                                    // otherwise, just add selectedClass
-                                    $productStates.attr( "class", "selectedClass" );
-//                                }
-
-                            });//closing for $productStates.attr( "class", function( index, classNames ) {
+                            $productStates.attr( "class", "selectedClass" );//add selectedClass to the matched elements
 
                             }//closing for else {//else, if element exists
 
                         });//closing for productTypes.forEach( function( entry ) { //iterates over each item in productTypes and make obj out of each match
-
 
                     });//closing for contacts.forEach( function( obj ){
 
@@ -121,27 +100,26 @@ $( document ).ready( function(){
             $( "#txtDOT" ).show();
 
         //WHEN USER CLICKS ON A STATE - ATTRIBUTES FUNCTION. Always discard existing clicked class first.
-        //$( this ).off( "click" );//this line only lets user click on a state one time. try some other method.
         $( this ).attr( "class", function( index, classNames ) {
+
             //IF USER CLICKS ON A STATE THAT IS ONE OF THE SELECTED STATES
-            if ( typeof classNames != "undefined" ) { //if there are existing classes on the clicked state
+            if ( typeof classNames != "undefined" ) {//if there are existing classes, i.e., selectedClass, already on the clicked state, then...
 //                return classNames + " clicked";//comment this line out and clicked won't get assigned to more than one of the selected states
 
-                //function that removes existing clicked class instances from sibling states. gets their class attribute and checks for existing classes on the "g" element
-                $(this).siblings("g").attr("class", function(index, classNames) {
-                    if (typeof classNames != "undefined") {//if there are existing classes on the siblings, i.e., selectedClass
-                        return classNames.replace("clicked", "");//return the existing classes, i.e., selectedClass, and remove just the clicked class
-                    }
-                    else {// if there are not existing classes, ie, the selectedClass, on the siblings
-                        return classNames;
+                //DISCARD CLICKED, KEEP SELECTEDCLASS ON SIBLINGS FUNCTION
+                $( this ).siblings( "g" ).attr( "class", function( index, classNames ) {//gets their class attribute and checks for existing classes on them
+                    if ( typeof classNames != "undefined" ) {//if there are existing classes, i.e., selectedClass, on the siblings, then...
+                        return classNames.replace( "clicked", "");//return the existing classes, i.e., selectedClass, and remove just the clicked class
                     }
                  });
             }
-            //IF USER CLICKS ON A STATE THAT IS NOT ONE OF THE SELECTED STATES
-            else {//else, if typeof classNames is undefined, meaning there aren't any existing classes
+
+            //ELSE, IF USER CLICKS ON A STATE THAT IS NOT ONE OF THE SELECTED STATES
+            else {//else, if typeof classNames is undefined, meaning there aren't any existing classes, then...
                 $( this ).attr( "class", "clicked" ).siblings( "g" ).removeAttr( "class" );//add the class clicked outright to the selected g element and remove the class from its siblings//removeAttr only takes one arg, says Reed
                 $( "#productOptions" ).find( "option:first" ).attr( "selected", "selected" );//RESET DROP DOWN MENU TO DEFAULT VALUE
             }
+
         });//closing for $( this ).attr( "class", function( index, classNames ) {
 
         //WHEN USER CLICKS ON A STATE - PARSE DATA, CREATE TEXT OBJECTS
@@ -149,7 +127,7 @@ $( document ).ready( function(){
 //          console.log( "so var clickedState is " + clickedState );
 
         $.each( data, function( key, val ){
-//                console.log ( key, val );//key is "nh" or "fl", val is whats inside json's { }s
+//            console.log ( key, val );//key is "nh" or "fl", val is whats inside json's { }s
 
             var jsonKey = ( key );
 //                console.log ( "this is a state key: " + jsonKey );
@@ -191,7 +169,7 @@ $( document ).ready( function(){
                         var email = ( obj.email );
 //                            console.log ( email );//empty string for 5 non-participating states
 
-                        //CONCATENATE TEXT OBJs WITH HTML - FINISH
+                        //CONCATENATE TEXT OBJECTS WITH HTML - FINISH
                         theText += "<dt class='contacts'>" + firstLast + ", " + title + ", " + phone + ", " + email + "</dt>";//<dt> tag defines a term/name in the <dl> description list
                         theText += "<dd class='productTypes'>" + productTypesText + "</dd>";//<dd> tag describes each <dt> term/name
                         }
@@ -200,39 +178,18 @@ $( document ).ready( function(){
 
                         var theMessage = ( obj.productTypes );//place a message where the productTypes obj would have been
                             console.log( theMessage );
-                        theText += "<dt class='contacts'>" + theMessage + "</dt>";//yes, I want the message I wrote into the productTypes cell in Excel to be displayed in the contacts class.
+                        theText += "<dt class='contacts'>" + theMessage + "</dt>";//yes, I want the message I wrote into Excel's productTypes cell to be displayed in the contacts class.
                         }
 
                     });
 
                   $( "#txtDOT" ).html( theText );
-
             }
 
-            else {//else, if jsonKey does not match the clickedState
-            //console.log( "clickedState ID " + clickedState + " does NOT match key: " + jsonKey + " , so don't return that val." )
-            }
-
-            });//closing for $.each( data, function( key,val ){
+            });//closing for $.each( data, function( key, val ){
 
         });//closing for $( "g" )on( "click", function(e){
 
-
       });//closing for $.getJSON( "stateInfoList.json", function( data ){
 
-    //});//closing for var showEventMessage = function(options){
-
 });//closing for $(document).ready(function(){
-
-
-
-/* removed from lines 17-27
-if (typeof classNames != "undefined") {//if there are existing classes on the g elements
-            $(".selectedClass").attr("class","");//discard the existing selectedClass instances
-            return classNames + " selectedClass";//return the existing classes and add selectedClass to the end of the list
-        }
-        else {//else, if there are not existing classes on the g elements
-            $("selectedClass").attr("class", "selectedClass");//just add selectedClass
-        }
-
-*/
