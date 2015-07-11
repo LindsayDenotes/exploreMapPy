@@ -1,10 +1,8 @@
 /*
-Brown's 6/28/15
+Brown's 7/10/15
 What's great about this version:
 -if clicked class doesn't exist, hide txtDOT works
 -if selectedClass doesn't exist, reset drop down menu to default value works
-Problems with this version:
--clicked not assigning when a selected state is clicked - see Deprey's code. this is semi-important aspect of the condition I have yet to code: keep selectedClass if the clicked state is one of the selectedClass states. Now, clicked attr isn't showing up within selected group. Why this isn't dire: text under map indicates which state was last clicked.
 */
 
 $( document ).ready( function(){
@@ -12,17 +10,18 @@ $( document ).ready( function(){
       $.getJSON( "stateInfoList.json", function( data ) {
         //console.log ( data );//whole JSON object loads on document ready
 
-        //WHEN USER SELECTS FROM DROP DOWN MENU
+        //EVENT HANDLER FUNCTION (1 of 2): USER SELECTS FROM DROP DOWN MENU
         $( "#productOptions" ).on( "change", function(e) {
 
-        //WHEN USER SELECTS FROM THE DROP DOWN MENU - ATTRIBUTES
-            $( ".clicked" ).attr( "class", "" );//always discard existing clicked class first
-            $( ".selectedClass" ).attr( "class", "" );//remove the selected class. attr takes 2 args so this is ok. wipes out all (or just selectedClass) class instances on the elements.
+        //Attributes methods. Selectors are classes.
+            $( ".clicked" ).attr( "class", "" );//DEFAULT BEHAVIOR: discard existing clicked class on both event handlers
+            //************Rebecca's differs from mine in the line below 6-30-15. Hers is formatted as an if else statement which wasn't needed********************
+            $( ".selectedClass" ).attr( "class", "" );//discard the existing selected class.
 
-            //WHEN USER SELECTS FROM THE DROP DOWN MENU - HIDE TEXT BOX FUNCTION
-            $( "svg" ).attr( "class", function( index, classNames ){
-                if ( typeof classNames != "undefined" ) {//if the SVG has the clicked class instance somewhere on it...
-                    console.log( "clicked exists so show txtDOT" );//BUT clicked not getting assigned to selected states so this isn't getting logged 6/28/15 See Deprey's code
+        //Hide text box nested function
+            $( "g" ).attr( "class", function( index, classNames ){
+                if ( typeof classNames != "undefined" ) {//if any g has the clicked class instance on it...
+                    console.log( "clicked exists so show txtDOT" );
                     $( "#txtDOT" ).show();//show the text box
                 }
                 else {
@@ -31,7 +30,7 @@ $( document ).ready( function(){
                 }
             });
 
-            //THE DROP DOWN MENU TEXT OBJECT CREATION AND FILTER FUNCTIONALITY
+        //Text object creation and filter functionality for the drop down menu
             var selected = $( "#productOptions option:selected" ).text();
               console.log( "user selected " + selected );
         //      console.log( typeof selected );//string
@@ -44,25 +43,25 @@ $( document ).ready( function(){
 
                 var contacts = [];
                 contacts = ( val.contacts );
-        //          console.log ( "Referenced by val.contacts, contacts are " + contacts );//returns contacts are [object object]. So crack into those with a forEach loop
+        //          console.log ( "Referenced by val.contacts, contacts are " + contacts );//logs contacts are [object object]. So crack into those with a forEach loop.
 
                     contacts.forEach( function( obj ){
 
                         var productTypes = [];
                         productTypes = ( obj.productTypes );
-        //                      console.log( productTypes );//an array of strings. For Array objects, the toString method joins the array and returns one string containing each array element separated by commas.
-        //                      console.log( typeof productTypes );//object
+        //                    console.log( productTypes );//an array of strings. For Array objects, the toString method joins the array and returns one string containing each array element separated by commas.
+        //                    console.log( typeof productTypes );//object
 
                         if( Object.prototype.toString.call( productTypes ) === "[object Array]" ) {//test to make sure it is a true array, not array-like object. a prototype function.
         //                   console.log ( "Array" );
                         }
 
                         //Iterate over each item in array and make object out of match
-                        productTypes.forEach( function( entry ) { //replaced the every method - executed the provided callback function once for each element present in the array ONLY until it found one where callback returned a falsy value (a value that becomes false when converted to a Boolean). If such an element was found, the every method immediately returned false.
-        //                          console.log( entry );//entry is the element(s) from array
-        //                          console.log ( typeof entry );//string
-        //                          console.log ( selected );//my var, option the user selected from drop down menu
-        //                          console.log ( typeof selected );//string
+                        productTypes.forEach( function( entry ) { //.forEach replaced the .every method - executed the provided callback function once for each element present in the array ONLY until it found one where callback returned a falsy value (a value that becomes false when converted to a Boolean). If such an element was found, the every method immediately returned false.
+        //                    console.log( entry );//entry is the element(s) from array
+        //                    console.log ( typeof entry );//string
+        //                    console.log ( selected );//my var, option the user selected from drop down menu
+        //                    console.log ( typeof selected );//string
 
                             if ( selected.indexOf( entry ) == -1 ) {//if element doesn't exist...//returns either the index/number of the start point for the string or a -1 meaning it isn’t there.
         //                      console.log( "element doesn't exist" );
@@ -71,23 +70,24 @@ $( document ).ready( function(){
         //                      console.log( "element found" );
 
                             var productKey = ( key );
-//                                console.log ( "productKey " + productKey );//presence of a productKey means that corresponding state shapes (#g's) should get styled.
+        //                        console.log ( "productKey " + productKey );//presence of a productKey means that corresponding state shapes (#g's) should get styled via attr method.
 
-                            var $productStates =  $( "g" )//the $ in the var name indicates the var contains jQuery object(s) or is a jQuery collection
+                            //Block below defines the selected states group; i.e., the states that use the product type that the user selected from the drop down menu.
+                            var $productStates =  $( "g" )//the $ in the var name indicates the var contains jQuery object(s) or is a jQuery collection.
                                 .filter( function( index ) {//within the filter function, this refers to each DOM element in turn.
                                     if ( $( this ).attr( "id" ) == productKey ){//if the id of a g el matches a productKey
-//                                        console.log ( this.id );//GOOD. logged or, mn, etc., i.e., the states that have the product type which user selected in the drop down menu
+        //                                console.log ( this.id );//GOOD. logged or, mn, etc., i.e., the states that have the product type which user selected in the drop down menu
                                         return ( this.id );//running slowly. I think each created object has its own function. constructor method of object creation inefficient.
                                     }
                                   })
-//                            console.log ( $productStates );
-//                            console.log ( typeof $productStates );//object; i.e., a jQuery collection of matched elements
+        //                      console.log ( $productStates );
+        //                      console.log ( typeof $productStates );//object; i.e., a jQuery collection of matched elements
 
-                            $productStates.attr( "class", "selectedClass" );//add selectedClass to the matched elements
+                            $productStates.attr( "class", "selectedClass" );//add selectedClass attribute to the matched elements
 
-                            }//closing for else {//else, if element exists
+                            }//closing for else {//else, if element exists...
 
-                        });//closing for productTypes.forEach( function( entry ) { //iterates over each item in productTypes and make obj out of each match
+                        });//closing for productTypes.forEach( function( entry ) {
 
                     });//closing for contacts.forEach( function( obj ){
 
@@ -95,34 +95,40 @@ $( document ).ready( function(){
 
         });//closing for $( "#productOptions" ).on( "change", function (e){
 
-        //WHEN USER CLICKS ON A STATE
+
+        //EVENT HANDLER FUNCTION (2 of 2): USER CLICKS ON A STATE SHAPE
         $( "g" ).on( "click", function ( e ) {
             $( "#txtDOT" ).show();
 
-        //WHEN USER CLICKS ON A STATE - ATTRIBUTES FUNCTION. Always discard existing clicked class first.
+        //Attributes function
         $( this ).attr( "class", function( index, classNames ) {
 
-            //IF USER CLICKS ON A STATE THAT IS ONE OF THE SELECTED STATES
-            if ( typeof classNames != "undefined" ) {//if there are existing classes, i.e., selectedClass, already on the clicked state, then...
-//                return classNames + " clicked";//comment this line out and clicked won't get assigned to more than one of the selected states
-
-                //DISCARD CLICKED, KEEP SELECTEDCLASS ON SIBLINGS FUNCTION
+            //CONDITION: IF USER CLICKS ON A STATE THAT IS ONE OF THE SELECTED STATES
+            //*******Rebecca's code differs from mine in the line below, and the whole block below. see her code lines 174-182. my comments 6-30-15*********
+            if ( $( this ).attr( "class" )  == ( "selectedClass" ) ) {//If clicked state has selectedClass... I deleted a set of her parans.
+                $( ".clicked" ).attr( "class", "selectedClass" );//KEEP SELECTEDCLASS ON CLICKED STATE
+                return classNames + " clicked";//temporarily keep the two clicked class instances
+                //SIBLINGS FUNCTION.*****Rebecca commented out block below
                 $( this ).siblings( "g" ).attr( "class", function( index, classNames ) {//gets their class attribute and checks for existing classes on them
                     if ( typeof classNames != "undefined" ) {//if there are existing classes, i.e., selectedClass, on the siblings, then...
-                        return classNames.replace( "clicked", "");//return the existing classes, i.e., selectedClass, and remove just the clicked class
+                        return classNames.replace( "clicked", "");//DEFAULT BEHAVIOR: discard existing clicked class on both event handlers. this line returns both the selected and clicked classes, then discards just the clicked
                     }
-                 });
+                });//closing for $( this ).siblings( "g" ).attr( "class", function( index, classNames ) {
             }
 
-            //ELSE, IF USER CLICKS ON A STATE THAT IS NOT ONE OF THE SELECTED STATES
+            //CONDITION: ELSE, IF USER CLICKS ON A STATE THAT IS NOT ONE OF THE SELECTED STATES
             else {//else, if typeof classNames is undefined, meaning there aren't any existing classes, then...
-                $( this ).attr( "class", "clicked" ).siblings( "g" ).removeAttr( "class" );//add the class clicked outright to the selected g element and remove the class from its siblings//removeAttr only takes one arg, says Reed
+                console.log ("TRUE: else, if this clicked state's attr class does not == selectedClass");
+                $( this ).attr( "class", "clicked" ).siblings( "g" ).removeAttr( "class" );//add clicked to this. on siblings, DEFAULT BEHAVIOR: discard existing clicked class on both event handlers, discard existing selected class
+
+                //CONDITION: IF SELECTED CLASS DOESN'T EXIST (same condition as comment on line 119 but reworded to match pg 2 wording in EventHandlerConditionals.txt)
                 $( "#productOptions" ).find( "option:first" ).attr( "selected", "selected" );//RESET DROP DOWN MENU TO DEFAULT VALUE
             }
-
+//            }
         });//closing for $( this ).attr( "class", function( index, classNames ) {
 
-        //WHEN USER CLICKS ON A STATE - PARSE DATA, CREATE TEXT OBJECTS
+
+        //Data parsing and text object creation for text box below the map.
         clickedState = ( this.id );
 //          console.log( "so var clickedState is " + clickedState );
 
@@ -139,7 +145,7 @@ $( document ).ready( function(){
                   contacts = ( val.contacts );
 //                      console.log ( "Referenced by val.contacts, contacts are " + contacts );
 
-                  //CONCATENATE TEXT OBJECTS WITH HTML - START
+                  //text object creation
                   var theText = "<dl class ='agency " + key + "'>" + val.agency + "</dl>";//<dl> tag defines a description list
 
                     contacts.forEach( function( obj ){//The forEach() method executes a provided function once per array element.
@@ -169,7 +175,7 @@ $( document ).ready( function(){
                         var email = ( obj.email );
 //                            console.log ( email );//empty string for 5 non-participating states
 
-                        //CONCATENATE TEXT OBJECTS WITH HTML - FINISH
+                        //concatenate text objects
                         theText += "<dt class='contacts'>" + firstLast + ", " + title + ", " + phone + ", " + email + "</dt>";//<dt> tag defines a term/name in the <dl> description list
                         theText += "<dd class='productTypes'>" + productTypesText + "</dd>";//<dd> tag describes each <dt> term/name
                         }
