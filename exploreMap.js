@@ -1,8 +1,6 @@
 /*
-Brown's 7/10/15
-What's great about this version:
--if clicked class doesn't exist, hide txtDOT works
--if selectedClass doesn't exist, reset drop down menu to default value works
+Comments in all caps describe the event handler conditionals dealt with in the code block beneath it
+Comments to the right of a line pertain to that line and are usually an interpretation in plain English of what the line does
 */
 
 $( document ).ready( function(){
@@ -12,6 +10,8 @@ $( document ).ready( function(){
 
         //EVENT HANDLER FUNCTION (1 of 2): USER SELECTS FROM DROP DOWN MENU
         $( "#productOptions" ).on( "change", function(e) {
+
+        $( this ).css({ "background-color": "#ffffff", "border-style": "solid", "border-width": "1px", "margin": "0px"});
 
         //Attributes methods. Selectors are classes.
             $( ".clicked" ).attr( "class", "" );//DEFAULT BEHAVIOR: discard existing clicked class on both event handlers
@@ -105,7 +105,7 @@ $( document ).ready( function(){
 
             //CONDITION: IF USER CLICKS ON A STATE THAT IS ONE OF THE SELECTED STATES
             //*******Rebecca's code differs from mine in the line below, and the whole block below. see her code lines 174-182. my comments 6-30-15*********
-            if ( $( this ).attr( "class" )  == ( "selectedClass" ) ) {//If clicked state has selectedClass... I deleted a set of her parans.
+            if ( $( this ).attr( "class" )  == ( "selectedClass" ) ) {//If clicked state has selectedClass...
                 $( ".clicked" ).attr( "class", "selectedClass" );//KEEP SELECTEDCLASS ON CLICKED STATE
                 return classNames + " clicked";//temporarily keep the two clicked class instances
                 //SIBLINGS FUNCTION.*****Rebecca commented out block below
@@ -184,7 +184,7 @@ $( document ).ready( function(){
 
                         var theMessage = ( obj.productTypes );//place a message where the productTypes obj would have been
                             console.log( theMessage );
-                        theText += "<dt class='contacts'>" + theMessage + "</dt>";//yes, I want the message I wrote into Excel's productTypes cell to be displayed in the contacts class.
+                        theText += "<dt class='contacts'>" + theMessage + "</dt>";//yes, I want the message I wrote into ntpepInfo.xlsx's productTypes cell to be displayed in the contacts class.
                         }
 
                     });
