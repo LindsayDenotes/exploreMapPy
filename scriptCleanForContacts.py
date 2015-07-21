@@ -66,7 +66,8 @@ def process_data():
     for row in allHeaders:
         abb,agency,firstLast,title,phone,email,productsString = row
         productsString = productsString.replace("_"," ")
-        
+        productsString = productsString.replace(" and ", " & ")
+                
         if abb not in dotDict:
             dotDict[abb] = {"agency": agency, "contacts":[]}
         
