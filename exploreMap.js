@@ -1,6 +1,6 @@
 /*
-Comments in all caps describe the event handler conditionals dealt with in the code block beneath it
-Comments to the right of a line pertain to that line and are usually an interpretation in plain English of what the line does
+Comments in all caps describe the event handler conditionals dealt with in that specific line or in the whole code block beneath the comment
+Comments to the right of a line pertain to that line only and are usually an interpretation in plain English of what the line does
 */
 
 $( document ).ready( function(){
@@ -15,13 +15,12 @@ $( document ).ready( function(){
 
         //Attributes methods. Selectors are classes.
             $( ".clicked" ).attr( "class", "" );//DEFAULT BEHAVIOR: discard existing clicked class on both event handlers
-            //************Rebecca's differs from mine in the line below 6-30-15. Hers is formatted as an if else statement which wasn't needed********************
             $( ".selectedClass" ).attr( "class", "" );//discard the existing selected class.
 
         //Hide text box nested function
             $( "g" ).attr( "class", function( index, classNames ){
                 if ( typeof classNames != "undefined" ) {//if any g has the clicked class instance on it...
-                    console.log( "clicked exists so show txtDOT" );
+        //          console.log( "clicked exists so show txtDOT" );
                     $( "#txtDOT" ).show();//show the text box
                 }
                 else {
@@ -35,7 +34,7 @@ $( document ).ready( function(){
               console.log( "user selected " + selected );
         //      console.log( typeof selected );//string
 
-            $.each ( data, function( key, val ){//parse JSON. Note: I wish I could wrap lines 45-51 into an IIFE (Immediately Invoked Function Expression) so I could access the productTypes array in my on click event handler without rewriting these lines.
+            $.each ( data, function( key, val ){//parse JSON.
         //        console.log ( key, val.contacts );//key is "nh" or "fl", val is whats inside json's { }s
 
         //      var jsonKey = ( key );
@@ -77,7 +76,7 @@ $( document ).ready( function(){
                                 .filter( function( index ) {//within the filter function, this refers to each DOM element in turn.
                                     if ( $( this ).attr( "id" ) == productKey ){//if the id of a g el matches a productKey
         //                                console.log ( this.id );//GOOD. logged or, mn, etc., i.e., the states that have the product type which user selected in the drop down menu
-                                        return ( this.id );//running slowly. I think each created object has its own function. constructor method of object creation inefficient.
+                                        return ( this.id );
                                     }
                                   })
         //                      console.log ( $productStates );
@@ -104,11 +103,10 @@ $( document ).ready( function(){
         $( this ).attr( "class", function( index, classNames ) {
 
             //CONDITION: IF USER CLICKS ON A STATE THAT IS ONE OF THE SELECTED STATES
-            //*******Rebecca's code differs from mine in the line below, and the whole block below. see her code lines 174-182. my comments 6-30-15*********
             if ( $( this ).attr( "class" )  == ( "selectedClass" ) ) {//If clicked state has selectedClass...
                 $( ".clicked" ).attr( "class", "selectedClass" );//KEEP SELECTEDCLASS ON CLICKED STATE
                 return classNames + " clicked";//temporarily keep the two clicked class instances
-                //SIBLINGS FUNCTION.*****Rebecca commented out block below
+                //SIBLINGS FUNCTION
                 $( this ).siblings( "g" ).attr( "class", function( index, classNames ) {//gets their class attribute and checks for existing classes on them
                     if ( typeof classNames != "undefined" ) {//if there are existing classes, i.e., selectedClass, on the siblings, then...
                         return classNames.replace( "clicked", "");//DEFAULT BEHAVIOR: discard existing clicked class on both event handlers. this line returns both the selected and clicked classes, then discards just the clicked
@@ -121,7 +119,7 @@ $( document ).ready( function(){
                 console.log ("TRUE: else, if this clicked state's attr class does not == selectedClass");
                 $( this ).attr( "class", "clicked" ).siblings( "g" ).removeAttr( "class" );//add clicked to this. on siblings, DEFAULT BEHAVIOR: discard existing clicked class on both event handlers, discard existing selected class
 
-                //CONDITION: IF SELECTED CLASS DOESN'T EXIST (same condition as comment on line 119 but reworded to match pg 2 wording in EventHandlerConditionals.txt)
+                //CONDITION: IF SELECTED CLASS DOESN'T EXIST (same condition as comment on line 119 but reworded to match wording on pg 2 in EventHandlerConditionals.txt)
                 $( "#productOptions" ).find( "option:first" ).attr( "selected", "selected" );//RESET DROP DOWN MENU TO DEFAULT VALUE
             }
 //            }
