@@ -1,51 +1,54 @@
-How about start off with several named functions each with own set of conditions
+Event Handler Conditional Requirements
+
+*exploreMap.js meets all of the below behaviors and conditions as of July 11, 2015
 
 
-Event Handler Default Behavior
-
-1) ALWAYS DISCARD EXISTING CLICKED CLASS ON BOTH EVENTS - works 6/24/15 (but clicked won't get assigned on any of the selected states group. I could settle for this.)
-	-earlier failure: used .off("click") at top of a function outside of the two event handler functions, then tried putting it at the top of each event handler functions, then both event handlers. 
+Event Handler Default Behavior-----
 
 
+1) ALWAYS DISCARD EXISTING CLICKED CLASS ON BOTH THE CLICK EVENT AND CHANGE EVENT 	
 
-Event Handler Conditionals - i.e., non-standard behavior functions
+		- successfully tied to both on click and on change event handlers.
+	
+		- History: as of 6/24/15 clicked won't get assigned on any of the selected states group. I could settle for this as it only means the absence of a bolder stroke and bold abbreviations on each state that gets clicked within the selected states group. The user will know which state he/she last clicked by the name of that state agency displaying in the text box beneath the map.
+	
+		- History: earlier failure: used .off("click") at top of a function outside of the two event handler functions, then tried putting it at the top of each event handler functions, then both event handlers. 
+
+
+
+Event Handler Conditional Behaviors - i.e., Non-Standard Behaviors-----
+
+
+.on("click") AND .on("change") Conditional
+
+
+1) if: clicked class doesn't exist anywhere on the map, 
+	then: Remove or hide the text under map
+	
+		- successfully tied to both on click and on change event handlers using show and hide methods.
+	
+		- History: as of 6/24/15 not working yet.    
+
+
 
 .on("click") Conditionals
+
 
 1) if: user has selected states && then user clicks a state that IS in the selected states group,
 	then: Keep selected, discard clicked (default)      
 	
-	- as of 6/24/15 discard clicked is not working which because click is not getting assigned to the clicked state in the selected states group	  
-	- earlier failure: Selected is successfully kept, but clicked instances are kept on previously clicked states within the selected states group, resulting in more than one state appearing as if the clicked state. Fixed it by commenting out line 160 return classNames + " clicked"	
+		- History: as of 6/24/15 discard clicked is not working because as mentioned at the top of this document, click is not getting assigned to the clicked state in the selected states group	  
+	
+		- History: earlier failure: Selected is successfully kept, but clicked is kept on previously clicked states within the selected states group, resulting in more than one state appearing as if the clicked state. Fixed it by commenting out line 160 return classNames + " clicked"	
+
 
 2) if: user has selected states && user then clicks a state that IS NOT one of the selected states,
 	then: Discard selected, discard clicked (default)      
 	
-	- this already works 6/9/15
-
-TO DO:	  
-3) if: clicked class doesn't exist anywhere on the map, 
-	then: Remove or hide the text under map
-
-	- Not working yet as of 6/24/15. Tie to an event handler?
-
-
-
-.on("change") Conditionals  
-
-	
-1) if: user has clicked any state && user then selects states which may or may not include the clicked state,
-	then: discard clicked (default)   
-
-	-this works 6/24/15 (notwithstanding that clicked doesn't get assigned on selected states)    
+		- this already works 6/9/15
 	  
-TO DO:
-2) if: selectedClass doesn't exist, 
-	then: reset menu.
 
-	- Not programmed yet as of 6/24/15. Tie to an event handler?
-		
-	
+3) if: selectedClass doesn't exist, 
+	then: Reset menu
 
-
-
+		- History: as of 6/24/15 not programmed yet 
