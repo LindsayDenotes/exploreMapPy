@@ -1,6 +1,7 @@
 /*
 Comments in all caps describe the event handler conditionals dealt with in that specific line or in the whole code block beneath the comment
-Comments to the right of a line pertain to that line only and are usually an interpretation in plain English of what the line does
+Comments to the right of a line pertain to that line only and are usually an interpretation in plain English of what that line does
+Future improvements to this code: 1) name and wrap functions in immediately invoked function expressions, 2) test without using console.log
 */
 
 $( document ).ready( function(){
@@ -119,10 +120,10 @@ $( document ).ready( function(){
                 console.log ("TRUE: else, if this clicked state's attr class does not == selectedClass");
                 $( this ).attr( "class", "clicked" ).siblings( "g" ).removeAttr( "class" );//add clicked to this. on siblings, DEFAULT BEHAVIOR: discard existing clicked class on both event handlers, discard existing selected class
 
-                //CONDITION: IF SELECTED CLASS DOESN'T EXIST (same condition as comment on line 119 but reworded to match wording on pg 2 in EventHandlerConditionals.txt)
+                //CONDITION: IF SELECTED CLASS DOESN'T EXIST (means same as line explanation comment on line 119 but this wording matches wording in EventHandlerConditionals.txt)
                 $( "#productOptions" ).find( "option:first" ).attr( "selected", "selected" );//RESET DROP DOWN MENU TO DEFAULT VALUE
             }
-//            }
+
         });//closing for $( this ).attr( "class", function( index, classNames ) {
 
 
@@ -134,10 +135,10 @@ $( document ).ready( function(){
 //            console.log ( key, val );//key is "nh" or "fl", val is whats inside json's { }s
 
             var jsonKey = ( key );
-//                console.log ( "this is a state key: " + jsonKey );
+                console.log ( "this is a state key: " + jsonKey );
 
             if ( jsonKey == clickedState ){
-//                      console.log( "clickedState ID " + clickedState + " MATCHES key: " + jsonKey + ". Return that val." );
+//                console.log( "clickedState ID " + clickedState + " MATCHES key: " + jsonKey + ". Return that val." );
 
                   var contacts = [];
                   contacts = ( val.contacts );
