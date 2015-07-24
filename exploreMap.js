@@ -12,7 +12,7 @@ $( document ).ready( function(){
         //EVENT HANDLER FUNCTION (1 of 2): USER SELECTS FROM DROP DOWN MENU
         $( "#productOptions" ).on( "change", function(e) {
 
-        $( this ).css({ "background-color": "#ffffff", "border-style": "solid", "border-width": "1px", "margin": "0px"});
+        $( this ).css({ "border-style": "solid", "border-color": "#333", "border-width": "1px", "outline": "1px dotted #333"});
 
         //Attributes methods. Selectors are classes.
             $( ".clicked" ).attr( "class", "" );//DEFAULT BEHAVIOR: discard existing clicked class on both event handlers
