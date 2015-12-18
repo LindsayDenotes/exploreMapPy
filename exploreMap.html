@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!--DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"-->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta charset="UTF-8">
@@ -13,6 +13,49 @@
         height: auto;
         margin: 0;
         padding: 0;
+
+    }
+
+    .main-container {
+        padding-left: 0%;
+        padding-top:0%;
+        width: 585px;
+        border-width: 1px;
+    }
+
+    .top-container {
+        padding-left: 2.75%;
+        padding-top:0%;
+        width: 585px;
+        border-width: 1px;
+    }
+
+    h5 {
+        font-family: verdana;
+        padding: 0%;
+        margin: 0 0 0 0%;
+        text-align: left;
+
+    }
+
+    .clkInstruct {
+        font-family: verdana;
+        font-size: small;
+        margin: .5% 7% 0% .5%;
+        width: 93%;
+        text-align: center;
+    }
+
+    .selInstruct {
+        font-family: verdana;
+        font-size: x-small;
+        margin: 0% 0% 0% 1.5%;
+        width: 100%;
+        text-align: left;
+    }
+
+    .menu-container {
+        padding: 1% 0 0 4%;
     }
 
     .clicked polygon {
@@ -30,26 +73,18 @@
     }
 
     .selectedClass polygon {
-        fill: #ffffff;
-        fill-opacity: 0.01;
+        fill-opacity: 0.0;
+
     }
 
     .selectedClass path {
-        fill: #ffffff;
-        fill-opacity: 0.01;
-    }
-
-    .menu-container {
-        padding-left: 3%;
-        padding-top:1%;
-        width: auto;
-      =  border-width: 1px;
+        fill-opacity: 0.0;
     }
 
     .txtBox {
         font-family: verdana;
         font-size: small;
-        padding-left: 3%;
+        padding-left: 2%;
     }
 
     dl.agency {
@@ -63,26 +98,26 @@
         padding-bottom:1%;
     }
 
-
-    </style>
+  </style>
 
 </head>
 
 <body>
 
-        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="585" height="375" viewBox="0 0 220 135" style="enable-background:new 0 0 220 150;" xml:space="preserve" stroke-width="0.2" font-size="2.5">
+    <div class="main-container">
+
+        <div class="top-container">
+
+            <h5>State DOT Usage of NTPEP - 2013 Survey Results - Updated November 2015</h5>
+
+            <p class="clkInstruct">Click on a state to see the product types for which that state uses NTPEP data (but not necessarily requires it). Contact information is provided below the map.</p>
 
 
-            <svg id="Header">
-                    <text transform="matrix(1 0 0 1 18 4)" font-family="Verdana">
-                        <tspan x="0" y="0" font-weight="bold" font-size="4.75">State DOT Usage of NTPEP - 2013 Survey Results - Updated March 2015</tspan>
-                        <tspan x="8" y="6.75" font-size="4.5">Click on a state to see the product types for which the state uses NTPEP data</tspan>
-                        <tspan x="23" y="12.5" font-size="4.5"> (but not necessarily requires it). Contact information is provided.</tspan>
-                    </text>
+        </div>
 
-            </svg>
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="585" height="340" viewBox="6 6 215 130" style="enable-background:new 0 0 230 130;" xml:space="preserve" stroke-width="0.2" font-size="2.5" fill="#000000" stroke="#1A171B" stroke-miterlimit="10">
 
-            <svg id="Map" x="0px" y="6%">
+            <!--svg id="Map" x="0" y="0"-->
 
                     <g id="ok">
                         <polygon id="OK_Outline" style="fill:#518dc1;stroke:#1A171B;;stroke-miterlimit:10;" points="115.395,76.269
@@ -901,36 +936,41 @@
 
                      <path id="path57" style="fill:none;stroke:#A9A9A9;stroke-width:0.1;stroke-miterlimit:10;" d="M47.557,106.164v12.309
                     l8.057,10.071 M0,90.945h32.503l15.123,15.219h19.411L79,118.249v10.295"/>
-            </svg>
+            <!--/svg-->
         </svg>
-
 
         <div class="menu-container">
             <select id="productOptions">
-                <option selected='selected'>Select a product type to see which states use NTPEP data to evaluate those products.</option>
+                <option selected='selected'>Select a product type to see which state DOTs use NTPEP data to evaluate those products.</option>
                 <option id=ARA> Asphalt Release Agents (ARA) </option>
                 <option id=CADD> Concrete Admixtures (CADD) </option>
                 <option id=CCC> Concrete Curing Compounds (CCC) </option>
-                <option id=ECP> Erosion Control Products (ECP) </option>
+                <!--option id=EBB> Elastomeric Bridge Bearing Pads (EBB) </option-->
+                <option id=ECP-SRD> Erosion Control Products & Sedimentation Retention Devices (ECP-SRD) </option>
+                <!--option id=GRL> Guardrail & Guiderail (GRL) </option-->
                 <option id=GTX-REGEO> Geotextiles & Reinforced Geosynthetics (GTX-REGEO) </option>
                 <option id=HDPE> High Density Polyethylene Plastic Pipe (HDPE) </option>
-                <option id=HMA-CS> Hot-Mix Asphalt Crack Sealers (HMA CS) </option>
-                <option id=PMM> Pavement Marking Materials (PMM) </option>
+                <option id=HMA CS> Hot-Mix Asphalt Crack Sealers (HMA CS) </option>
                 <option id=PCC JS> Portland Cement Concrete Joint Sealants (PCC JS) </option>
                 <option id=PCMS-FAP> Portable Changeable Message Signs & Flashing Arrow Panels (PCMS-FAP) </option>
                 <option id=PCO> Polymer Concrete Overlays (PCO) </option>
-                <option id=SSC-CCS> Structural Steel Coatings & Concrete Coating Systems (SSC-CCS) </option>
+                <option id=PMM> Pavement Marking Materials (PMM) </option>
                 <option id=PPP> Polypropylene Pipe (PPP) </option>
                 <option id=PVC> Polyvinyl Chloride Drainage Pipe (PVC) </option>
+                <option id=REBAR-WWR> Reinforcing Steel & Welded Wire Reinforcement (REBAR-WWR) </option>
                 <option id=RPM-SRPM> Raised Pavement Markers & Snowplowable Raised Pavement Markers (RPM-SRPM) </option>
                 <option id=RSCPM> Rapid Set Concrete Patch Materials (RSCPM) </option>
-                <option id=REBAR-WWR> Reinforcing Steel & Welded Wire Reinforcement (REBAR-WWR) </option>
+                <!--option id=SAPL> Spray Applied Non-Structural Pipe Liners (SAPL) </option-->
+                <option id=SSC-CCS> Structural Steel Coatings & Concrete Coating Systems (SSC-CCS) </option>
                 <option id=SSM-RUP> Sign Sheeting Materials & Roll Up Signs (SSM-RUP) </option>
                 <option id=TTCD> Temporary Traffic Control Devices (TTCD) </option>
+                <!--option id=WMA> Warm Mix Asphalt Technologies (WMA) </option-->
             </select>
-        </div>
 
-        <div id="txtDOT" class="txtBox"></div>
+        </div>
+    </div>
+
+    <div id="txtDOT" class="txtBox"></div>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="exploreMap.js"></script>
