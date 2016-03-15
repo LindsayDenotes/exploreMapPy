@@ -22,85 +22,98 @@ $( document ).ready( function(){
         $( this ).css({ "border-style": "solid", "border-color": "#333", "border-width": "1px", "outline": "1px dotted #333"});
 
         //Attributes methods. Selectors are classes.
-            $( ".clicked" ).attr( "class", "" );//DEFAULT BEHAVIOR: discard existing clicked class on both event handlers
-            $( ".selectedClass" ).attr( "class", "" );//discard the existing selected class.
+        $( ".clicked" ).attr( "class", "" );//DEFAULT BEHAVIOR: discard existing clicked class on both event handlers
+        $( ".selectedClass" ).attr( "class", "" );//discard the existing selected class.
 
         //Hide text box nested function
-            $( "g" ).attr( "class", function( index, classNames ){
-                if ( typeof classNames != "undefined" ) {//if any g has the clicked class instance on it...
-        //          console.log( "clicked exists so show txtDOT" );
-                    $( "#txtDOT" ).show();//show the text box
-                }
-                else {
-                    console.log( "clicked doesn't exist so hide txtDOT" );
-                    $( "#txtDOT" ).hide();//hide the text box; comes back when clicked class comes back
-                }
-            });
+        $( "g" ).attr( "class", function( index, classNames ){
+            if ( typeof classNames != "undefined" ) {//if any g has the clicked class instance on it...
+    //          console.log( "clicked exists so show txtDOT" );
+                $( "#txtDOT" ).show();//show the text box
+            }
+            else {
+                console.log( "clicked doesn't exist so hide txtDOT" );
+                $( "#txtDOT" ).hide();//hide the text box; comes back when clicked class comes back
+            }
+        });
 
         //Text object creation and filter functionality for the drop down menu
+        function getSelected(){ //callback function
+            
             var selected = $( "#productOptions option:selected" ).text();
-              console.log( "user selected " + selected );
-        //      console.log( typeof selected );//string
 
-            $.each ( data, function( key, val ){//parse JSON.
-        //        console.log ( key, val.contacts );//key is "nh" or "fl", val is whats inside json's { }s
+            function pickIt(){ 
+                console.log( "user selected " + selected ); 
+    //           console.log( typeof selected );//string  
+            }
 
-        //      var jsonKey = ( key );
-        //          console.log ( "this is a state key: " + jsonKey );
+            return pickIt;
+        }
 
-                var contacts = [];
-                contacts = ( val.contacts );
-        //          console.log ( "Referenced by val.contacts, contacts are " + contacts );//logs contacts are [object object]. So crack into those with a forEach loop.
+        getSelected();
 
-                    contacts.forEach( function( obj ){
+        
+        
 
-                        var productTypes = [];
-                        productTypes = ( obj.productTypes );
-        //                    console.log( productTypes );//an array of strings. For Array objects, the toString method joins the array and returns one string containing each array element separated by commas.
-        //                    console.log( typeof productTypes );//object
+        $.each ( data, function( key, val ){//parse JSON.
+    //        console.log ( key, val.contacts );//key is "nh" or "fl", val is whats inside json's { }s
 
-                        if( Object.prototype.toString.call( productTypes ) === "[object Array]" ) {//test to make sure it is a true array, not array-like object. a prototype function.
-        //                   console.log ( "Array" );
+         var jsonKey = ( key );
+    //          console.log ( "this is a state key: " + jsonKey );
+
+            var contacts = [];
+            contacts = ( val.contacts );
+    //          console.log ( "Referenced by val.contacts, contacts are " + contacts );//logs contacts are [object object]. So crack into those with a forEach loop.
+
+                contacts.forEach( function( obj ){
+
+                    var productTypes = [];
+                    productTypes = ( obj.productTypes );
+    //                    console.log( productTypes );//an array of strings. For Array objects, the toString method joins the array and returns one string containing each array element separated by commas.
+    //                    console.log( typeof productTypes );//object
+
+                    if( Object.prototype.toString.call( productTypes ) === "[object Array]" ) {//test to make sure it is a true array, not array-like object. a prototype function.
+    //                   console.log ( "Array" );
+                    }
+
+                    //Iterate over each item in array and make object out of match
+                    productTypes.forEach( function( entry ) { //.forEach replaced the .every method - executed the provided callback function once for each element present in the array ONLY until it found one where callback returned a falsy value (a value that becomes false when converted to a Boolean). If such an element was found, the every method immediately returned false.
+    //                    console.log( entry );//entry is the element(s) from array
+    //                    console.log ( typeof entry );//string
+    //                    console.log ( selected );//my var, option the user selected from drop down menu
+    //                    console.log ( typeof selected );//string
+                        // var theSelected = getSelected();
+                        if ( selected.indexOf( entry ) == -1 ) {//if element doesn't exist...//returns either the index/number of the start point for the string or a -1 meaning it isn’t there.
+    //                      console.log( "element doesn't exist" );
                         }
+                        else {//else, if element exists...
+    //                      console.log( "element found" );
 
-                        //Iterate over each item in array and make object out of match
-                        productTypes.forEach( function( entry ) { //.forEach replaced the .every method - executed the provided callback function once for each element present in the array ONLY until it found one where callback returned a falsy value (a value that becomes false when converted to a Boolean). If such an element was found, the every method immediately returned false.
-        //                    console.log( entry );//entry is the element(s) from array
-        //                    console.log ( typeof entry );//string
-        //                    console.log ( selected );//my var, option the user selected from drop down menu
-        //                    console.log ( typeof selected );//string
+                        var productKey = ( key );
+    //                        console.log ( "productKey " + productKey );//presence of a productKey means that corresponding state shapes (#g's) should get styled via attr method.
 
-                            if ( selected.indexOf( entry ) == -1 ) {//if element doesn't exist...//returns either the index/number of the start point for the string or a -1 meaning it isn’t there.
-        //                      console.log( "element doesn't exist" );
-                            }
-                            else {//else, if element exists...
-        //                      console.log( "element found" );
+                        //Block below defines the selected states group; i.e., the states that use the product type that the user selected from the drop down menu.
+                        var $productStates =  $( "g" )//the $ in the var name indicates the var contains jQuery object(s) or is a jQuery collection.
+                            .filter( function( index ) {//within the filter function, this refers to each DOM element in turn.
+                                if ( $( this ).attr( "id" ) == productKey ){//if the id of a g el matches a productKey
+    //                                console.log ( this.id );//GOOD. logged or, mn, etc., i.e., the states that have the product type which user selected in the drop down menu
+                                    return ( this.id );
+                                }
+                              })
+    //                      console.log ( $productStates );
+    //                      console.log ( typeof $productStates );//object; i.e., a jQuery collection of matched elements
 
-                            var productKey = ( key );
-        //                        console.log ( "productKey " + productKey );//presence of a productKey means that corresponding state shapes (#g's) should get styled via attr method.
+                        $productStates.attr( "class", "selectedClass" );//add selectedClass attribute to the matched elements
 
-                            //Block below defines the selected states group; i.e., the states that use the product type that the user selected from the drop down menu.
-                            var $productStates =  $( "g" )//the $ in the var name indicates the var contains jQuery object(s) or is a jQuery collection.
-                                .filter( function( index ) {//within the filter function, this refers to each DOM element in turn.
-                                    if ( $( this ).attr( "id" ) == productKey ){//if the id of a g el matches a productKey
-        //                                console.log ( this.id );//GOOD. logged or, mn, etc., i.e., the states that have the product type which user selected in the drop down menu
-                                        return ( this.id );
-                                    }
-                                  })
-        //                      console.log ( $productStates );
-        //                      console.log ( typeof $productStates );//object; i.e., a jQuery collection of matched elements
+                        }//closing for else {//else, if element exists...
 
-                            $productStates.attr( "class", "selectedClass" );//add selectedClass attribute to the matched elements
+                    });//closing for productTypes.forEach( function( entry ) {
 
-                            }//closing for else {//else, if element exists...
+                });//closing for contacts.forEach( function( obj ){
 
-                        });//closing for productTypes.forEach( function( entry ) {
+        });//closing for $.each ( data, function( key, val ){
 
-                    });//closing for contacts.forEach( function( obj ){
-
-            });//closing for $.each ( data, function( key, val ){
-
-        });//closing for $( "#productOptions" ).on( "change", function (e){
+    });//closing for $( "#productOptions" ).on( "change", function (e){
 
 
         //EVENT HANDLER FUNCTION (2 of 2): USER CLICKS ON A STATE SHAPE
@@ -142,7 +155,7 @@ $( document ).ready( function(){
 //            console.log ( key, val );//key is "nh" or "fl", val is whats inside json's { }s
 
             var jsonKey = ( key );
-                console.log ( "this is a state key: " + jsonKey );
+                // console.log ( "this is a state key: " + jsonKey );
 
             if ( jsonKey == clickedState ){
 //                console.log( "clickedState ID " + clickedState + " MATCHES key: " + jsonKey + ". Return that val." );
@@ -166,25 +179,27 @@ $( document ).ready( function(){
                         var productTypesText = " ";//is string
                         productTypesText += productTypes;//the addition assignment operator adds the value of the right operand to a variable and assigns the result to the variable.
                         productTypesText = productTypesText.replace( /,/g , "<br/>" );//g stands for global, replace all matches, not just the first one. makes it a regular expression
-//                            console.log( productTypesText );
+                           console.log( productTypesText );
 //                            console.log ( typeof productTypesText );//logged string
-
+                        
                         // if productTypesText contains selected, return val.contact                        
-                        if ( $( "#productOptions option:selected" ) == productTypesText ) {
+                        // if ( $( "#productOptions option:selected" ) == productTypesText ) {
+                        // MODEL: if ( selected.indexOf( entry ) == -1 ) {//if element doesn't exist...//returns either the index/number of the start point for the string or a -1 meaning it isn’t there.
+                        if ( "#productOptions option:selected".indexOf( productTypesText ) == -1 ){//it sorta worked for productTypes but the <br> interferes, not productTypesText
+                        console.log ("selected !== text");
+                        function Expert(){
                             
-                            function Expert(){
-                                
-                                var contact = {};
-                                contact = ( [obj] );
+                            var contact = {};
+                            contact = ( [obj] );
 
-                                function getExpert(){
-                                    console.log ( "referenced by [obj], contact is " + contact );
-                                }
-                                //return contacts index to make obj for a single contact
-                                return getExpert;
+                            function getExpert(){
+                                console.log ( "referenced by [obj], contact is " + contact );
                             }
+                            //return contacts index to make obj for a single contact
+                            return getExpert;
+                        }
 
-                            Expert = obj;
+                        Expert();
 
                         }
 
