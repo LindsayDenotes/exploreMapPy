@@ -38,11 +38,11 @@ $( document ).ready( function(){
         });
 
         //Text object creation and filter functionality for the drop down menu
-        function getSelected(){ //callback function
+        function getSelected(){ //higher order function
             
             var selected = $( "#productOptions option:selected" ).text();
 
-            function pickIt(){ 
+            function pickIt(){ //callback function
                 console.log( "user selected " + selected ); 
     //           console.log( typeof selected );//string  
             }
