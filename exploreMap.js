@@ -19,6 +19,8 @@ $( document ).ready( function(){
         //EVENT HANDLER FUNCTION (1 of 2): USER SELECTS FROM DROP DOWN MENU
         $( "#productOptions" ).on( "change", function(e) {
 
+        var selected = $( "#productOptions option:selected" ).text();
+
         $( this ).css({ "border-style": "solid", "border-color": "#333", "border-width": "1px", "outline": "1px dotted #333"});
 
         //Attributes methods. Selectors are classes.
@@ -36,24 +38,7 @@ $( document ).ready( function(){
                 $( "#txtDOT" ).hide();//hide the text box; comes back when clicked class comes back
             }
         });
-
-        //Text object creation and filter functionality for the drop down menu
-        function getSelected(){ //higher order function
-            
-            var selected = $( "#productOptions option:selected" ).text();
-
-            function pickIt(){ //callback function
-                console.log( "user selected " + selected ); 
-    //           console.log( typeof selected );//string  
-            }
-
-            return pickIt;
-        }
-
-        getSelected();
-
-        
-        
+         
 
         $.each ( data, function( key, val ){//parse JSON.
     //        console.log ( key, val.contacts );//key is "nh" or "fl", val is whats inside json's { }s
@@ -175,35 +160,39 @@ $( document ).ready( function(){
 //                            console.log( productTypes );
 //                            console.log( typeof productTypes );//logged object
 
+                        var selected = $( "#productOptions option:selected" ).text();
+                        console.log ("selected line 171", selected);
+                        // if productTypesText contains selected, return val.contact                        
+                        // if ( $( "#productOptions option:selected" ) == productTypesText ) {
+                        // MODEL: if ( selected.indexOf( entry ) == -1 ) {//if element doesn't exist...//returns either the index/number of the start point for the string or a -1 meaning it isn’t there.
+                        
+                        productTypes.forEach( function( entry ) {
+
+                            if ( selected.indexOf( entry ) == -1 ){
+                                console.log ("selected is not in productTypes");
+                            }
+                            else {//else, if element exists...
+                                console.log( "selected is in productTypes" );   
+
+                                function Expert(){                                    
+                                    var contact = {};
+                                    contact = ( [obj] );
+                                    console.log("line 181 contact",contact);
+                                }
+
+                                Expert();
+                            }  
+
+                        });
+
 
                         var productTypesText = " ";//is string
                         productTypesText += productTypes;//the addition assignment operator adds the value of the right operand to a variable and assigns the result to the variable.
                         productTypesText = productTypesText.replace( /,/g , "<br/>" );//g stands for global, replace all matches, not just the first one. makes it a regular expression
-                           console.log( productTypesText );
+//                            console.log( productTypesText );
 //                            console.log ( typeof productTypesText );//logged string
                         
-                        // if productTypesText contains selected, return val.contact                        
-                        // if ( $( "#productOptions option:selected" ) == productTypesText ) {
-                        // MODEL: if ( selected.indexOf( entry ) == -1 ) {//if element doesn't exist...//returns either the index/number of the start point for the string or a -1 meaning it isn’t there.
-                        if ( "#productOptions option:selected".indexOf( productTypesText ) == -1 ){//it sorta worked for productTypes but the <br> interferes, not productTypesText
-                        console.log ("selected !== text");
-                        function Expert(){
-                            
-                            var contact = {};
-                            contact = ( [obj] );
-
-                            function getExpert(){
-                                console.log ( "referenced by [obj], contact is " + contact );
-                            }
-                            //return contacts index to make obj for a single contact
-                            return getExpert;
-                        }
-
-                        Expert();
-
-                        }
-
-                        //obj for 5 non-participating states are empty strings.
+                        //objects for 5 non-participating states are empty strings.
                         var firstLast = ( obj.firstLast );
 //                            console.log( firstLast );
 
