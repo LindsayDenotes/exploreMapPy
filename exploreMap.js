@@ -161,30 +161,50 @@ $( document ).ready( function(){
 //                            console.log( typeof productTypes );//logged object
 
                         var selected = $( "#productOptions option:selected" ).text();
-                        console.log ("selected line 171", selected);
-                        // if productTypesText contains selected, return val.contact                        
-                        // if ( $( "#productOptions option:selected" ) == productTypesText ) {
-                        // MODEL: if ( selected.indexOf( entry ) == -1 ) {//if element doesn't exist...//returns either the index/number of the start point for the string or a -1 meaning it isn’t there.
+                        // console.log ("selected line 171", selected);
                         
+                        // if productTypes contains selected, return that one contact                        
+                        function seekTheOne() { //Crockford: Avoid creating functions within a loop. wasteful computationally, cause confusion. 
+                        // ~Instead~ create a helper function outside of the loop that will deliver a function that binds to the current value of i.
+ 
                         productTypes.forEach( function( entry ) {
 
                             if ( selected.indexOf( entry ) == -1 ){
-                                console.log ("selected is not in productTypes");
-                            }
-                            else {//else, if element exists...
-                                console.log( "selected is in productTypes" );   
+                                // console.log ( "selected doesn't match this productType" );
 
-                                function Expert(){                                    
-                                    var contact = {};
-                                    contact = ( [obj] );
-                                    console.log("line 181 contact",contact);
+                                function All(){
+                                    var allContacts = {};
+                                    allContacts = contacts;
+                                    console.log( "line 174 allContacts", allContacts );
                                 }
 
-                                Expert();
-                            }  
+                                return All; //~~~are we sure this returns to seekTheOne()? jQuery collection may be needed.
+                            } //closing for if                    
 
-                        });
+                            else {//else, if element exists...
+                                console.log( "selected IS in productTypes" );   
 
+                                function theOne(){                                    
+                                    var contact = {};
+                                    contact = ( [obj] );
+                                    console.log( "line 181 contact",contact );
+                                }
+
+                                return theOne; //~~~are we sure this returns to seekTheOne()? jQuery collection may be needed.
+                            } //closing for else
+
+                        }); //closing for productTypes.forEach( function( entry ) {
+                            
+                        } //closing for function seekTheOne(){
+
+                        seekTheOne();
+
+                        // var come1orAll = seekTheOne();
+
+                        // console.log(come1orAll()); //I'll call this proly further down
+
+                        //var obj = come1orAll();
+                        // if you end up needing to use an identifier other than obj, you'll need to change obj's below
 
                         var productTypesText = " ";//is string
                         productTypesText += productTypes;//the addition assignment operator adds the value of the right operand to a variable and assigns the result to the variable.
@@ -218,6 +238,8 @@ $( document ).ready( function(){
                             console.log( theMessage );
                         theText += "<dt class='contacts'>" + theMessage + "</dt>";//yes, I want the message I wrote into ntpepInfo.xlsx's productTypes cell to be displayed in the contacts class.
                         }
+
+                        //});//closing for productTypes.forEach( function( entry ) { 
 
                     });
 
