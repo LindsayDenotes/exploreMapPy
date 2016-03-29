@@ -16,32 +16,60 @@ $( document ).ready( function(){
     // console.log ( data );//whole JSON object loads on document ready
     // var ol = Object.keys( data );//how many keys does data contain?
     // console.log(ol.length);//logged 51
-    productTypes = [];
-    //PARSE JSON
-    $.each ( data, function( key, val ){
-        // console.log ( key, val.contacts );//key is "nh" or "fl", val is whats inside json's { }s
-        
-        //CREATE MODULE MAKER FOR JSONKEY - TO INVOKE IN CLICK HANDLER BEFORE PARSE DATA
-        var jsonKey = ( key );
-        // console.log ( "this is a state key: " + jsonKey );
 
-        //CREATE MODULE MAKER FOR CONTACTS - TO INVOKE IN CLICK HANDLER BEFORE COMEONEORALL MODULE MAKER
-        var contacts = [];
-        contacts = ( val.contacts );
-        // console.log ( "Referenced by val.contacts, contacts are " + contacts );//logs [object Object] etc. So crack into those with a forEach loop.
+    
+    
+        //PARSE JSON
+        $.each ( data, function( key, val ){
+            // console.log ( key, val.contacts );//key is "nh" or "fl", val is whats inside json's { }s
+            function ParseJsonModule(){
+                var jsonKey = "";
+                var contacts = [];
+                var productTypes = [];
+                //CREATE MODULE MAKER FOR JSONKEY - TO INVOKE IN CLICK HANDLER BEFORE PARSE DATA
+                function jsonKeyF(){
+                    jsonKey = ( key );
+                    console.log ( "a state key: ", jsonKey );
+                }
 
-        var productTypes = [];//is an array in the JSON          
-        // console.log("productTypes before contacts.forEach",productTypes);
+                //CREATE MODULE MAKER FOR CONTACTS - TO INVOKE IN CLICK HANDLER BEFORE COMEONEORALL MODULE MAKER
+                function contactsF(){
+                    contacts = ( val.contacts );
+                    console.log ( "contacts are: ", contacts );//logs [object Object] etc. So crack into those with a forEach loop.
+                }
+                         
+                // console.log("productTypes before contacts.forEach",productTypes);
 
-        //CREATE MODULE MAKER FOR PRODUCTTYPES - TO INVOKE IN ONCHANGE HANDLER BEFORE $PRODUCTSTATES 
-        contacts.forEach( function( obj ){//The forEach() method executes a provided function once per array element.
-            //productTypes gets accessed in both event handlers so placing it in the 3rd tier scope makes it accessible to both event handlers which are also in the third tier
-            productTypes = ( obj.productTypes );//make the array into an [object Array] so we can compare it with the string value of var selected
-             // console.log( "line37 (outside event handlers) Array.isArray(productTypes): ", Array.isArray(productTypes) );//logged true
-             // console.log( "line38 (outside event handlers) Object.prototype.toString.call(productTypes): ",Object.prototype.toString.call(productTypes) );//logged [object Array]
-         });
-        // console.log("productTypes after contacts.forEach",productTypes);
-    });// CLOSING .EACH HERE 
+                //CREATE MODULE MAKER FOR PRODUCTTYPES - TO INVOKE IN ONCHANGE HANDLER BEFORE $PRODUCTSTATES 
+                function productTypesF(){
+                    productTypes = [];
+                    
+                    contacts.forEach( function( obj ){//The forEach() method executes a provided function once per array element.
+                        //productTypes gets accessed in both event handlers so placing it in the 3rd tier scope makes it accessible to both event handlers which are also in the third tier
+                        productTypes = ( obj.productTypes );//make the array into an [object Array] so we can compare it with the string value of var selected
+                         // console.log( "line37 (outside event handlers) Array.isArray(productTypes): ", Array.isArray(productTypes) );//logged true
+                         // console.log( "line38 (outside event handlers) Object.prototype.toString.call(productTypes): ",Object.prototype.toString.call(productTypes) );//logged [object Array]
+                         console.log( "productTypes: ", productTypes );
+                    });
+                }
+
+                return {
+                    jsonKeyF: jsonKeyF,
+                    contactsF: contactsF,
+                    productTypesF: productTypesF
+                };
+            }
+
+            var fetch = ParseJsonModule();
+
+            fetch.jsonKeyF();
+            fetch.contactsF();
+            fetch.productTypesF();
+            // console.log("productTypes after contacts.forEach",productTypes);
+        });// CLOSING .EACH HERE 
+    
+
+    
     
     // See if you can invoke module maker for productTypes here first
         
