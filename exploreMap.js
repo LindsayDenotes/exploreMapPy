@@ -12,14 +12,14 @@ IDENTIFY FUNC INVOCATIONS, HIGHER ORDER FUNCS ($.getJSON), AND THEIR CALLBACK FU
 */
 $( document ).ready( function(){
   var json = {};
-  $.getJSON( "stateInfoList.json", function( data ) {
+  $.getJSON( "stateInfoList.json", function( data ){
     // console.log ( data );//whole JSON object loads on document ready
     // var ol = Object.keys( data );//how many keys does data contain?
     // console.log(ol.length);//logged 51
 
-    
-    
-        //PARSE JSON
+    var Get = function GetModule(){
+        
+        // PARSE JSON
         $.each ( data, function( key, val ){
             // console.log ( key, val.contacts );//key is "nh" or "fl", val is whats inside json's { }s
             function ParseJsonModule(){
@@ -58,21 +58,24 @@ $( document ).ready( function(){
                     contactsF: contactsF,
                     productTypesF: productTypesF
                 };
-            }
-
+            }//closing for ParseJsonModule(){
+            
             var fetch = ParseJsonModule();
 
             fetch.jsonKeyF();
             fetch.contactsF();
-            fetch.productTypesF();
-            // console.log("productTypes after contacts.forEach",productTypes);
-        });// CLOSING .EACH HERE 
-    
-
-    
-    
-    // See if you can invoke module maker for productTypes here first
+            fetch.productTypesF();  
         
+        });//CLOSING .EACH HERE    
+        
+    }();//closing for var Get = function GetModule(){ 
+    
+    //See if you can invoke module maker for productTypes here first
+    // var fetch = Get;
+
+    // fetch.jsonKeyF();
+    // fetch.contactsF();
+    // fetch.productTypesF();  
         
         //-----EVENT HANDLER FUNCTION (1 of 2): USER SELECTS FROM DROP DOWN MENU-----
         $( "#productOptions" ).on( "change", function(e) {    
