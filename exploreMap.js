@@ -23,10 +23,10 @@ $( document ).ready( function(){
         $.each ( data, function( key, val ){
             // console.log ( key, val.contacts );//key is "nh" or "fl", val is whats inside json's { }s
             function ParseJsonModule(){
-
-                var jsonKey = "";
-                var contacts = [];
-                var productTypes = [];
+                // var jsonKey = ""; Keep this commented out. Will log as undefined if you uncomment
+                // var contacts = []; Keep this commented out. Will log as undefined if you uncomment
+                // var productTypes = []; //Keep this commented out. Will log as undefined if you uncomment
+                
                 //CREATE MODULE MAKER FOR JSONKEY - TO INVOKE IN CLICK HANDLER BEFORE PARSE DATA
                 function jsonKeyF(){
                     jsonKey = ( key );
@@ -40,14 +40,13 @@ $( document ).ready( function(){
                 //CREATE MODULE MAKER FOR PRODUCTTYPES - TO INVOKE IN ONCHANGE HANDLER BEFORE $PRODUCTSTATES 
                 function productTypesF(){
                     productTypes = [];
-                    //I think I need to do something here in order to assign productTypes in the event handler scope
+                    //I think I need to do something here in order to get back all productTypes in the event handler scope, not just the last item in productTypes
                     contacts.forEach( function( obj ){//The forEach() method executes a provided function once per array element.
-                        //productTypes gets accessed in both event handlers so placing it in the 3rd tier scope makes it accessible to both event handlers which are also in the third tier
                         productTypes = ( obj.productTypes );//make the array into an [object Array] so we can compare it with the string value of var selected
-                         // console.log( "line37 (outside event handlers) Array.isArray(productTypes): ", Array.isArray(productTypes) );//logged true
-                         // console.log( "line38 (outside event handlers) Object.prototype.toString.call(productTypes): ",Object.prototype.toString.call(productTypes) );//logged [object Array]
+                             // console.log( "line37 (outside event handlers) Array.isArray(productTypes): ", Array.isArray(productTypes) );//logged true
+                             // console.log( "line38 (outside event handlers) Object.prototype.toString.call(productTypes): ",Object.prototype.toString.call(productTypes) );//logged [object Array]
                         console.log ( "productTypes are: ", productTypes );
-                    });
+                    })
                 }
 
                 return {
@@ -63,7 +62,18 @@ $( document ).ready( function(){
             fetch.jsonKeyF();
             fetch.contactsF();
             fetch.productTypesF();
+
+            var theJsonKey = jsonKey;
+            console.log("theJsonKey",theJsonKey);
+
+            var theContacts = contacts;
+            console.log("theContacts",theContacts);
+
+            //INVOKE PRODUCTTYPES MODULE MAKER HERE
+            var theProductTypes = productTypes;
+            console.log("theProductTypes",theProductTypes);     
                      
+            
             //-----EVENT HANDLER FUNCTION (1 of 2): USER SELECTS FROM DROP DOWN MENU-----
             $( "#productOptions" ).on( "change", function(e) {    
                 var selected = $( "#productOptions option:selected" ).text();
@@ -85,20 +95,14 @@ $( document ).ready( function(){
                         $( "#txtDOT" ).hide();//hide the text box; comes back when clicked class comes back
                     }
                 });
-                
-                //INVOKE PRODUCTTYPES MODULE MAKER HERE
-                // var productTypesGet = ParseJsonModule();
 
-                // productTypesGet.productTypesF();
-                // console.log("productTypes",productTypes);
-                 
-                // if ( Object.prototype.toString.call( productTypes ) === "[object Array]" ) {//test to make sure it is a true array, not array-like object. a prototype function.
-                //     console.log ( "productTypes on line 66 is an array" );//use Array.isArray or Object.prototype.toString.call to differentiate regular objects from arrays
+
+                // if ( Object.prototype.toString.call( theProductTypes ) === "[object Array]" ) {//test to make sure it is a true array, not array-like object. a prototype function.
+                //     console.log ( "theProductTypes is an array" );//use Array.isArray or Object.prototype.toString.call to differentiate regular objects from arrays
                 // }
-                // console.log("productTypesCaught",productTypesCaught);//
-                
+                             
                 //Iterate over each item in array and make jQuery collection, i.e., object out of match
-                productTypes.forEach( function( entry ) { //.forEach replaced the .every method - executed the provided callback function once for each element present in the array ONLY until it found one where callback returned a falsy value (a value that becomes false when converted to a Boolean). If such an element was found, the every method immediately returned false.
+                theProductTypes.forEach( function( entry ) { //.forEach replaced the .every method - executed the provided callback function once for each element present in the array ONLY until it found one where callback returned a falsy value (a value that becomes false when converted to a Boolean). If such an element was found, the every method immediately returned false.
                     // console.log( entry );//entry is the element(s) from array
                     // console.log ( typeof entry );//string
                     
@@ -106,8 +110,9 @@ $( document ).ready( function(){
                         // console.log( "element doesn't exist" );
                     }
                     else {//else, if element exists...
-                        console.log( "element found" );
+                        // console.log( "element found" );
 
+                                       
                     var productKey = ( key );
                     // console.log ( "productKey " + productKey );//presence of a productKey means that corresponding state shapes (#g's) should get styled via attr method.
                     
@@ -264,7 +269,7 @@ $( document ).ready( function(){
         
         });//CLOSING .EACH HERE   
 
-    })();//closing for function GetModule(){
+    })();//closing for var get = (function GetModule() {
   
   });//closing for $.getJSON( "stateInfoList.json", function( data ){
 
