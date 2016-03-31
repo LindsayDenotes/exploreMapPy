@@ -17,42 +17,31 @@ $( document ).ready( function(){
     // var ol = Object.keys( data );//how many keys does data contain?
     // console.log(ol.length);//logged 51
 
-    var get = (function GetModule() {
+    var get = (function GetModule() { //for now, this closing is at bottom of program until I figure stuff out
         
-        // PARSE JSON
         $.each ( data, function( key, val ){
+
             // console.log ( key, val.contacts );//key is "nh" or "fl", val is whats inside json's { }s
+            
+            //PARSE JSON MODULE MAKER
             function ParseJsonModule(){
                 // var jsonKey = ""; Keep this commented out. Will log as undefined if you uncomment
                 // var contacts = []; Keep this commented out. Will log as undefined if you uncomment
-                // var productTypes = []; //Keep this commented out. Will log as undefined if you uncomment
-                
-                //CREATE MODULE MAKER FOR JSONKEY - TO INVOKE IN CLICK HANDLER BEFORE PARSE DATA
+                                
+                //CREATE MODULE MAKER FOR JSONKEY - TO INVOKE IN CLICK HANDLER BEFORE PARSE DATA AS WELL AS IN ON CHANGE HANDLER BEFORE...
                 function jsonKeyF(){
                     jsonKey = ( key );
                     console.log ( "a state key: ", jsonKey );
                 }
-                //CREATE MODULE MAKER FOR CONTACTS - TO INVOKE IN CLICK HANDLER BEFORE COMEONEORALL MODULE MAKER
+                //CREATE MODULE MAKER FOR CONTACTS - TO INVOKE IN CLICK HANDLER BEFORE COMEONEORALL MODULE MAKER AS WELL AS IN ON CHANGE HANDLER BEFORE...
                 function contactsF(){
                     contacts = ( val.contacts );
-                    console.log ( "contacts are: ", contacts );//logs [object Object] etc. So crack into those with a forEach loop.
+                    console.log ( "the state's contacts: ", contacts );//logs [object Object] etc. Later, crack into those with a forEach loop.
                 }
-                //CREATE MODULE MAKER FOR PRODUCTTYPES - TO INVOKE IN ONCHANGE HANDLER BEFORE $PRODUCTSTATES 
-                function productTypesF(){
-                    productTypes = [];
-                    //I think I need to do something here in order to get back all productTypes in the event handler scope, not just the last item in productTypes
-                    contacts.forEach( function( obj ){//The forEach() method executes a provided function once per array element.
-                        productTypes = ( obj.productTypes );//make the array into an [object Array] so we can compare it with the string value of var selected
-                             // console.log( "line37 (outside event handlers) Array.isArray(productTypes): ", Array.isArray(productTypes) );//logged true
-                             // console.log( "line38 (outside event handlers) Object.prototype.toString.call(productTypes): ",Object.prototype.toString.call(productTypes) );//logged [object Array]
-                        console.log ( "productTypes are: ", productTypes );
-                    })
-                }
-
+                
                 return {
                     jsonKeyF: jsonKeyF,
-                    contactsF: contactsF,
-                    productTypesF: productTypesF
+                    contactsF: contactsF
                 };
             
             }//closing for ParseJsonModule(){
@@ -61,19 +50,14 @@ $( document ).ready( function(){
 
             fetch.jsonKeyF();
             fetch.contactsF();
-            fetch.productTypesF();
-
+            
             var theJsonKey = jsonKey;
             console.log("theJsonKey",theJsonKey);
 
             var theContacts = contacts;
             console.log("theContacts",theContacts);
 
-            //INVOKE PRODUCTTYPES MODULE MAKER HERE
-            var theProductTypes = productTypes;
-            console.log("theProductTypes",theProductTypes);     
                      
-            
             //-----EVENT HANDLER FUNCTION (1 of 2): USER SELECTS FROM DROP DOWN MENU-----
             $( "#productOptions" ).on( "change", function(e) {    
                 var selected = $( "#productOptions option:selected" ).text();
@@ -81,12 +65,12 @@ $( document ).ready( function(){
                 $( this ).css({ "border-style": "solid", "border-color": "#333", "border-width": "1px", "outline": "1px dotted #333"});
 
                 //Add or discard attributes on class selectors on change event.
-                $( ".clicked" ).attr( "class", "" );//DEFAULT BEHAVIOR: discard existing clicked class on both event handlers
+                $( ".clicked" ).attr( "class", "" );//DEFAULT BEHAVIOR: discard existing clicked class (should happen on click event handler, too)
                 $( ".selectedClass" ).attr( "class", "" );//discard the existing selected class on change event.
 
                 //Show or hide text box on change event (inner functions in blocks below)
                 $( "g" ).attr( "class", function( index, classNames ){
-                    if ( typeof classNames != "undefined" ) {//if any g has the clicked class instance on it...
+                    if ( typeof classNames != "undefined" ) {//~~~~~~~~add 2nd =?~~~~~~~if any g has the clicked class instance on it...
                         // console.log( "clicked exists so show txtDOT" );
                         $( "#txtDOT" ).show();//show the text box
                     }
@@ -96,7 +80,33 @@ $( document ).ready( function(){
                     }
                 });
 
+                //PRODUCTTYPES MODULE MAKER 
+                function ProductTypesModule(){
 
+                    // var productTypes = [];//Keep this commented out. Will log as undefined if you uncomment   
+                    //I think I need to do something here in order to get back all productTypes when I invoke this later, not just the last item in productTypes
+                    theContacts.forEach( function( obj ){//The forEach() method executes a provided function once per array element.
+                        
+                        var productTypes = [];                 
+                        productTypes = ( obj.productTypes );//make the array into an [object Array] so we can compare it with the string value of var selected
+                         // console.log( "line37 (outside event handlers) Array.isArray(productTypes): ", Array.isArray(productTypes) );//logged true
+                         // console.log( "line38 (outside event handlers) Object.prototype.toString.call(productTypes): ",Object.prototype.toString.call(productTypes) );//logged [object Array]
+                        console.log ( "productTypes are: ", productTypes );
+                    }); 
+                    return {
+                        productTypesModule: productTypesModule
+                    };                   
+
+                }//closing for ProductTypesModule(){
+                
+                //INVOKE PRODUCTTYPES MODULE MAKER HERE
+                ProductTypesModule();
+                // var forage = ProductTypesModule();
+
+                // forage.productTypesF();
+
+                var theProductTypes = productTypes;
+                console.log("theProductTypes",theProductTypes);
                 // if ( Object.prototype.toString.call( theProductTypes ) === "[object Array]" ) {//test to make sure it is a true array, not array-like object. a prototype function.
                 //     console.log ( "theProductTypes is an array" );//use Array.isArray or Object.prototype.toString.call to differentiate regular objects from arrays
                 // }
