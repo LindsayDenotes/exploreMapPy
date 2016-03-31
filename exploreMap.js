@@ -17,26 +17,23 @@ $( document ).ready( function(){
     // var ol = Object.keys( data );//how many keys does data contain?
     // console.log(ol.length);//logged 51
 
-    var get = (function GetModule() { //for now, this closing is at bottom of program until I figure stuff out
+    var get = (function GetModule(){ //for now, this closing is at bottom of program until I figure stuff out
         
         $.each ( data, function( key, val ){
-
             // console.log ( key, val.contacts );//key is "nh" or "fl", val is whats inside json's { }s
             
             //PARSE JSON MODULE MAKER
             function ParseJsonModule(){
-                // var jsonKey = ""; Keep this commented out. Will log as undefined if you uncomment
-                // var contacts = []; Keep this commented out. Will log as undefined if you uncomment
-                                
+                
                 //CREATE MODULE MAKER FOR JSONKEY - TO INVOKE IN CLICK HANDLER BEFORE PARSE DATA AS WELL AS IN ON CHANGE HANDLER BEFORE...
                 function jsonKeyF(){
                     jsonKey = ( key );
-                    console.log ( "a state key: ", jsonKey );
+                    console.log ( "state's key: ", jsonKey );
                 }
                 //CREATE MODULE MAKER FOR CONTACTS - TO INVOKE IN CLICK HANDLER BEFORE COMEONEORALL MODULE MAKER AS WELL AS IN ON CHANGE HANDLER BEFORE...
                 function contactsF(){
                     contacts = ( val.contacts );
-                    console.log ( "the state's contacts: ", contacts );//logs [object Object] etc. Later, crack into those with a forEach loop.
+                    console.log ( "state's contacts: ", contacts );//logs [object Object] etc. Later, crack into those with a forEach loop.
                 }
                 
                 return {
@@ -55,8 +52,44 @@ $( document ).ready( function(){
             console.log("theJsonKey",theJsonKey);
 
             var theContacts = contacts;
-            console.log("theContacts",theContacts);
+            console.log("theContacts",theContacts.length);
 
+            // var productTypes = [];
+            //PRODUCTTYPES MODULE MAKER
+            function ProductTypesModule(){
+
+                //I think I'm overwriting the productTypes var so it only holds last item
+                function productTypesF(){
+                                    
+                    theContacts.forEach( function( obj ){//The forEach() method executes a provided function once per array element. function is the callback function.
+                        
+                        productTypes = ( obj.productTypes );//make the array into an [object Array] so we can compare it with the string value of var selected
+                        // console.log( "line37 (outside event handlers) Array.isArray(productTypes): ", Array.isArray(productTypes) );//logged true
+                        // console.log( "line38 (outside event handlers) Object.prototype.toString.call(productTypes): ",Object.prototype.toString.call(productTypes) );//logged [object Array]
+                        console.log ( "productTypes are: ", productTypes );
+                    
+                    // return ( theContacts !== theContacts.length );
+
+                    });
+                }  
+                
+                return {
+                    productTypesF: productTypesF
+                };
+
+            }//closing for ProductTypesModule(){
+                
+            //INVOKE PRODUCTTYPES MODULE MAKER HERE
+            var forage = ProductTypesModule();
+
+            forage.productTypesF();
+
+            var theProductTypes = productTypes;
+            console.log("theProductTypes",theProductTypes);
+            // if ( Object.prototype.toString.call( theProductTypes ) === "[object Array]" ) {//test to make sure it is a true array, not array-like object. a prototype function.
+            //     console.log ( "theProductTypes is an array" );//use Array.isArray or Object.prototype.toString.call to differentiate regular objects from arrays
+            // }
+        });//CLOSING .EACH HERE
                      
             //-----EVENT HANDLER FUNCTION (1 of 2): USER SELECTS FROM DROP DOWN MENU-----
             $( "#productOptions" ).on( "change", function(e) {    
@@ -78,41 +111,34 @@ $( document ).ready( function(){
                         // console.log( "clicked doesn't exist so hide txtDOT" );
                         $( "#txtDOT" ).hide();//hide the text box; comes back when clicked class comes back
                     }
-                });
+                    });
+                //START - from http://www.tutorialspoint.com/javascript/array_foreach.htm
+                // if (!Array.prototype.forEach)
+                //  {
+                //     Array.prototype.forEach = function(fun /*, thisp*/)
+                //     {
+                //        var len = this.length;
+                       
+                //        if (typeof fun != "function")
+                //        throw new TypeError();
+                       
+                //        var thisp = arguments[1];
+                //        for (var i = 0; i < len; i++)
+                //        {
+                //           if (i in this)
+                //           fun.call(thisp, this[i], i, this);
+                //        }
+                //     };
+                //  }
 
-                //PRODUCTTYPES MODULE MAKER 
-                function ProductTypesModule(){
-
-                    // var productTypes = [];//Keep this commented out. Will log as undefined if you uncomment   
-                    //I think I need to do something here in order to get back all productTypes when I invoke this later, not just the last item in productTypes
-                    theContacts.forEach( function( obj ){//The forEach() method executes a provided function once per array element.
-                        
-                        var productTypes = [];                 
-                        productTypes = ( obj.productTypes );//make the array into an [object Array] so we can compare it with the string value of var selected
-                         // console.log( "line37 (outside event handlers) Array.isArray(productTypes): ", Array.isArray(productTypes) );//logged true
-                         // console.log( "line38 (outside event handlers) Object.prototype.toString.call(productTypes): ",Object.prototype.toString.call(productTypes) );//logged [object Array]
-                        console.log ( "productTypes are: ", productTypes );
-                    }); 
-                    return {
-                        productTypesModule: productTypesModule
-                    };                   
-
-                }//closing for ProductTypesModule(){
+                //  function printBr(element, index, array){
+                //     document.write("<br />[" + index + "] is " + element ); 
+                //  } //END from http://www.tutorialspoint.com/javascript/array_foreach.htm
                 
-                //INVOKE PRODUCTTYPES MODULE MAKER HERE
-                ProductTypesModule();
-                // var forage = ProductTypesModule();
-
-                // forage.productTypesF();
-
-                var theProductTypes = productTypes;
-                console.log("theProductTypes",theProductTypes);
-                // if ( Object.prototype.toString.call( theProductTypes ) === "[object Array]" ) {//test to make sure it is a true array, not array-like object. a prototype function.
-                //     console.log ( "theProductTypes is an array" );//use Array.isArray or Object.prototype.toString.call to differentiate regular objects from arrays
-                // }
-                             
+                //INVOKE PRODUCTTYPES MODULE MAKER 
+                
                 //Iterate over each item in array and make jQuery collection, i.e., object out of match
-                theProductTypes.forEach( function( entry ) { //.forEach replaced the .every method - executed the provided callback function once for each element present in the array ONLY until it found one where callback returned a falsy value (a value that becomes false when converted to a Boolean). If such an element was found, the every method immediately returned false.
+                productTypes.forEach( function( entry ) { //.forEach replaced the .every method - executed the provided callback function once for each element present in the array ONLY until it found one where callback returned a falsy value (a value that becomes false when converted to a Boolean). If such an element was found, the every method immediately returned false.
                     // console.log( entry );//entry is the element(s) from array
                     // console.log ( typeof entry );//string
                     
@@ -277,7 +303,7 @@ $( document ).ready( function(){
             
             });//closing for $( "g" )on( "click", function(e){ i.e., CLOSES THE CLICK EVENT HANDLER.-----           
         
-        });//CLOSING .EACH HERE   
+           
 
     })();//closing for var get = (function GetModule() {
   
