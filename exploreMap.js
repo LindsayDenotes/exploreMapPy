@@ -1,7 +1,14 @@
 /*
 Comments in all caps describe the event handler conditionals dealt with in that specific line or in the whole code block beneath the comment
 Comments to the right of a line pertain to that line only and are usually an interpretation in plain English of what that line does
-Future improvements to this code: 1) name and wrap functions in immediately invoked function expressions, 2) test without using console.log
+If I were to redo this code: 
+1) add functionality to show upon click only the one contact at that state who matches the selected product type.
+2) perhaps name and wrap functions in immediately invoked function expressions (not hoisting bc fns would be in same lexical scope)  
+3) avoid pyramid of doom (select event handler has 4 levels of indentations; click has 5 levels. Eek! )
+
+Please visit denotetoday.com to see the responsive CSS version of this project
+
+IDENTIFY FUNC INVOCATIONS, HIGHER ORDER FUNCS, AND THEIR CALLBACK FUNCS
 */
 
 $( document ).ready( function(){
@@ -144,6 +151,7 @@ $( document ).ready( function(){
                   contacts = ( val.contacts );
 //                      console.log ( "Referenced by val.contacts, contacts are " + contacts );
 
+
                   //text object creation
                   var theText = "<dl class ='agency " + key + "'>" + val.agency + "</dl>";//<dl> tag defines a description list
 
@@ -154,25 +162,46 @@ $( document ).ready( function(){
 //                            console.log( productTypes );
 //                            console.log( typeof productTypes );//logged object
 
+
                         var productTypesText = " ";//is string
                         productTypesText += productTypes;//the addition assignment operator adds the value of the right operand to a variable and assigns the result to the variable.
                         productTypesText = productTypesText.replace( /,/g , "<br/>" );//g stands for global, replace all matches, not just the first one. makes it a regular expression
 //                            console.log( productTypesText );
 //                            console.log ( typeof productTypesText );//logged string
 
+                        // if productTypesText contains selected, return val.contact                        
+                        if ( $( "#productOptions option:selected" ) == productTypesText ) {
+                            
+                            function Expert(){
+                                
+                                var contact = {};
+                                contact = ( [obj] );
+
+                                function getExpert(){
+                                    console.log ( "referenced by [obj], contact is " + contact );
+                                }
+                                //return contacts index to make obj for a single contact
+                                return getExpert;
+                            }
+
+                            Expert = obj;
+
+                        }
+
+                        //obj for 5 non-participating states are empty strings.
                         var firstLast = ( obj.firstLast );
-//                            console.log( firstLast );//empty string for 5 non-participating states
+//                            console.log( firstLast );
 
                         if ( firstLast !== " " ){//if firstLast obj is not an empty string, then...
 
                         var title = ( obj.title );
-//                            console.log ( title );//empty string for 5 non-participating states
+//                            console.log ( title );
 
                         var phone = ( obj.phone );
-//                            console.log ( phone );//empty string for 5 non-participating states
+//                            console.log ( phone );
 
                         var email = ( obj.email );
-//                            console.log ( email );//empty string for 5 non-participating states
+//                            console.log ( email );
 
                         //concatenate text objects
                         theText += "<dt class='contacts'>" + firstLast + ", " + title + ", " + phone + ", " + email + "</dt>";//<dt> tag defines a term/name in the <dl> description list
