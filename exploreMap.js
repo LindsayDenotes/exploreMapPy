@@ -17,7 +17,7 @@ $( document ).ready( function(){
     // var ol = Object.keys( data );//how many keys does data contain?
     // console.log(ol.length);//logged 51
 
-    var get = (function GetModule() {
+    // var get = (function GetModule() {
         
         // PARSE JSON
         $.each ( data, function( key, val ){
@@ -30,7 +30,7 @@ $( document ).ready( function(){
                 //CREATE MODULE MAKER FOR JSONKEY - TO INVOKE IN CLICK HANDLER BEFORE PARSE DATA
                 function jsonKeyF(){
                     jsonKey = ( key );
-                    console.log ( "a state key: ", jsonKey );
+                    console.log ( "a state key is: ", jsonKey );
                 }
                 //CREATE MODULE MAKER FOR CONTACTS - TO INVOKE IN CLICK HANDLER BEFORE COMEONEORALL MODULE MAKER
                 function contactsF(){
@@ -41,12 +41,12 @@ $( document ).ready( function(){
                 function productTypesF(){
                     productTypes = [];
                     //I think I need to do something here in order to get back all productTypes in the event handler scope, not just the last item in productTypes
-                    contacts.forEach( function( obj ){//The forEach() method executes a provided function once per array element.
-                        productTypes = ( obj.productTypes );//make the array into an [object Array] so we can compare it with the string value of var selected
+                    contacts.forEach( function( obj, i ){//The forEach() method executes a provided function once per array element.
+                        productTypes[i] = ( obj.productTypes );//make the array into an [object Array] so we can compare it with the string value of var selected
                              // console.log( "line37 (outside event handlers) Array.isArray(productTypes): ", Array.isArray(productTypes) );//logged true
                              // console.log( "line38 (outside event handlers) Object.prototype.toString.call(productTypes): ",Object.prototype.toString.call(productTypes) );//logged [object Array]
-                        console.log ( "productTypes are: ", productTypes );
                     })
+                    console.log("productTypes are: ", productTypes);
                 }
 
                 return {
@@ -269,7 +269,7 @@ $( document ).ready( function(){
         
         });//CLOSING .EACH HERE   
 
-    })();//closing for var get = (function GetModule() {
+    // })();//closing for var get = (function GetModule() {
   
   });//closing for $.getJSON( "stateInfoList.json", function( data ){
 
