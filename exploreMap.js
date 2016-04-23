@@ -39,39 +39,18 @@ function dropDownHandler(data, e) {
 }
 
 function highlightStates(key, val){
-    var contacts = [];
-    contacts = ( val.contacts );
+    var contacts = val.contacts;
 
     contacts.forEach( function( obj ){
 
-        var productTypes = [];
-        productTypes = ( obj.productTypes );
-
-        // Iterate over each item in array and make object out of match
-        // .forEach replaced the .every method - executed the provided callback
-        // function once for each element present in the array ONLY until it
-        // found one where callback returned a falsy value (a value that
-        // becomes false when converted to a Boolean). If such an element
-        // was found, the every method immediately returned false.
+        var productTypes = obj.productTypes;
         productTypes.forEach( function( entry ) {
 
             var selected = $( "#productOptions option:selected" ).text();
 
             if ( selected.indexOf( entry ) !== -1 ) {
-                var productKey = ( key );
-
-                // Block below defines the selected states group; i.e., the
-                // states that use the product type that the user selected
-                // from the drop down menu.
-                //
-                // The $ in the var name indicates the var contains jQuery
-                // object(s) or is a jQuery collection.
-                //
-                // Within the filter function, this refers to each DOM
-                // element in turn.
                 var $productStates =  $( "g" ).filter(function(index) {
-                    //if the id of a g el matches a productKey
-                    if ( $( this ).attr( "id" ) == productKey ){
+                    if ( $( this ).attr( "id" ) == key ){
                         return ( this.id );
                     }
                 })
