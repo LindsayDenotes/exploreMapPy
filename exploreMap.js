@@ -104,79 +104,82 @@ function handleStateInfo(data) {
     //Data parsing and text object creation for text box below the map.
     clickedState = ( this.id );
 
-    $.each( data, function( key, val ){
-
-        var jsonKey = ( key );
-            console.log ( "this is a state key: " + jsonKey );
-
-        if ( jsonKey == clickedState ){
-
-              var contacts = [];
-              contacts = ( val.contacts );
-
-
-              //text object creation
-              var theText = "<dl class ='agency " + key + "'>" + val.agency + "</dl>";//<dl> tag defines a description list
-
-                contacts.forEach( function( obj ){//The forEach() method executes a provided function once per array element.
-
-                    var productTypes = [];//is an array
-                    productTypes = ( obj.productTypes );//make the array into an object
-
-
-                    var productTypesText = " ";//is string
-                    productTypesText += productTypes;//the addition assignment operator adds the value of the right operand to a variable and assigns the result to the variable.
-                    productTypesText = productTypesText.replace( /,/g , "<br/>" );//g stands for global, replace all matches, not just the first one. makes it a regular expression
-
-                    // if productTypesText contains selected, return val.contact
-                    if ( $( "#productOptions option:selected" ) == productTypesText ) {
-
-                        function Expert(){
-
-                            var contact = {};
-                            contact = ( [obj] );
-
-                            function getExpert(){
-                                console.log ( "referenced by [obj], contact is " + contact );
-                            }
-                            return getExpert;
-                        }
-
-                        Expert = obj;
-
-                    }
-
-                    //obj for 5 non-participating states are empty strings.
-                    var firstLast = ( obj.firstLast );
-
-                    if ( firstLast !== " " ){//if firstLast obj is not an empty string, then...
-
-                    var title = ( obj.title );
-
-                    var phone = ( obj.phone );
-
-                    var email = ( obj.email );
-
-                    //concatenate text objects
-                    theText += "<dt class='contacts'>" + firstLast + ", " + title + ", " + phone + ", " + email + "</dt>";//<dt> tag defines a term/name in the <dl> description list
-                    theText += "<dd class='productTypes'>" + productTypesText + "</dd>";//<dd> tag describes each <dt> term/name
-                    }
-
-                    else {//else, if firstLast obj is an empty string, then...
-
-                    var theMessage = ( obj.productTypes );//place a message where the productTypes obj would have been
-                        console.log( theMessage );
-                    theText += "<dt class='contacts'>" + theMessage + "</dt>";//yes, I want the message I wrote into ntpepInfo.xlsx's productTypes cell to be displayed in the contacts class.
-                    }
-
-                });
-
-              $( "#txtDOT" ).html( theText );
-        }
-
-        });//closing for $.each( data, function( key, val ){
+    $.each( data, function( key, val ) {
+        parseStateData(clickedState, key, val)
+    });//closing for $.each( data, function( key, val ){
 
     });//closing for $( "g" )on( "click", function(e){
+}
+
+function parseStateData(clickedState, key, val) {
+
+    var jsonKey = ( key );
+        console.log ( "this is a state key: " + jsonKey );
+
+    if ( jsonKey == clickedState ){
+
+          var contacts = [];
+          contacts = ( val.contacts );
+
+
+          //text object creation
+          var theText = "<dl class ='agency " + key + "'>" + val.agency + "</dl>";//<dl> tag defines a description list
+
+            contacts.forEach( function( obj ){//The forEach() method executes a provided function once per array element.
+
+                var productTypes = [];//is an array
+                productTypes = ( obj.productTypes );//make the array into an object
+
+
+                var productTypesText = " ";//is string
+                productTypesText += productTypes;//the addition assignment operator adds the value of the right operand to a variable and assigns the result to the variable.
+                productTypesText = productTypesText.replace( /,/g , "<br/>" );//g stands for global, replace all matches, not just the first one. makes it a regular expression
+
+                // if productTypesText contains selected, return val.contact
+                if ( $( "#productOptions option:selected" ) == productTypesText ) {
+
+                    function Expert(){
+
+                        var contact = {};
+                        contact = ( [obj] );
+
+                        function getExpert(){
+                            console.log ( "referenced by [obj], contact is " + contact );
+                        }
+                        return getExpert;
+                    }
+
+                    Expert = obj;
+
+                }
+
+                //obj for 5 non-participating states are empty strings.
+                var firstLast = ( obj.firstLast );
+
+                if ( firstLast !== " " ){//if firstLast obj is not an empty string, then...
+
+                var title = ( obj.title );
+
+                var phone = ( obj.phone );
+
+                var email = ( obj.email );
+
+                //concatenate text objects
+                theText += "<dt class='contacts'>" + firstLast + ", " + title + ", " + phone + ", " + email + "</dt>";//<dt> tag defines a term/name in the <dl> description list
+                theText += "<dd class='productTypes'>" + productTypesText + "</dd>";//<dd> tag describes each <dt> term/name
+                }
+
+                else {//else, if firstLast obj is an empty string, then...
+
+                var theMessage = ( obj.productTypes );//place a message where the productTypes obj would have been
+                    console.log( theMessage );
+                theText += "<dt class='contacts'>" + theMessage + "</dt>";//yes, I want the message I wrote into ntpepInfo.xlsx's productTypes cell to be displayed in the contacts class.
+                }
+
+            });
+
+          $( "#txtDOT" ).html( theText );
+    }
 }
 
 $( document ).ready( function(){
