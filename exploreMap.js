@@ -11,186 +11,185 @@ Please visit denotetoday.com to see the responsive CSS version of this project
 IDENTIFY FUNC INVOCATIONS, HIGHER ORDER FUNCS, AND THEIR CALLBACK FUNCS
 */
 
-$( document ).ready( function(){
-    var json = {};
-      $.getJSON( "stateInfoList.json", function( data ) {
+function handleStateInfo(data) {
 
-        //EVENT HANDLER FUNCTION (1 of 2): USER SELECTS FROM DROP DOWN MENU
-        $( "#productOptions" ).on( "change", function(e) {
+    //EVENT HANDLER FUNCTION (1 of 2): USER SELECTS FROM DROP DOWN MENU
+    $( "#productOptions" ).on( "change", function(e) {
 
-        $( this ).css({ "border-style": "solid", "border-color": "#333", "border-width": "1px", "outline": "1px dotted #333"});
+    $( this ).css({ "border-style": "solid", "border-color": "#333", "border-width": "1px", "outline": "1px dotted #333"});
 
-        //Attributes methods. Selectors are classes.
-            $( ".clicked" ).attr( "class", "" );//DEFAULT BEHAVIOR: discard existing clicked class on both event handlers
-            $( ".selectedClass" ).attr( "class", "" );//discard the existing selected class.
+    //Attributes methods. Selectors are classes.
+        $( ".clicked" ).attr( "class", "" );//DEFAULT BEHAVIOR: discard existing clicked class on both event handlers
+        $( ".selectedClass" ).attr( "class", "" );//discard the existing selected class.
 
-        //Hide text box nested function
-            $( "g" ).attr( "class", function( index, classNames ){
-                if ( typeof classNames != "undefined" ) {//if any g has the clicked class instance on it...
-                    $( "#txtDOT" ).show();//show the text box
-                }
-                else {
-                    console.log( "clicked doesn't exist so hide txtDOT" );
-                    $( "#txtDOT" ).hide();//hide the text box; comes back when clicked class comes back
-                }
-            });
+    //Hide text box nested function
+        $( "g" ).attr( "class", function( index, classNames ){
+            if ( typeof classNames != "undefined" ) {//if any g has the clicked class instance on it...
+                $( "#txtDOT" ).show();//show the text box
+            }
+            else {
+                console.log( "clicked doesn't exist so hide txtDOT" );
+                $( "#txtDOT" ).hide();//hide the text box; comes back when clicked class comes back
+            }
+        });
 
-        //Text object creation and filter functionality for the drop down menu
-            var selected = $( "#productOptions option:selected" ).text();
-              console.log( "user selected " + selected );
+    //Text object creation and filter functionality for the drop down menu
+        var selected = $( "#productOptions option:selected" ).text();
+          console.log( "user selected " + selected );
 
-            $.each ( data, function( key, val ){//parse JSON.
+        $.each ( data, function( key, val ){//parse JSON.
 
-                var contacts = [];
-                contacts = ( val.contacts );
+            var contacts = [];
+            contacts = ( val.contacts );
 
-                    contacts.forEach( function( obj ){
+                contacts.forEach( function( obj ){
 
-                        var productTypes = [];
-                        productTypes = ( obj.productTypes );
+                    var productTypes = [];
+                    productTypes = ( obj.productTypes );
 
-                        if( Object.prototype.toString.call( productTypes ) === "[object Array]" ) {//test to make sure it is a true array, not array-like object. a prototype function.
-                        }
-
-                        //Iterate over each item in array and make object out of match
-                        productTypes.forEach( function( entry ) { //.forEach replaced the .every method - executed the provided callback function once for each element present in the array ONLY until it found one where callback returned a falsy value (a value that becomes false when converted to a Boolean). If such an element was found, the every method immediately returned false.
-
-                            if ( selected.indexOf( entry ) == -1 ) {//if element doesn't exist...//returns either the index/number of the start point for the string or a -1 meaning it isn’t there.
-                            }
-                            else {//else, if element exists...
-
-                            var productKey = ( key );
-
-                            //Block below defines the selected states group; i.e., the states that use the product type that the user selected from the drop down menu.
-                            var $productStates =  $( "g" )//the $ in the var name indicates the var contains jQuery object(s) or is a jQuery collection.
-                                .filter( function( index ) {//within the filter function, this refers to each DOM element in turn.
-                                    if ( $( this ).attr( "id" ) == productKey ){//if the id of a g el matches a productKey
-        //                                console.log ( this.id );//GOOD. logged or, mn, etc., i.e., the states that have the product type which user selected in the drop down menu
-                                        return ( this.id );
-                                    }
-                                  })
-
-                            $productStates.attr( "class", "selectedClass" );//add selectedClass attribute to the matched elements
-
-                            }//closing for else {//else, if element exists...
-
-                        });//closing for productTypes.forEach( function( entry ) {
-
-                    });//closing for contacts.forEach( function( obj ){
-
-            });//closing for $.each ( data, function( key, val ){
-
-        });//closing for $( "#productOptions" ).on( "change", function (e){
-
-
-        //EVENT HANDLER FUNCTION (2 of 2): USER CLICKS ON A STATE SHAPE
-        $( "g" ).on( "click", function ( e ) {
-            $( "#txtDOT" ).show();
-
-        //Attributes function
-        $( this ).attr( "class", function( index, classNames ) {
-
-            //CONDITION: IF USER CLICKS ON A STATE THAT IS ONE OF THE SELECTED STATES
-            if ( $( this ).attr( "class" )  == ( "selectedClass" ) ) {//If clicked state has selectedClass...
-                $( ".clicked" ).attr( "class", "selectedClass" );//KEEP SELECTEDCLASS ON CLICKED STATE
-                return classNames + " clicked";//temporarily keep the two clicked class instances
-                //SIBLINGS FUNCTION
-                $( this ).siblings( "g" ).attr( "class", function( index, classNames ) {//gets their class attribute and checks for existing classes on them
-                    if ( typeof classNames != "undefined" ) {//if there are existing classes, i.e., selectedClass, on the siblings, then...
-                        return classNames.replace( "clicked", "");//DEFAULT BEHAVIOR: discard existing clicked class on both event handlers. this line returns both the selected and clicked classes, then discards just the clicked
+                    if( Object.prototype.toString.call( productTypes ) === "[object Array]" ) {//test to make sure it is a true array, not array-like object. a prototype function.
                     }
-                });//closing for $( this ).siblings( "g" ).attr( "class", function( index, classNames ) {
-            }
 
-            //CONDITION: ELSE, IF USER CLICKS ON A STATE THAT IS NOT ONE OF THE SELECTED STATES
-            else {//else, if typeof classNames is undefined, meaning there aren't any existing classes, then...
-                console.log ("TRUE: else, if this clicked state's attr class does not == selectedClass");
-                $( this ).attr( "class", "clicked" ).siblings( "g" ).removeAttr( "class" );//add clicked to this. on siblings, DEFAULT BEHAVIOR: discard existing clicked class on both event handlers, discard existing selected class
+                    //Iterate over each item in array and make object out of match
+                    productTypes.forEach( function( entry ) { //.forEach replaced the .every method - executed the provided callback function once for each element present in the array ONLY until it found one where callback returned a falsy value (a value that becomes false when converted to a Boolean). If such an element was found, the every method immediately returned false.
 
-                //CONDITION: IF SELECTED CLASS DOESN'T EXIST (means same as line explanation comment on line 119 but this wording matches wording in EventHandlerConditionals.txt)
-                $( "#productOptions" ).find( "option:first" ).attr( "selected", "selected" );//RESET DROP DOWN MENU TO DEFAULT VALUE
-            }
+                        if ( selected.indexOf( entry ) == -1 ) {//if element doesn't exist...//returns either the index/number of the start point for the string or a -1 meaning it isn’t there.
+                        }
+                        else {//else, if element exists...
 
-        });//closing for $( this ).attr( "class", function( index, classNames ) {
+                        var productKey = ( key );
 
-
-        //Data parsing and text object creation for text box below the map.
-        clickedState = ( this.id );
-
-        $.each( data, function( key, val ){
-
-            var jsonKey = ( key );
-                console.log ( "this is a state key: " + jsonKey );
-
-            if ( jsonKey == clickedState ){
-
-                  var contacts = [];
-                  contacts = ( val.contacts );
-
-
-                  //text object creation
-                  var theText = "<dl class ='agency " + key + "'>" + val.agency + "</dl>";//<dl> tag defines a description list
-
-                    contacts.forEach( function( obj ){//The forEach() method executes a provided function once per array element.
-
-                        var productTypes = [];//is an array
-                        productTypes = ( obj.productTypes );//make the array into an object
-
-
-                        var productTypesText = " ";//is string
-                        productTypesText += productTypes;//the addition assignment operator adds the value of the right operand to a variable and assigns the result to the variable.
-                        productTypesText = productTypesText.replace( /,/g , "<br/>" );//g stands for global, replace all matches, not just the first one. makes it a regular expression
-
-                        // if productTypesText contains selected, return val.contact
-                        if ( $( "#productOptions option:selected" ) == productTypesText ) {
-
-                            function Expert(){
-
-                                var contact = {};
-                                contact = ( [obj] );
-
-                                function getExpert(){
-                                    console.log ( "referenced by [obj], contact is " + contact );
+                        //Block below defines the selected states group; i.e., the states that use the product type that the user selected from the drop down menu.
+                        var $productStates =  $( "g" )//the $ in the var name indicates the var contains jQuery object(s) or is a jQuery collection.
+                            .filter( function( index ) {//within the filter function, this refers to each DOM element in turn.
+                                if ( $( this ).attr( "id" ) == productKey ){//if the id of a g el matches a productKey
+    //                                console.log ( this.id );//GOOD. logged or, mn, etc., i.e., the states that have the product type which user selected in the drop down menu
+                                    return ( this.id );
                                 }
-                                return getExpert;
+                              })
+
+                        $productStates.attr( "class", "selectedClass" );//add selectedClass attribute to the matched elements
+
+                        }//closing for else {//else, if element exists...
+
+                    });//closing for productTypes.forEach( function( entry ) {
+
+                });//closing for contacts.forEach( function( obj ){
+
+        });//closing for $.each ( data, function( key, val ){
+
+    });//closing for $( "#productOptions" ).on( "change", function (e){
+
+
+    //EVENT HANDLER FUNCTION (2 of 2): USER CLICKS ON A STATE SHAPE
+    $( "g" ).on( "click", function ( e ) {
+        $( "#txtDOT" ).show();
+
+    //Attributes function
+    $( this ).attr( "class", function( index, classNames ) {
+
+        //CONDITION: IF USER CLICKS ON A STATE THAT IS ONE OF THE SELECTED STATES
+        if ( $( this ).attr( "class" )  == ( "selectedClass" ) ) {//If clicked state has selectedClass...
+            $( ".clicked" ).attr( "class", "selectedClass" );//KEEP SELECTEDCLASS ON CLICKED STATE
+            return classNames + " clicked";//temporarily keep the two clicked class instances
+            //SIBLINGS FUNCTION
+            $( this ).siblings( "g" ).attr( "class", function( index, classNames ) {//gets their class attribute and checks for existing classes on them
+                if ( typeof classNames != "undefined" ) {//if there are existing classes, i.e., selectedClass, on the siblings, then...
+                    return classNames.replace( "clicked", "");//DEFAULT BEHAVIOR: discard existing clicked class on both event handlers. this line returns both the selected and clicked classes, then discards just the clicked
+                }
+            });//closing for $( this ).siblings( "g" ).attr( "class", function( index, classNames ) {
+        }
+
+        //CONDITION: ELSE, IF USER CLICKS ON A STATE THAT IS NOT ONE OF THE SELECTED STATES
+        else {//else, if typeof classNames is undefined, meaning there aren't any existing classes, then...
+            console.log ("TRUE: else, if this clicked state's attr class does not == selectedClass");
+            $( this ).attr( "class", "clicked" ).siblings( "g" ).removeAttr( "class" );//add clicked to this. on siblings, DEFAULT BEHAVIOR: discard existing clicked class on both event handlers, discard existing selected class
+
+            //CONDITION: IF SELECTED CLASS DOESN'T EXIST (means same as line explanation comment on line 119 but this wording matches wording in EventHandlerConditionals.txt)
+            $( "#productOptions" ).find( "option:first" ).attr( "selected", "selected" );//RESET DROP DOWN MENU TO DEFAULT VALUE
+        }
+
+    });//closing for $( this ).attr( "class", function( index, classNames ) {
+
+
+    //Data parsing and text object creation for text box below the map.
+    clickedState = ( this.id );
+
+    $.each( data, function( key, val ){
+
+        var jsonKey = ( key );
+            console.log ( "this is a state key: " + jsonKey );
+
+        if ( jsonKey == clickedState ){
+
+              var contacts = [];
+              contacts = ( val.contacts );
+
+
+              //text object creation
+              var theText = "<dl class ='agency " + key + "'>" + val.agency + "</dl>";//<dl> tag defines a description list
+
+                contacts.forEach( function( obj ){//The forEach() method executes a provided function once per array element.
+
+                    var productTypes = [];//is an array
+                    productTypes = ( obj.productTypes );//make the array into an object
+
+
+                    var productTypesText = " ";//is string
+                    productTypesText += productTypes;//the addition assignment operator adds the value of the right operand to a variable and assigns the result to the variable.
+                    productTypesText = productTypesText.replace( /,/g , "<br/>" );//g stands for global, replace all matches, not just the first one. makes it a regular expression
+
+                    // if productTypesText contains selected, return val.contact
+                    if ( $( "#productOptions option:selected" ) == productTypesText ) {
+
+                        function Expert(){
+
+                            var contact = {};
+                            contact = ( [obj] );
+
+                            function getExpert(){
+                                console.log ( "referenced by [obj], contact is " + contact );
                             }
-
-                            Expert = obj;
-
+                            return getExpert;
                         }
 
-                        //obj for 5 non-participating states are empty strings.
-                        var firstLast = ( obj.firstLast );
+                        Expert = obj;
 
-                        if ( firstLast !== " " ){//if firstLast obj is not an empty string, then...
+                    }
 
-                        var title = ( obj.title );
+                    //obj for 5 non-participating states are empty strings.
+                    var firstLast = ( obj.firstLast );
 
-                        var phone = ( obj.phone );
+                    if ( firstLast !== " " ){//if firstLast obj is not an empty string, then...
 
-                        var email = ( obj.email );
+                    var title = ( obj.title );
 
-                        //concatenate text objects
-                        theText += "<dt class='contacts'>" + firstLast + ", " + title + ", " + phone + ", " + email + "</dt>";//<dt> tag defines a term/name in the <dl> description list
-                        theText += "<dd class='productTypes'>" + productTypesText + "</dd>";//<dd> tag describes each <dt> term/name
-                        }
+                    var phone = ( obj.phone );
 
-                        else {//else, if firstLast obj is an empty string, then...
+                    var email = ( obj.email );
 
-                        var theMessage = ( obj.productTypes );//place a message where the productTypes obj would have been
-                            console.log( theMessage );
-                        theText += "<dt class='contacts'>" + theMessage + "</dt>";//yes, I want the message I wrote into ntpepInfo.xlsx's productTypes cell to be displayed in the contacts class.
-                        }
+                    //concatenate text objects
+                    theText += "<dt class='contacts'>" + firstLast + ", " + title + ", " + phone + ", " + email + "</dt>";//<dt> tag defines a term/name in the <dl> description list
+                    theText += "<dd class='productTypes'>" + productTypesText + "</dd>";//<dd> tag describes each <dt> term/name
+                    }
 
-                    });
+                    else {//else, if firstLast obj is an empty string, then...
 
-                  $( "#txtDOT" ).html( theText );
-            }
+                    var theMessage = ( obj.productTypes );//place a message where the productTypes obj would have been
+                        console.log( theMessage );
+                    theText += "<dt class='contacts'>" + theMessage + "</dt>";//yes, I want the message I wrote into ntpepInfo.xlsx's productTypes cell to be displayed in the contacts class.
+                    }
 
-            });//closing for $.each( data, function( key, val ){
+                });
 
-        });//closing for $( "g" )on( "click", function(e){
+              $( "#txtDOT" ).html( theText );
+        }
 
-      });//closing for $.getJSON( "stateInfoList.json", function( data ){
+        });//closing for $.each( data, function( key, val ){
 
-});//closing for $(document).ready(function(){
+    });//closing for $( "g" )on( "click", function(e){
+}
+
+$( document ).ready( function(){
+    $.getJSON( "stateInfoList.json", handleStateInfo);
+})
