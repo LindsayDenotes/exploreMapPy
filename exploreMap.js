@@ -35,65 +35,66 @@ function dropDownHandler(data, e) {
     //Hide text box nested function
     $( "g" ).attr( "class", toggleTextBox);
 
+    $.each (data, highlightStates);//closing for $.each ( data, function( key, val ){
+}
+
+function highlightStates(key, val){
     //Text object creation and filter functionality for the drop down menu
     var selected = $( "#productOptions option:selected" ).text();
     console.log( "user selected " + selected );
 
-    $.each ( data, function( key, val ){//parse JSON.
+    var contacts = [];
+    contacts = ( val.contacts );
 
-        var contacts = [];
-        contacts = ( val.contacts );
+    contacts.forEach( function( obj ){
 
-        contacts.forEach( function( obj ){
+        var productTypes = [];
+        productTypes = ( obj.productTypes );
 
-            var productTypes = [];
-            productTypes = ( obj.productTypes );
+        // test to make sure it is a true array, not array-like object.
+        // a prototype function.
+        if( Object.prototype.toString.call( productTypes ) === "[object Array]" ) {
+        }
 
-            // test to make sure it is a true array, not array-like object.
-            // a prototype function.
-            if( Object.prototype.toString.call( productTypes ) === "[object Array]" ) {
-            }
+        // Iterate over each item in array and make object out of match
+        // .forEach replaced the .every method - executed the provided callback
+        // function once for each element present in the array ONLY until it
+        // found one where callback returned a falsy value (a value that
+        // becomes false when converted to a Boolean). If such an element
+        // was found, the every method immediately returned false.
+        productTypes.forEach( function( entry ) {
 
-            // Iterate over each item in array and make object out of match
-            // .forEach replaced the .every method - executed the provided callback
-            // function once for each element present in the array ONLY until it
-            // found one where callback returned a falsy value (a value that
-            // becomes false when converted to a Boolean). If such an element
-            // was found, the every method immediately returned false.
-            productTypes.forEach( function( entry ) {
+            //if element doesn't exist...//returns either the index/number
+            //of the start point for the string or a -1 meaning it isn’t there.
+            if ( selected.indexOf( entry ) == -1 ) {
+            } else {//else, if element exists...
 
-                //if element doesn't exist...//returns either the index/number
-                //of the start point for the string or a -1 meaning it isn’t there.
-                if ( selected.indexOf( entry ) == -1 ) {
-                } else {//else, if element exists...
+                var productKey = ( key );
 
-                    var productKey = ( key );
+                // Block below defines the selected states group; i.e., the
+                // states that use the product type that the user selected
+                // from the drop down menu.
+                //
+                // The $ in the var name indicates the var contains jQuery
+                // object(s) or is a jQuery collection.
+                //
+                // Within the filter function, this refers to each DOM
+                // element in turn.
+                var $productStates =  $( "g" ).filter(function(index) {
+                    //if the id of a g el matches a productKey
+                    if ( $( this ).attr( "id" ) == productKey ){
+                        return ( this.id );
+                    }
+                })
 
-                    // Block below defines the selected states group; i.e., the
-                    // states that use the product type that the user selected
-                    // from the drop down menu.
-                    //
-                    // The $ in the var name indicates the var contains jQuery
-                    // object(s) or is a jQuery collection.
-                    //
-                    // Within the filter function, this refers to each DOM
-                    // element in turn.
-                    var $productStates =  $( "g" ).filter(function(index) {
-                        //if the id of a g el matches a productKey
-                        if ( $( this ).attr( "id" ) == productKey ){
-                            return ( this.id );
-                        }
-                    })
+                $productStates.attr( "class", "selectedClass" );//add selectedClass attribute to the matched elements
 
-                    $productStates.attr( "class", "selectedClass" );//add selectedClass attribute to the matched elements
+            }//closing for else {//else, if element exists...
 
-                }//closing for else {//else, if element exists...
+        });//closing for productTypes.forEach( function( entry ) {
 
-            });//closing for productTypes.forEach( function( entry ) {
+    });//closing for contacts.forEach( function( obj ){
 
-        });//closing for contacts.forEach( function( obj ){
-
-    });//closing for $.each ( data, function( key, val ){
 }
 
 function handleStateInfo(data) {
