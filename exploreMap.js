@@ -128,24 +128,6 @@ function parseStateData(clickedState, key, val) {
             productTypesText += productTypes;//the addition assignment operator adds the value of the right operand to a variable and assigns the result to the variable.
             productTypesText = productTypesText.replace( /,/g , "<br/>" );//g stands for global, replace all matches, not just the first one. makes it a regular expression
 
-            // if productTypesText contains selected, return val.contact
-            if ( $( "#productOptions option:selected" ) == productTypesText ) {
-
-                function Expert(){
-
-                    var contact = {};
-                    contact = ( [obj] );
-
-                    function getExpert(){
-                        console.log ( "referenced by [obj], contact is " + contact );
-                    }
-                    return getExpert;
-                }
-
-                Expert = obj;
-
-            }
-
             //obj for 5 non-participating states are empty strings.
             var firstLast = obj.firstLast;
 
