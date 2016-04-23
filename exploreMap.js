@@ -11,6 +11,15 @@ Please visit denotetoday.com to see the responsive CSS version of this project
 IDENTIFY FUNC INVOCATIONS, HIGHER ORDER FUNCS, AND THEIR CALLBACK FUNCS
 */
 
+function toggleTextBox(index, classNames ){
+    if ( typeof classNames != "undefined" ) {//if any g has the clicked class instance on it...
+        $( "#txtDOT" ).show();//show the text box
+    } else {
+        console.log( "clicked doesn't exist so hide txtDOT" );
+        $( "#txtDOT" ).hide();//hide the text box; comes back when clicked class comes back
+    }
+}
+
 function dropDownHandler(data, e) {
     $(this).css({
         "border-style": "solid",
@@ -24,15 +33,7 @@ function dropDownHandler(data, e) {
     $( ".selectedClass" ).attr( "class", "" );//discard the existing selected class.
 
     //Hide text box nested function
-    $( "g" ).attr( "class", function( index, classNames ){
-        if ( typeof classNames != "undefined" ) {//if any g has the clicked class instance on it...
-            $( "#txtDOT" ).show();//show the text box
-        }
-        else {
-            console.log( "clicked doesn't exist so hide txtDOT" );
-            $( "#txtDOT" ).hide();//hide the text box; comes back when clicked class comes back
-        }
-    });
+    $( "g" ).attr( "class", toggleTextBox);
 
     //Text object creation and filter functionality for the drop down menu
     var selected = $( "#productOptions option:selected" ).text();
