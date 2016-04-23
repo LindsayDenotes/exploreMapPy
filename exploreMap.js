@@ -113,23 +113,16 @@ function handleStateInfo(data) {
 
 function parseStateData(clickedState, key, val) {
 
-    var jsonKey = ( key );
-        console.log ( "this is a state key: " + jsonKey );
+    if ( key == clickedState ){
 
-    if ( jsonKey == clickedState ){
-
-          var contacts = [];
-          contacts = ( val.contacts );
-
+          var contacts = val.contacts;
 
           //text object creation
           var theText = "<dl class ='agency " + key + "'>" + val.agency + "</dl>";//<dl> tag defines a description list
 
-            contacts.forEach( function( obj ){//The forEach() method executes a provided function once per array element.
+            contacts.forEach( function( obj ) {//The forEach() method executes a provided function once per array element.
 
-                var productTypes = [];//is an array
-                productTypes = ( obj.productTypes );//make the array into an object
-
+                var productTypes = obj.productTypes;
 
                 var productTypesText = " ";//is string
                 productTypesText += productTypes;//the addition assignment operator adds the value of the right operand to a variable and assigns the result to the variable.
@@ -154,15 +147,12 @@ function parseStateData(clickedState, key, val) {
                 }
 
                 //obj for 5 non-participating states are empty strings.
-                var firstLast = ( obj.firstLast );
-
+                var firstLast = obj.firstLast;
                 if ( firstLast !== " " ){//if firstLast obj is not an empty string, then...
 
-                var title = ( obj.title );
-
-                var phone = ( obj.phone );
-
-                var email = ( obj.email );
+                var title = obj.title;
+                var phone = obj.phone;
+                var email = obj.email;
 
                 //concatenate text objects
                 theText += "<dt class='contacts'>" + firstLast + ", " + title + ", " + phone + ", " + email + "</dt>";//<dt> tag defines a term/name in the <dl> description list
