@@ -74,39 +74,39 @@ function handleStateInfo(data) {
     $( "g" ).on( "click", function ( e ) {
         $( "#txtDOT" ).show();
 
-    //Attributes function
-    $( this ).attr( "class", function( index, classNames ) {
+        //Attributes function
+        $( this ).attr( "class", function( index, classNames ) {
 
-        //CONDITION: IF USER CLICKS ON A STATE THAT IS ONE OF THE SELECTED STATES
-        if ( $( this ).attr( "class" )  == ( "selectedClass" ) ) {//If clicked state has selectedClass...
-            $( ".clicked" ).attr( "class", "selectedClass" );//KEEP SELECTEDCLASS ON CLICKED STATE
-            return classNames + " clicked";//temporarily keep the two clicked class instances
-            //SIBLINGS FUNCTION
-            $( this ).siblings( "g" ).attr( "class", function( index, classNames ) {//gets their class attribute and checks for existing classes on them
-                if ( typeof classNames != "undefined" ) {//if there are existing classes, i.e., selectedClass, on the siblings, then...
-                    return classNames.replace( "clicked", "");//DEFAULT BEHAVIOR: discard existing clicked class on both event handlers. this line returns both the selected and clicked classes, then discards just the clicked
-                }
-            });//closing for $( this ).siblings( "g" ).attr( "class", function( index, classNames ) {
-        }
+            //CONDITION: IF USER CLICKS ON A STATE THAT IS ONE OF THE SELECTED STATES
+            if ( $( this ).attr( "class" )  == ( "selectedClass" ) ) {//If clicked state has selectedClass...
+                $( ".clicked" ).attr( "class", "selectedClass" );//KEEP SELECTEDCLASS ON CLICKED STATE
+                return classNames + " clicked";//temporarily keep the two clicked class instances
+                //SIBLINGS FUNCTION
+                $( this ).siblings( "g" ).attr( "class", function( index, classNames ) {//gets their class attribute and checks for existing classes on them
+                    if ( typeof classNames != "undefined" ) {//if there are existing classes, i.e., selectedClass, on the siblings, then...
+                        return classNames.replace( "clicked", "");//DEFAULT BEHAVIOR: discard existing clicked class on both event handlers. this line returns both the selected and clicked classes, then discards just the clicked
+                    }
+                });//closing for $( this ).siblings( "g" ).attr( "class", function( index, classNames ) {
+            }
 
-        //CONDITION: ELSE, IF USER CLICKS ON A STATE THAT IS NOT ONE OF THE SELECTED STATES
-        else {//else, if typeof classNames is undefined, meaning there aren't any existing classes, then...
-            console.log ("TRUE: else, if this clicked state's attr class does not == selectedClass");
-            $( this ).attr( "class", "clicked" ).siblings( "g" ).removeAttr( "class" );//add clicked to this. on siblings, DEFAULT BEHAVIOR: discard existing clicked class on both event handlers, discard existing selected class
+            //CONDITION: ELSE, IF USER CLICKS ON A STATE THAT IS NOT ONE OF THE SELECTED STATES
+            else {//else, if typeof classNames is undefined, meaning there aren't any existing classes, then...
+                console.log ("TRUE: else, if this clicked state's attr class does not == selectedClass");
+                $( this ).attr( "class", "clicked" ).siblings( "g" ).removeAttr( "class" );//add clicked to this. on siblings, DEFAULT BEHAVIOR: discard existing clicked class on both event handlers, discard existing selected class
 
-            //CONDITION: IF SELECTED CLASS DOESN'T EXIST (means same as line explanation comment on line 119 but this wording matches wording in EventHandlerConditionals.txt)
-            $( "#productOptions" ).find( "option:first" ).attr( "selected", "selected" );//RESET DROP DOWN MENU TO DEFAULT VALUE
-        }
+                //CONDITION: IF SELECTED CLASS DOESN'T EXIST (means same as line explanation comment on line 119 but this wording matches wording in EventHandlerConditionals.txt)
+                $( "#productOptions" ).find( "option:first" ).attr( "selected", "selected" );//RESET DROP DOWN MENU TO DEFAULT VALUE
+            }
 
-    });//closing for $( this ).attr( "class", function( index, classNames ) {
+        });//closing for $( this ).attr( "class", function( index, classNames ) {
 
 
-    //Data parsing and text object creation for text box below the map.
-    clickedState = ( this.id );
+        //Data parsing and text object creation for text box below the map.
+        clickedState = ( this.id );
 
-    $.each( data, function( key, val ) {
-        parseStateData(clickedState, key, val)
-    });//closing for $.each( data, function( key, val ){
+        $.each( data, function( key, val ) {
+            parseStateData(clickedState, key, val)
+        });//closing for $.each( data, function( key, val ){
 
     });//closing for $( "g" )on( "click", function(e){
 }
