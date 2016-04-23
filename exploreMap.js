@@ -39,10 +39,6 @@ function dropDownHandler(data, e) {
 }
 
 function highlightStates(key, val){
-    //Text object creation and filter functionality for the drop down menu
-    var selected = $( "#productOptions option:selected" ).text();
-    console.log( "user selected " + selected );
-
     var contacts = [];
     contacts = ( val.contacts );
 
@@ -50,11 +46,6 @@ function highlightStates(key, val){
 
         var productTypes = [];
         productTypes = ( obj.productTypes );
-
-        // test to make sure it is a true array, not array-like object.
-        // a prototype function.
-        if( Object.prototype.toString.call( productTypes ) === "[object Array]" ) {
-        }
 
         // Iterate over each item in array and make object out of match
         // .forEach replaced the .every method - executed the provided callback
@@ -64,11 +55,9 @@ function highlightStates(key, val){
         // was found, the every method immediately returned false.
         productTypes.forEach( function( entry ) {
 
-            //if element doesn't exist...//returns either the index/number
-            //of the start point for the string or a -1 meaning it isn’t there.
-            if ( selected.indexOf( entry ) == -1 ) {
-            } else {//else, if element exists...
+            var selected = $( "#productOptions option:selected" ).text();
 
+            if ( selected.indexOf( entry ) !== -1 ) {
                 var productKey = ( key );
 
                 // Block below defines the selected states group; i.e., the
@@ -88,9 +77,7 @@ function highlightStates(key, val){
                 })
 
                 $productStates.attr( "class", "selectedClass" );//add selectedClass attribute to the matched elements
-
-            }//closing for else {//else, if element exists...
-
+            }
         });//closing for productTypes.forEach( function( entry ) {
 
     });//closing for contacts.forEach( function( obj ){
